@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VOC.Core
+namespace VOC.Core.Games
 {
-    public class Class1
+    public interface IGame
     {
+        
     }
 }
