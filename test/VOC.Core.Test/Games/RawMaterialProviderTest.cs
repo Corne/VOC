@@ -24,7 +24,7 @@ namespace VOC.Core.Test.Games
             var board = new Mock<IBoard>();
             var provider = new RawMaterialProvider(board.Object);
 
-            Assert.Throws<ArgumentException>(() => provider.Distrubte(value));
+            Assert.Throws<ArgumentException>(() => provider.Distribute(value));
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace VOC.Core.Test.Games
             var board = new Mock<IBoard>();
             var provider = new RawMaterialProvider(board.Object);
 
-            provider.Distrubte(3);
+            provider.Distribute(3);
 
             board.Verify(b => b.GetTiles(3));
         }
@@ -52,7 +52,7 @@ namespace VOC.Core.Test.Games
             board.Setup(b => b.GetTiles(It.IsAny<int>())).Returns(tiles.Select(t => t));
 
             var provider = new RawMaterialProvider(board.Object);
-            provider.Distrubte(3);
+            provider.Distribute(3);
 
             foreach (ITile tile in tiles)
             {
@@ -81,7 +81,7 @@ namespace VOC.Core.Test.Games
             board.Setup(b => b.GetEstablishments(tiles[2])).Returns(new[] { establisment1.Object });
 
             var provider = new RawMaterialProvider(board.Object);
-            provider.Distrubte(3);
+            provider.Distribute(3);
 
             establisment1.Verify(e => e.Harvest(tiles[0]));
             establisment1.Verify(e => e.Harvest(tiles[2]));

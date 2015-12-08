@@ -18,7 +18,7 @@ namespace VOC.Core.Games
         }
 
 
-        public void Distrubte(int value)
+        public void Distribute(int value)
         {
             if (value <= 0 || value > 12 || value == 7)
                 throw new ArgumentException("Can only distrubte materials between 1 and 12, and excluding 7 because of it's the robbers number");
