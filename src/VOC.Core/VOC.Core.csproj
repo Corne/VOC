@@ -43,6 +43,8 @@
     <Compile Include="Boards\Coordinate.cs" />
     <Compile Include="Boards\IBoard.cs" />
     <Compile Include="Boards\ITile.cs" />
+    <Compile Include="Establishments\EstablishmentLevel.cs" />
+    <Compile Include="Establishments\IEstablishment.cs" />
     <Compile Include="Games\Game.cs" />
     <Compile Include="Games\IGame.cs" />
     <Compile Include="Games\RawMaterialProvider.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="Players\IPlayer.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Trading\Bank.cs" />
     <Compile Include="Trading\IMarket.cs" />
     <Compile Include="Trading\Market.cs" />
   </ItemGroup>
