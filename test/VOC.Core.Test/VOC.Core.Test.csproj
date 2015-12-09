@@ -69,7 +69,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Games\RawMaterialProviderTest.cs" />
+    <Compile Include="Establishments\EstablismentTest.cs" />
+    <Compile Include="Items\RawMaterials\RawMaterialProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

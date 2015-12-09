@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using VOC.Core.Boards;
 using VOC.Core.Establishments;
+using VOC.Core.Games;
 
-namespace VOC.Core.Games
+namespace VOC.Core.Items.RawMaterials
 {
-    public class RawMaterialProvider
+    public class RawMaterialProvider : IDistributer
     {
         private readonly IBoard board;
 
@@ -17,14 +18,12 @@ namespace VOC.Core.Games
             this.board = board;
         }
 
-
-        public void Distribute(int value)
+        public void Distribute(int number)
         {
-            if (value <= 0 || value > 12 || value == 7)
+            if (number <= 0 || number > 12 || number == 7)
                 throw new ArgumentException("Can only distrubte materials between 1 and 12, and excluding 7 because of it's the robbers number");
 
-            IEnumerable<ITile> tiles = board.GetTiles(value);
-
+            IEnumerable<ITile> tiles = board.GetTiles(number);
             foreach (ITile tile in tiles)
             {
                 IEnumerable<IEstablishment> establisments = board.GetEstablishments(tile);

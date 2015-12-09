@@ -42,12 +42,17 @@
   <ItemGroup>
     <Compile Include="Boards\Coordinate.cs" />
     <Compile Include="Boards\IBoard.cs" />
+    <Compile Include="Boards\IEdge.cs" />
     <Compile Include="Boards\ITile.cs" />
+    <Compile Include="Boards\IVertex.cs" />
     <Compile Include="Establishments\EstablishmentLevel.cs" />
+    <Compile Include="Establishments\Establisment.cs" />
     <Compile Include="Establishments\IEstablishment.cs" />
     <Compile Include="Games\Game.cs" />
+    <Compile Include="Games\IDistributer.cs" />
     <Compile Include="Games\IGame.cs" />
-    <Compile Include="Games\RawMaterialProvider.cs" />
+    <Compile Include="Items\RawMaterials\RawMaterial.cs" />
+    <Compile Include="Items\RawMaterials\RawMaterialProvider.cs" />
     <Compile Include="Items\RawMaterials\IRawMaterial.cs" />
     <Compile Include="Items\RawMaterials\MaterialType.cs" />
     <Compile Include="Players\IPlayer.cs" />

@@ -7,6 +7,7 @@ using VOC.Core.Establishments;
 
 namespace VOC.Core.Boards
 {
+    //http://www-cs-students.stanford.edu/~amitp/game-programming/grids/
     public interface IBoard
     {
         ITile[] Tiles { get; }

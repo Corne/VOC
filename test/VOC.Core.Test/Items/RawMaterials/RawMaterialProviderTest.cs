@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 using Moq;
 using VOC.Core.Boards;
 using VOC.Core.Establishments;
-using VOC.Core.Games;
-using VOC.Core.Players;
+using VOC.Core.Items.RawMaterials;
 using Xunit;
 
-namespace VOC.Core.Test.Games
+namespace VOC.Core.Test.Items.RawMaterials
 {
-    //www.spelregels-online.nl/j-k-l/de-kolonisten-van-catan/de-kolonisten-van-catan
+    
     public class RawMaterialProviderTest
     {
         [Theory]

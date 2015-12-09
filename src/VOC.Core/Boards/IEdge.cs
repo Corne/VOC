@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VOC.Core.Items.RawMaterials;
 
 namespace VOC.Core.Boards
 {
-    public interface ITile
+    public interface IEdge
     {
-        int Number { get; }
-        MaterialType Rawmaterial { get; }
-
-        IRawMaterial Farm();
     }
 }

@@ -8,5 +8,6 @@ namespace VOC.Core.Items.RawMaterials
 {
     public interface IRawMaterial
     {
+        MaterialType Type { get; }
     }
 }

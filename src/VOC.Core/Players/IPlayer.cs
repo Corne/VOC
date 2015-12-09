@@ -15,5 +15,7 @@ namespace VOC.Core.Players
         string Name { get; }
 
         IEnumerable<IRawMaterial> Inventory { get; }
+
+        void AddResource(IRawMaterial rawMaterial);
     }
 }

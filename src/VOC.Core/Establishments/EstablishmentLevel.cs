@@ -14,7 +14,7 @@ namespace VOC.Core.Establishments
     public enum EstablishmentLevel
     {
         //Farm,
-        Settlement,
-        City
+        Settlement = 1,
+        City = 2
     }
 }

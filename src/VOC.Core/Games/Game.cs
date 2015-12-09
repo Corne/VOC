@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace VOC.Core.Games
 {
+    //www.spelregels-online.nl/j-k-l/de-kolonisten-van-catan/de-kolonisten-van-catan
     public class Game
     {
 
