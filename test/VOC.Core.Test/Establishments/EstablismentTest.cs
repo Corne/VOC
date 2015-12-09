@@ -71,7 +71,7 @@ namespace VOC.Core.Test.Establishments
 
             vertex.Setup(v => v.IsAdjacentTo(tile.Object)).Returns(false);
             var establisment = new Establisment(player.Object, vertex.Object);
-                       
+
             Assert.Throws<ArgumentException>(() => establisment.Harvest(tile.Object));
         }
 
@@ -96,7 +96,7 @@ namespace VOC.Core.Test.Establishments
         }
 
         [Fact]
-        public void HarvestAddsXResourcesToPlayer() 
+        public void HarvestAddsXResourcesToPlayer()
         {
             var player = new Mock<IPlayer>();
             var vertex = new Mock<IVertex>();
