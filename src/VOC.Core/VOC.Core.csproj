@@ -45,6 +45,7 @@
     <Compile Include="Boards\IEdge.cs" />
     <Compile Include="Boards\ITile.cs" />
     <Compile Include="Boards\IVertex.cs" />
+    <Compile Include="Boards\Vertex.cs" />
     <Compile Include="Establishments\EstablishmentLevel.cs" />
     <Compile Include="Establishments\Establisment.cs" />
     <Compile Include="Establishments\IEstablishment.cs" />
