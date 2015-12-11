@@ -42,9 +42,11 @@
   <ItemGroup>
     <Compile Include="Boards\Coordinate.cs" />
     <Compile Include="Boards\IBoard.cs" />
+    <Compile Include="Boards\IBoardComponent.cs" />
     <Compile Include="Boards\IEdge.cs" />
     <Compile Include="Boards\ITile.cs" />
     <Compile Include="Boards\IVertex.cs" />
+    <Compile Include="Boards\Tile.cs" />
     <Compile Include="Boards\Vertex.cs" />
     <Compile Include="Establishments\EstablishmentLevel.cs" />
     <Compile Include="Establishments\Establisment.cs" />

@@ -69,6 +69,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Boards\TileTest.cs" />
     <Compile Include="Boards\VertextTest.cs" />
     <Compile Include="Establishments\EstablismentTest.cs" />
     <Compile Include="Items\RawMaterials\RawMaterialProviderTest.cs" />

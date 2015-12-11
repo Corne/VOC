@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace VOC.Core.Boards
 {
-    public interface IVertex
+    public interface IVertex : IBoardComponent
     {
         int X { get; }
         int Y { get; }
         VertexTileSide Side { get; }
-
-        //CvB Todo, BoardComponent interface which contains all those 3 methods?
-        bool IsAdjacentTo(IVertex vertex);
-        bool IsAdjacentTo(ITile tile);
-        bool IsAdjacentTo(IEdge edge);
     }
 
     public enum VertexTileSide

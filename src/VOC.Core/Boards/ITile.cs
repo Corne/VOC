@@ -7,7 +7,7 @@ using VOC.Core.Items.RawMaterials;
 
 namespace VOC.Core.Boards
 {
-    //CvB Todo interface is maybe not correct, Dessert should not have a farm method?
+    //Todo: CvB interface is maybe not correct, Dessert should not have a farm method?
     public interface ITile
     {
         /// <summary>

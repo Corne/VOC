@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VOC.Core.Boards
 {
-    public class Vertex : IVertex
+    public class Vertex : IVertex, IBoardComponent
     {
         public Vertex(int x, int y, VertexTileSide side)
         {
