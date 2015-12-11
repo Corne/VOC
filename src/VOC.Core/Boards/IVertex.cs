@@ -10,9 +10,10 @@ namespace VOC.Core.Boards
     {
         int X { get; }
         int Y { get; }
-        VertexTileSide Side { get; } 
+        VertexTileSide Side { get; }
 
         //CvB Todo, BoardComponent interface which contains all those 3 methods?
+        bool IsAdjacentTo(IVertex vertex);
         bool IsAdjacentTo(ITile tile);
         bool IsAdjacentTo(IEdge edge);
     }

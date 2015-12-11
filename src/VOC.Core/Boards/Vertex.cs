@@ -20,6 +20,33 @@ namespace VOC.Core.Boards
 
         public VertexTileSide Side { get; }
 
+        /// <summary>
+        /// (x,y,R) → (x+1,y-1,L) (x+1,y,L) (x+2,y-1,L)
+        /// (x,y,L) → (x-1,y+1,R) (x-1,y,R) (x-2,y+1,R) 
+        /// </summary>
+        /// <param name="vertex"></param>
+        /// <returns></returns>
+        public bool IsAdjacentTo(IVertex vertex)
+        {
+            //Vertex can only be adjacent if it has a different Tile Side
+            if (vertex == null || Side == vertex.Side)
+                return false;
+
+            int modifier = (int)Side;
+            // (x+1,y-1,L) / (x-1,y+1,R)
+            if (X + modifier == vertex.X && Y - modifier == vertex.Y)
+                return true;
+
+            //(x+1,y,L) / (x-1,y,R)
+            if (X + modifier == vertex.X && Y == vertex.Y)
+                return true;
+
+            //(x+2,y-1,L) / (x-2,y+1,R) 
+            if (X + 2 * modifier == vertex.X && Y - modifier == vertex.Y)
+                return true;
+
+            return false;
+        }
         //(x,y,L) → (x,y,W) (x-1,y,E) (x-1,y,N)
         //(x,y,R) → (x+1,y-1,N) (x+1,y-1,W) (x,y,E)
         public bool IsAdjacentTo(IEdge edge)
