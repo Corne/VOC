@@ -18,6 +18,7 @@ namespace VOC.Core.Test.Boards
             Assert.False(vertex.IsAdjacentTo((ITile)null));
         }
 
+
         [Theory]
         [InlineData(0, 0, VertexTileSide.Left)]
         [InlineData(0, 0, VertexTileSide.Right)]

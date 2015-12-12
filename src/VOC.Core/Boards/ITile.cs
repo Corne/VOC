@@ -8,7 +8,7 @@ using VOC.Core.Items.RawMaterials;
 namespace VOC.Core.Boards
 {
     //Todo: CvB interface is maybe not correct, Dessert should not have a farm method?
-    public interface ITile
+    public interface ITile : IBoardComponent
     {
         /// <summary>
         /// Tile Number
