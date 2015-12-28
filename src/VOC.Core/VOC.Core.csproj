@@ -40,9 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Boards\Board.cs" />
     <Compile Include="Boards\Coordinate.cs" />
+    <Compile Include="Boards\DefaultBoardBuilder.cs" />
     <Compile Include="Boards\Edge.cs" />
     <Compile Include="Boards\IBoard.cs" />
+    <Compile Include="Boards\IBoardBuilder.cs" />
     <Compile Include="Boards\IBoardComponent.cs" />
     <Compile Include="Boards\IEdge.cs" />
     <Compile Include="Boards\ITile.cs" />
@@ -50,7 +53,7 @@
     <Compile Include="Boards\Tile.cs" />
     <Compile Include="Boards\Vertex.cs" />
     <Compile Include="Establishments\EstablishmentLevel.cs" />
-    <Compile Include="Establishments\Establisment.cs" />
+    <Compile Include="Establishments\Establishment.cs" />
     <Compile Include="Establishments\IEstablishment.cs" />
     <Compile Include="Games\Game.cs" />
     <Compile Include="Games\IDistributer.cs" />

@@ -12,9 +12,9 @@ namespace VOC.Core.Establishments
     /// <summary>
     /// Maybe changing to abstract class, in the future depending on our needs and EstablismentLevel
     /// </summary>
-    public class Establisment : IEstablishment
+    public class Establishment : IEstablishment
     {
-        public Establisment(IPlayer owner, IVertex vertex)
+        public Establishment(IPlayer owner, IVertex vertex)
         {
             Owner = owner;
             Vertex = vertex;

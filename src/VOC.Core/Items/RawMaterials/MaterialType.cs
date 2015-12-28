@@ -13,6 +13,10 @@ namespace VOC.Core.Items.RawMaterials
         /// Will be used for the desert / tiles that don't provide resources
         /// </summary>
         Unsourced,
+        /// <summary>
+        /// We use tiles to display the sea
+        /// </summary>
+        Sea,
         Brick,
         Lumber,
         Wool,

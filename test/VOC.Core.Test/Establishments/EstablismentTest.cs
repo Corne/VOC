@@ -19,7 +19,7 @@ namespace VOC.Core.Test.Establishments
         {
             var player = new Mock<IPlayer>();
             var vertex = new Mock<IVertex>();
-            var establisment = new Establisment(player.Object, vertex.Object);
+            var establisment = new Establishment(player.Object, vertex.Object);
 
             Assert.Equal(EstablishmentLevel.Settlement, establisment.Level);
         }
@@ -29,7 +29,7 @@ namespace VOC.Core.Test.Establishments
         {
             var player = new Mock<IPlayer>();
             var vertex = new Mock<IVertex>();
-            var establisment = new Establisment(player.Object, vertex.Object);
+            var establisment = new Establishment(player.Object, vertex.Object);
 
             establisment.Upgrade();
 
@@ -41,7 +41,7 @@ namespace VOC.Core.Test.Establishments
         {
             var player = new Mock<IPlayer>();
             var vertex = new Mock<IVertex>();
-            var establisment = new Establisment(player.Object, vertex.Object);
+            var establisment = new Establishment(player.Object, vertex.Object);
 
             establisment.Upgrade();
             Assert.Throws<InvalidOperationException>(() => establisment.Upgrade());
@@ -55,7 +55,7 @@ namespace VOC.Core.Test.Establishments
             var tile = new Mock<ITile>();
 
             vertex.Setup(v => v.IsAdjacentTo(tile.Object)).Returns(true);
-            var establisment = new Establisment(player.Object, vertex.Object);
+            var establisment = new Establishment(player.Object, vertex.Object);
 
             establisment.Harvest(tile.Object);
 
@@ -70,7 +70,7 @@ namespace VOC.Core.Test.Establishments
             var tile = new Mock<ITile>();
 
             vertex.Setup(v => v.IsAdjacentTo(tile.Object)).Returns(false);
-            var establisment = new Establisment(player.Object, vertex.Object);
+            var establisment = new Establishment(player.Object, vertex.Object);
 
             Assert.Throws<ArgumentException>(() => establisment.Harvest(tile.Object));
         }
@@ -89,7 +89,7 @@ namespace VOC.Core.Test.Establishments
             var tile = tileMock.Object;
             vertex.Setup(v => v.IsAdjacentTo(tile)).Returns(true);
 
-            var establisment = new Establisment(player.Object, vertex.Object);
+            var establisment = new Establishment(player.Object, vertex.Object);
             establisment.Harvest(tile);
 
             tileMock.Verify(t => t.Farm());
@@ -107,7 +107,7 @@ namespace VOC.Core.Test.Establishments
             var tile = tileMock.Object;
             vertex.Setup(v => v.IsAdjacentTo(tile)).Returns(true);
 
-            var establisment = new Establisment(player.Object, vertex.Object);
+            var establisment = new Establishment(player.Object, vertex.Object);
 
             establisment.Harvest(tile);
             player.Verify(p => p.AddResource(It.IsAny<IRawMaterial>()), Times.Once());
@@ -125,7 +125,7 @@ namespace VOC.Core.Test.Establishments
             var tile = tileMock.Object;
             vertex.Setup(v => v.IsAdjacentTo(tile)).Returns(true);
 
-            var establisment = new Establisment(player.Object, vertex.Object);
+            var establisment = new Establishment(player.Object, vertex.Object);
             establisment.Upgrade();
             establisment.Harvest(tile);
 
