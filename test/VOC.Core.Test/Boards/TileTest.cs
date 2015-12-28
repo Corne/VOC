@@ -82,7 +82,7 @@ namespace VOC.Core.Test.Boards
 
             bool result = tile.IsAdjacentTo(edge.Object);
 
-            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}, Right); Edge(X: {edgeX}, Y: {edgeY}");
+            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}); Edge(X: {edgeX}, Y: {edgeY}");
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace VOC.Core.Test.Boards
 
             bool result = tile.IsAdjacentTo(edge.Object);
 
-            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}, Right); Edge(X: {edgeX}, Y: {edgeY}");
+            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}); Edge(X: {edgeX}, Y: {edgeY}");
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace VOC.Core.Test.Boards
 
             bool result = tile.IsAdjacentTo(edge.Object);
 
-            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}, Right); Edge(X: {edgeX}, Y: {edgeY}");
+            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}); Edge(X: {edgeX}, Y: {edgeY}");
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace VOC.Core.Test.Boards
             var tile = new Tile(x, y, 5, MaterialType.Ore);
             bool result = tile.IsAdjacentTo(input.Object);
 
-            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}, Right); Tile(X: {inputX}, Y: {inputY}");
+            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}); Tile(X: {inputX}, Y: {inputY}");
         }
 
         [Theory]
@@ -219,7 +219,7 @@ namespace VOC.Core.Test.Boards
             var tile = new Tile(x, y, 5, MaterialType.Ore);
             bool result = tile.IsAdjacentTo(vertex.Object);
 
-            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}, Right); Vertex(X: {vertexX}, Y: {vertexY}, side: {side})");
+            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}); Vertex(X: {vertexX}, Y: {vertexY}, side: {side})");
         }
 
         //Top-Left:(x-1,y+1,R) Top-Right(x+1,y,L) 
@@ -245,7 +245,7 @@ namespace VOC.Core.Test.Boards
             var tile = new Tile(x, y, 5, MaterialType.Ore);
             bool result = tile.IsAdjacentTo(vertex.Object);
 
-            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}, Right); Vertex(X: {vertexX}, Y: {vertexY}, Side: {side})");
+            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}); Vertex(X: {vertexX}, Y: {vertexY}, Side: {side})");
         }
 
         //Bottom-Left:(x-1, y, R) Bottom-Right:(x+1, y-1, L)
@@ -271,7 +271,7 @@ namespace VOC.Core.Test.Boards
             var tile = new Tile(x, y, 5, MaterialType.Ore);
             bool result = tile.IsAdjacentTo(vertex.Object);
 
-            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}, Right); Vertex(X: {vertexX}, Y: {vertexY}");
+            Assert.True(result == expected, $"Result: {result}, Expected: {expected}\nTile(X: {x}, Y: {y}); Vertex(X: {vertexX}, Y: {vertexY}");
         }
     }
 }

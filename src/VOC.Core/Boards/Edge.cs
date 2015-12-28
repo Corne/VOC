@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VOC.Core.Boards
 {
-    public class Edge : IEdge
+    public class Edge : IEdge, IBoardComponent
     {
         public Edge(int x, int y, EdgeSide side)
         {
