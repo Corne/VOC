@@ -76,7 +76,9 @@
     <Compile Include="Boards\TileTest.cs" />
     <Compile Include="Boards\VertextTest.cs" />
     <Compile Include="Establishments\EstablismentTest.cs" />
+    <Compile Include="Items\DieTest.cs" />
     <Compile Include="Items\RawMaterials\RawMaterialProviderTest.cs" />
+    <Compile Include="Items\RobberTest.cs" />
     <Compile Include="Players\PlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

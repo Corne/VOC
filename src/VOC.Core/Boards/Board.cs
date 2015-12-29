@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VOC.Core.Establishments;
+using VOC.Core.Items;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 
@@ -20,16 +21,18 @@ namespace VOC.Core.Boards
 
         public IEnumerable<IEstablishment> Establishments { get { return establishments.AsReadOnly(); } }
         public IEnumerable<IRoad> Roads { get { return roads.AsReadOnly(); } }
-
+        public IRobber Robber { get; }
         public Board(IBoardBuilder builder)
         {
             establishments = new List<IEstablishment>();
             roads = new List<IRoad>();
-            //CvB Todo: not sure if correct/clean to call this in constructor
+
             builder.Build();
             Tiles = builder.Tiles;
             Vertices = builder.Vertices;
             Edges = builder.Edges;
+
+            Robber = new Robber(Tiles.Single(t => t.Rawmaterial == MaterialType.Unsourced));
         }
 
         public IEstablishment BuildEstablishment(IVertex vertex, IPlayer owner)
@@ -96,9 +99,9 @@ namespace VOC.Core.Boards
             return Establishments.Where(e => e.Vertex.IsAdjacentTo(tile)).ToList();
         }
 
-        public IEnumerable<ITile> GetTiles(int number)
+        public IEnumerable<ITile> GetResourceTiles(int number)
         {
-            return Tiles.Where(t => t.Number == number).ToList();
+            return Tiles.Except(new[] { Robber.CurrentTile }).Where(t => t.Number == number).ToList();
         }
     }
 }

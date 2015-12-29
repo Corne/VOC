@@ -34,7 +34,7 @@ namespace VOC.Core.Test.Items.RawMaterials
 
             provider.Distribute(3);
 
-            board.Verify(b => b.GetTiles(3));
+            board.Verify(b => b.GetResourceTiles(3));
         }
 
         //Get farms/cities on given tiles
@@ -48,7 +48,7 @@ namespace VOC.Core.Test.Items.RawMaterials
             };
 
             var board = new Mock<IBoard>();
-            board.Setup(b => b.GetTiles(It.IsAny<int>())).Returns(tiles.Select(t => t));
+            board.Setup(b => b.GetResourceTiles(It.IsAny<int>())).Returns(tiles.Select(t => t));
 
             var provider = new RawMaterialProvider(board.Object);
             provider.Distribute(3);
@@ -74,7 +74,7 @@ namespace VOC.Core.Test.Items.RawMaterials
             var establisment2 = new Mock<IEstablishment>();
 
             var board = new Mock<IBoard>();
-            board.Setup(b => b.GetTiles(It.IsAny<int>())).Returns(tiles.Select(t => t));
+            board.Setup(b => b.GetResourceTiles(It.IsAny<int>())).Returns(tiles.Select(t => t));
             board.Setup(b => b.GetEstablishments(tiles[0])).Returns(new[] { establisment2.Object, establisment1.Object });
             board.Setup(b => b.GetEstablishments(tiles[1])).Returns(new IEstablishment[] { });
             board.Setup(b => b.GetEstablishments(tiles[2])).Returns(new[] { establisment1.Object });

@@ -10,7 +10,10 @@ namespace VOC.Core.Games
     public class Game
     {
 
+        public Game()
+        {
 
+        }
 
     }
 }

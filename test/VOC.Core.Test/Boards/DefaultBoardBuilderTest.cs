@@ -24,7 +24,7 @@ namespace VOC.Core.Test.Boards
         }
 
         [Fact]
-        public void DefaultBoardHas1Dessert()
+        public void DefaultBoardHas1Desert()
         {
             var builder = new DefaultBoardBuilder();
             builder.Build();

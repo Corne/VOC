@@ -19,27 +19,40 @@ namespace VOC.Core.Test.Boards
         [Fact]
         public void BoardWillBeCreatedInConstructor()
         {
-            var builder = new Mock<IBoardBuilder>();
-            var board = new Board(builder.Object);
+            var board = new Board(builder);
 
-            builder.Verify(b => b.Build());
+            Assert.NotEmpty(board.Tiles);
+            Assert.NotEmpty(board.Vertices);
+            Assert.NotEmpty(board.Edges);
+            Assert.NotNull(board.Robber);
         }
 
         [Fact]
         public void GetTilesTest()
         {
             var board = new Board(builder);
-            var tiles = board.GetTiles(4);
+            var tiles = board.GetResourceTiles(4);
 
             Assert.Equal(2, tiles.Count());
             Assert.Equal(new[] { MaterialType.Lumber, MaterialType.Brick }, tiles.Select(t => t.Rawmaterial));
         }
 
         [Fact]
+        public void GetTilesIgnoresRobberTiles()
+        {
+            var board = new Board(builder);
+            board.Robber.Move(board.Tiles.Single(t => t.X == 0 && t.Y == 0));
+            var tiles = board.GetResourceTiles(11);
+
+            Assert.Equal(1, tiles.Count());
+            Assert.Equal(new[] { MaterialType.Lumber }, tiles.Select(t => t.Rawmaterial));
+        }
+
+        [Fact]
         public void GetTilesReturnsEmptyListIfNoMatchingTiles()
         {
             var board = new Board(builder);
-            var tiles = board.GetTiles(13);
+            var tiles = board.GetResourceTiles(13);
 
             Assert.Equal(new ITile[0], tiles);
         }

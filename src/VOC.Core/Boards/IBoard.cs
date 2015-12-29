@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VOC.Core.Establishments;
+using VOC.Core.Items;
 using VOC.Core.Players;
 
 namespace VOC.Core.Boards
@@ -16,12 +17,14 @@ namespace VOC.Core.Boards
         IEnumerable<IEdge> Edges { get; }
         IEnumerable<IEstablishment> Establishments { get; }
         IEnumerable<IRoad> Roads { get; }
+        IRobber Robber { get; }
+
         /// <summary>
-        /// Get all tiles that have the specific number
+        /// Get all tiles that have the specific number, exluding tiles blocked by the robber
         /// </summary>
         /// <param name="number">Number you want the tiles of</param>
-        /// <returns>All Tiles on the board with given number</returns>
-        IEnumerable<ITile> GetTiles(int number);
+        /// <returns>All Tiles on the board with given number, if not blocked by the robber</returns>
+        IEnumerable<ITile> GetResourceTiles(int number);
 
         /// <summary>
         /// Get all establiments that are adjacent to the tile

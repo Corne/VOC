@@ -21,9 +21,10 @@ namespace VOC.Core.Items.RawMaterials
         public void Distribute(int number)
         {
             if (number <= 0 || number > 12 || number == 7)
-                throw new ArgumentException("Can only distrubte materials between 1 and 12, and excluding 7 because of it's the robbers number");
+                throw new ArgumentException("Can only distrubte materials between 1 and 12, and excluding 7 because of it's the desserts number");
 
-            IEnumerable<ITile> tiles = board.GetTiles(number);
+            //CvB todo exclude robber tile
+            IEnumerable<ITile> tiles = board.GetResourceTiles(number);
             foreach (ITile tile in tiles)
             {
                 IEnumerable<IEstablishment> establisments = board.GetEstablishments(tile);
