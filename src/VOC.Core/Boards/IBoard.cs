@@ -14,11 +14,8 @@ namespace VOC.Core.Boards
         IEnumerable<ITile> Tiles { get; }
         IEnumerable<IVertex> Vertices { get; }
         IEnumerable<IEdge> Edges { get; }
-        //CvB Todo: not sure if we need/should expose vertices and edges
-        //IEnumerable<IVertex> Vertices { get; }
-        //IEnumerable<IEdge> Edges { get; }
-        IEnumerable<IEstablishment> Establisments { get; }
-
+        IEnumerable<IEstablishment> Establishments { get; }
+        IEnumerable<IRoad> Roads { get; }
         /// <summary>
         /// Get all tiles that have the specific number
         /// </summary>
@@ -40,6 +37,15 @@ namespace VOC.Core.Boards
         /// <param name="vertex">Vertex the establisment will be placed on</param>
         /// <param name="owner">Player who will own the establisment</param>
         /// <returns>The created establisment</returns>
-        IEstablishment BuildEstablisment(IVertex vertex, IPlayer owner);
+        IEstablishment BuildEstablishment(IVertex vertex, IPlayer owner);
+
+        /// <summary>
+        /// Build a road
+        /// CvB ToDo: validate if this is the correct place for this method
+        /// </summary>
+        /// <param name="edge">edge the road will be placed on</param>
+        /// <param name="owner">owner of the road</param>
+        /// <returns>The created road</returns>
+        IRoad BuildRoad(IEdge edge, IPlayer owner);
     }
 }

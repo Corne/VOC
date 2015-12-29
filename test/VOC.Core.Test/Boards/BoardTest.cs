@@ -51,7 +51,7 @@ namespace VOC.Core.Test.Boards
             var player = new Mock<IPlayer>();
             var board = new Board(builder);
 
-            Assert.Throws<ArgumentNullException>(() => board.BuildEstablisment(null, player.Object));
+            Assert.Throws<ArgumentNullException>(() => board.BuildEstablishment(null, player.Object));
         }
 
 
@@ -63,7 +63,7 @@ namespace VOC.Core.Test.Boards
             var vertex = new Mock<IVertex>();
             var board = new Board(builder);
 
-            Assert.Throws<ArgumentException>(() => board.BuildEstablisment(vertex.Object, player.Object));
+            Assert.Throws<ArgumentException>(() => board.BuildEstablishment(vertex.Object, player.Object));
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace VOC.Core.Test.Boards
             var board = new Board(builder);
             var vertex = builder.Vertices.First(t => t.X == 0 && t.Y == 0);
 
-            Assert.Throws<ArgumentNullException>(() => board.BuildEstablisment(vertex, null));
+            Assert.Throws<ArgumentNullException>(() => board.BuildEstablishment(vertex, null));
         }
 
         [Fact]
@@ -82,27 +82,41 @@ namespace VOC.Core.Test.Boards
             var player = new Mock<IPlayer>();
             var vertex = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
 
-            var result = board.BuildEstablisment(vertex, player.Object);
-            Assert.Contains(result, board.Establisments);
+            var result = board.BuildEstablishment(vertex, player.Object);
+            Assert.Contains(result, board.Establishments);
             Assert.Equal(player.Object, result.Owner);
             Assert.Equal(vertex, result.Vertex);
         }
 
         [Fact]
-        public void BuidFailsIfAlreadyEstablismentOnVertex()
+        public void BuildEstablishmentFailsIfAlreadyEstablismentOnVertex()
         {
             var board = new Board(builder);
             var player1 = new Mock<IPlayer>();
             var player2 = new Mock<IPlayer>();
             var vertex = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
 
-            board.BuildEstablisment(vertex, player1.Object);
+            board.BuildEstablishment(vertex, player1.Object);
 
-            Assert.Throws<ArgumentException>(() => board.BuildEstablisment(vertex, player2.Object));
+            Assert.Throws<ArgumentException>(() => board.BuildEstablishment(vertex, player2.Object));
         }
 
         [Fact]
-        public void BuildFailsIfTryingToBuildOnVertexSurroundedBySea()
+        public void BuildEstablishmentFailsIfAnAdjacentTileHasEstablishment()
+        {
+            var board = new Board(builder);
+
+            var player1 = new Mock<IPlayer>();
+            var player2 = new Mock<IPlayer>();
+            var vertex1 = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
+            var vertex2 = builder.Vertices.First(t => t.IsAdjacentTo(vertex1));
+            board.BuildEstablishment(vertex1, player1.Object);
+
+            Assert.Throws<ArgumentException>(() => board.BuildEstablishment(vertex2, player2.Object));
+        }
+
+        [Fact]
+        public void BuildEstablishmentFailsIfTryingToBuildOnVertexSurroundedBySea()
         {
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
@@ -112,7 +126,131 @@ namespace VOC.Core.Test.Boards
                 .First(v => builder.Tiles.Where(t => t.IsAdjacentTo(v))
                     .All(t => t.Rawmaterial == MaterialType.Sea));
 
-            Assert.Throws<ArgumentException>(() => board.BuildEstablisment(seaVertex, player.Object));
+            Assert.Throws<ArgumentException>(() => board.BuildEstablishment(seaVertex, player.Object));
+        }
+
+        [Fact]
+        public void BuildRoadNullEdgeException()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+
+            Assert.Throws<ArgumentNullException>(() => board.BuildRoad(null, player.Object));
+        }
+
+        [Fact]
+        public void BuildRoadNullOwnerException()
+        {
+            var board = new Board(builder);
+            var edge = board.Edges.First(e => e.X == 0 && e.Y == 0);
+
+            Assert.Throws<ArgumentNullException>(() => board.BuildRoad(edge, null));
+        }
+
+        [Fact]
+        public void BuildRoadFailsIfNoAdjacentEdgesOrEstablismentsOfThePlayer()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
+
+            Assert.Throws<ArgumentException>(() => board.BuildRoad(edge, player.Object));
+        }
+
+        [Fact]
+        public void BuildRoadSuccesIfAdjcanentToEstablisment()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
+            var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
+
+            board.BuildEstablishment(vertex, player.Object);
+            var road = board.BuildRoad(edge, player.Object);
+
+            Assert.Contains(road, board.Roads);
+            Assert.NotNull(road);
+            Assert.Equal(edge, road.Edge);
+            Assert.Equal(player.Object, road.Owner);
+        }
+
+
+        [Fact]
+        public void BuildRoadSuccesIfAdjcentToDifferentPlayerRoad()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            var edge1 = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
+            var edge2 = board.Edges.First(e => e.X == -1 && e.Y == 1 && e.Side == EdgeSide.East);
+            var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
+
+            board.BuildEstablishment(vertex, player.Object);
+            board.BuildRoad(edge1, player.Object);
+
+            var road = board.BuildRoad(edge2, player.Object);
+
+            Assert.Contains(road, board.Roads);
+            Assert.NotNull(road);
+            Assert.Equal(edge2, road.Edge);
+            Assert.Equal(player.Object, road.Owner);
+        }
+
+        [Fact]
+        public void BuildRoadFailsIfAdjcanentEstablismentFromDifferentPlayer()
+        {
+            var board = new Board(builder);
+            var player1 = new Mock<IPlayer>();
+            var player2 = new Mock<IPlayer>();
+            var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
+            var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
+
+            board.BuildEstablishment(vertex, player2.Object);
+            Assert.Throws<ArgumentException>(() => board.BuildRoad(edge, player1.Object));
+        }
+
+        [Fact]
+        public void BuildRoadFailIfAlreadyRoadOnThatEdge()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
+            var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
+
+            board.BuildEstablishment(vertex, player.Object);
+            board.BuildRoad(edge, player.Object);
+            Assert.Throws<ArgumentException>(() => board.BuildRoad(edge, player.Object));
+        }
+
+        [Fact]
+        public void BuildRoadFailIfEdgeIsBetweenSeaTiles()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+
+            var vertex = board.Vertices.First(v =>
+            {
+                var tiles = board.Tiles.Where(t => t.IsAdjacentTo(v));
+                return tiles.Count() == 3 && tiles.Count(t => t.Rawmaterial == MaterialType.Sea) == 2;
+            });
+            var edge = board.Edges.First(e => board.Tiles.Where(t => t.IsAdjacentTo(e)).All(t => t.Rawmaterial == MaterialType.Sea));
+
+            board.BuildEstablishment(vertex, player.Object);
+            Assert.Throws<ArgumentException>(() => board.BuildRoad(edge, player.Object));
+        }
+
+        [Fact]
+        public void BuildRoadFailIfEdgeNotOnBoard()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            var edge = new Mock<IEdge>();
+            edge.Setup(e => e.X).Returns(0);
+            edge.Setup(e => e.Y).Returns(0);
+            edge.Setup(e => e.Side).Returns(EdgeSide.West);
+            var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
+
+            board.BuildEstablishment(vertex, player.Object);
+            Assert.Throws<ArgumentException>(() => board.BuildRoad(edge.Object, player.Object));
         }
 
         [Fact]
@@ -131,7 +269,7 @@ namespace VOC.Core.Test.Boards
             var player = new Mock<IPlayer>();
 
             //add an establisment
-            var establisment = board.BuildEstablisment(vertex, player.Object);
+            var establisment = board.BuildEstablishment(vertex, player.Object);
 
             var tile1 = new Mock<ITile>();
             tile1.Setup(t => t.X).Returns(0);
@@ -164,8 +302,8 @@ namespace VOC.Core.Test.Boards
             var player = new Mock<IPlayer>();
 
             //add an establisment
-            var establisment1 = board.BuildEstablisment(vertex1, player.Object);
-            var establisment2 = board.BuildEstablisment(vertex2, player.Object);
+            var establisment1 = board.BuildEstablishment(vertex1, player.Object);
+            var establisment2 = board.BuildEstablishment(vertex2, player.Object);
 
             var tile = new Mock<ITile>();
             tile.Setup(t => t.X).Returns(-1);

@@ -11,18 +11,20 @@ namespace VOC.Core.Boards
 {
     public class Board : IBoard
     {
-        private readonly List<IEstablishment> establisments;
+        private readonly List<IEstablishment> establishments;
+        private readonly List<IRoad> roads;
 
         public IEnumerable<ITile> Tiles { get; }
         public IEnumerable<IVertex> Vertices { get; }
         public IEnumerable<IEdge> Edges { get; }
 
-        public IEnumerable<IEstablishment> Establisments { get { return establisments.AsReadOnly(); } }
+        public IEnumerable<IEstablishment> Establishments { get { return establishments.AsReadOnly(); } }
+        public IEnumerable<IRoad> Roads { get { return roads.AsReadOnly(); } }
 
         public Board(IBoardBuilder builder)
         {
-            establisments = new List<IEstablishment>();
-
+            establishments = new List<IEstablishment>();
+            roads = new List<IRoad>();
             //CvB Todo: not sure if correct/clean to call this in constructor
             builder.Build();
             Tiles = builder.Tiles;
@@ -30,7 +32,7 @@ namespace VOC.Core.Boards
             Edges = builder.Edges;
         }
 
-        public IEstablishment BuildEstablisment(IVertex vertex, IPlayer owner)
+        public IEstablishment BuildEstablishment(IVertex vertex, IPlayer owner)
         {
             if (vertex == null)
                 throw new ArgumentNullException(nameof(vertex));
@@ -41,16 +43,49 @@ namespace VOC.Core.Boards
             if (!Vertices.Contains(vertex))
                 throw new ArgumentException("Did not find the passed vertex on the board");
 
-            if (establisments.Any(e => e.Vertex == vertex))
-                throw new ArgumentException("Invalid vertex, already an establisment here");
+            if (establishments.Any(e => e.Vertex == vertex))
+                throw new ArgumentException("Invalid vertex, already an establishment here");
+
+            var vertices = Vertices.Where(v => v.IsAdjacentTo(vertex));
+            if (establishments.Any(e => vertices.Contains(e.Vertex)))
+                throw new ArgumentException("Invalid vertex, establishment can't be placed next to another establishment");
 
             var tiles = Tiles.Where(t => t.IsAdjacentTo(vertex));
             if (tiles.All(t => t.Rawmaterial == MaterialType.Sea))
-                throw new ArgumentException("Can't place an establilsment on sea!");
+                throw new ArgumentException("Can't place an establishment on sea!");
 
-            var establisment = new Establishment(owner, vertex);
-            establisments.Add(establisment);
-            return establisment;
+            var establishment = new Establishment(owner, vertex);
+            establishments.Add(establishment);
+            return establishment;
+        }
+
+        public IRoad BuildRoad(IEdge edge, IPlayer owner)
+        {
+            if (edge == null)
+                throw new ArgumentNullException(nameof(edge));
+
+            if (owner == null)
+                throw new ArgumentNullException(nameof(owner));
+
+            if (!Edges.Contains(edge))
+                throw new ArgumentException("Edge does not exist on the board");
+
+            if (roads.Any(r => r.Edge == edge))
+                throw new ArgumentException("There already is a road build on the given edge");
+
+            if (Tiles.Where(t => t.IsAdjacentTo(edge)).All(t => t.Rawmaterial == MaterialType.Sea))
+                throw new ArgumentException("Can't build roads on sea!");
+
+            var adjacentVertices = Vertices.Where(v => v.IsAdjacentTo(edge));
+            var adjacentEdges = Edges.Where(e => e.IsAdjacentTo(edge));
+            //CvB Todo: not really readable
+            if (establishments.All(e => !adjacentVertices.Contains(e.Vertex) || e.Owner != owner) &&
+                roads.All(r => !adjacentEdges.Contains(r.Edge) || r.Owner != owner))
+                throw new ArgumentException("Road should have an adjacent establisment or road of the player");
+
+            var road = new Road(edge, owner);
+            roads.Add(road);
+            return road;
         }
 
         public IEnumerable<IEstablishment> GetEstablishments(ITile tile)
@@ -58,7 +93,7 @@ namespace VOC.Core.Boards
             if (tile == null)
                 throw new ArgumentNullException(nameof(tile));
 
-            return Establisments.Where(e => e.Vertex.IsAdjacentTo(tile)).ToList();
+            return Establishments.Where(e => e.Vertex.IsAdjacentTo(tile)).ToList();
         }
 
         public IEnumerable<ITile> GetTiles(int number)
