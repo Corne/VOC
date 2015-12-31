@@ -29,9 +29,26 @@ namespace VOC.Core.Players
             if (rawMaterial == null)
                 throw new ArgumentNullException(nameof(rawMaterial));
 
+            if (rawMaterial.Type == MaterialType.Unsourced || rawMaterial.Type == MaterialType.Sea)
+                throw new ArgumentException("Unsourced and Sea are invalid resources");
             //ToDo CvB: Max inventory space? 
 
             materials.Add(rawMaterial);
+        }
+
+        public bool HasResources(params MaterialType[] rawmaterials)
+        {
+            if (rawmaterials == null)
+                return false;
+
+            var distinctTypes = rawmaterials.Distinct();
+            var materialTypes = materials.Select(m => m.Type);
+            return distinctTypes.All(t => materialTypes.Where(m => m == t).Count() >= rawmaterials.Where(m => m == t).Count()); 
+        }
+
+        public void RemoveResources(params MaterialType[] resources)
+        {
+            throw new NotImplementedException();
         }
     }
 }

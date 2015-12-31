@@ -57,8 +57,13 @@ namespace VOC.Core.Boards
             if (tiles.All(t => t.Rawmaterial == MaterialType.Sea))
                 throw new ArgumentException("Can't place an establishment on sea!");
 
+            if (!owner.HasResources(Establishment.BUILD_RESOURCES))
+                throw new InvalidOperationException("Can't build a house for this player, because there are not enough resources");
+
             var establishment = new Establishment(owner, vertex);
             establishments.Add(establishment);
+            owner.RemoveResources(Establishment.BUILD_RESOURCES);
+
             return establishment;
         }
 

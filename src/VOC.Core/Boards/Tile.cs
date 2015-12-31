@@ -27,6 +27,9 @@ namespace VOC.Core.Boards
 
         public IRawMaterial Farm()
         {
+            if (Rawmaterial == MaterialType.Sea || Rawmaterial == MaterialType.Unsourced)
+                throw new InvalidOperationException("Can't farm sea / unsourced tiles");
+
             return new RawMaterial(Rawmaterial);
         }
 

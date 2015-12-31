@@ -18,7 +18,6 @@ namespace VOC.Core.Test.Boards
         [InlineData(MaterialType.Lumber)]
         [InlineData(MaterialType.Ore)]
         [InlineData(MaterialType.Wool)]
-        [InlineData(MaterialType.Unsourced)] //NOT SURE about this one
         public void FarmTest(MaterialType type)
         {
             var tile = new Tile(1, 2, 3, type);
@@ -27,6 +26,15 @@ namespace VOC.Core.Test.Boards
             Assert.Equal(type, material.Type);
         }
 
+        //CvB Todo: maybe better to have seperate classes (farmableTile/...Tile), instead of writing exluded types
+        [Theory]
+        [InlineData(MaterialType.Unsourced)]
+        [InlineData(MaterialType.Sea)]
+        public void InvalidFarmTiles(MaterialType type)
+        {
+            var tile = new Tile(1, 2, 3, type);
+            Assert.Throws<InvalidOperationException>(() => tile.Farm());
+        }
 
         [Fact]
         public void NotAdjacentToNullEdge()

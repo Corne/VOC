@@ -14,6 +14,9 @@ namespace VOC.Core.Establishments
     /// </summary>
     public class Establishment : IEstablishment
     {
+        public static readonly MaterialType[] BUILD_RESOURCES = { MaterialType.Lumber, MaterialType.Brick, MaterialType.Grain, MaterialType.Wool };
+        public static readonly MaterialType[] UPGRADE_RESOURCES = { MaterialType.Grain, MaterialType.Grain, MaterialType.Ore, MaterialType.Ore, MaterialType.Ore };
+
         public Establishment(IPlayer owner, IVertex vertex)
         {
             Owner = owner;

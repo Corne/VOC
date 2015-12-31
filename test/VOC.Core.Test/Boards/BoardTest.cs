@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using VOC.Core.Boards;
+using VOC.Core.Establishments;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 using Xunit;
@@ -72,6 +73,7 @@ namespace VOC.Core.Test.Boards
         public void BuildEstablismentNonExisitingVertexException()
         {
             var player = new Mock<IPlayer>();
+
             //mock can never be on the board
             var vertex = new Mock<IVertex>();
             var board = new Board(builder);
@@ -89,10 +91,24 @@ namespace VOC.Core.Test.Boards
         }
 
         [Fact]
+        public void BuildEstablistmentFailsIfPlayerNotEnoughtResources()
+        {
+            var board = new Board(builder);
+            var vertex = builder.Vertices.First(t => t.X == 0 && t.Y == 0);
+
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(false);
+
+            Assert.Throws<InvalidOperationException>(() => board.BuildEstablishment(vertex, player.Object));
+        }
+
+        [Fact]
         public void BuildEstablismentTest()
         {
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var vertex = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
 
             var result = board.BuildEstablishment(vertex, player.Object);
@@ -102,11 +118,29 @@ namespace VOC.Core.Test.Boards
         }
 
         [Fact]
+        public void BuildEstablismentRemovedResourcesFromPlayer()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
+            var vertex = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
+
+            var result = board.BuildEstablishment(vertex, player.Object);
+
+            player.Verify(p => p.RemoveResources(Establishment.BUILD_RESOURCES));
+        }
+
+        [Fact]
         public void BuildEstablishmentFailsIfAlreadyEstablismentOnVertex()
         {
             var board = new Board(builder);
             var player1 = new Mock<IPlayer>();
+            player1.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var player2 = new Mock<IPlayer>();
+            player2.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var vertex = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
 
             board.BuildEstablishment(vertex, player1.Object);
@@ -120,7 +154,11 @@ namespace VOC.Core.Test.Boards
             var board = new Board(builder);
 
             var player1 = new Mock<IPlayer>();
+            player1.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var player2 = new Mock<IPlayer>();
+            player2.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var vertex1 = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
             var vertex2 = builder.Vertices.First(t => t.IsAdjacentTo(vertex1));
             board.BuildEstablishment(vertex1, player1.Object);
@@ -133,6 +171,7 @@ namespace VOC.Core.Test.Boards
         {
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
 
             //get first tile where all adjacent tiles are sea
             var seaVertex = board.Vertices
@@ -175,6 +214,8 @@ namespace VOC.Core.Test.Boards
         {
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
             var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
 
@@ -193,6 +234,8 @@ namespace VOC.Core.Test.Boards
         {
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var edge1 = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
             var edge2 = board.Edges.First(e => e.X == -1 && e.Y == 1 && e.Side == EdgeSide.East);
             var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
@@ -214,6 +257,8 @@ namespace VOC.Core.Test.Boards
             var board = new Board(builder);
             var player1 = new Mock<IPlayer>();
             var player2 = new Mock<IPlayer>();
+            player2.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
             var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
 
@@ -226,6 +271,8 @@ namespace VOC.Core.Test.Boards
         {
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
             var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
 
@@ -239,6 +286,8 @@ namespace VOC.Core.Test.Boards
         {
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
 
             var vertex = board.Vertices.First(v =>
             {
@@ -256,6 +305,8 @@ namespace VOC.Core.Test.Boards
         {
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
             var edge = new Mock<IEdge>();
             edge.Setup(e => e.X).Returns(0);
             edge.Setup(e => e.Y).Returns(0);
@@ -280,6 +331,7 @@ namespace VOC.Core.Test.Boards
 
             var vertex = board.Vertices.Single(v => v.X == -1 && v.Y == 1 && v.Side == VertexTileSide.Right);
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
 
             //add an establisment
             var establisment = board.BuildEstablishment(vertex, player.Object);
@@ -313,6 +365,7 @@ namespace VOC.Core.Test.Boards
             var vertex1 = board.Vertices.Single(v => v.X == -1 && v.Y == 1 && v.Side == VertexTileSide.Right);
             var vertex2 = board.Vertices.Single(v => v.X == -1 && v.Y == 1 && v.Side == VertexTileSide.Left);
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
 
             //add an establisment
             var establisment1 = board.BuildEstablishment(vertex1, player.Object);
