@@ -25,10 +25,24 @@ namespace VOC.Core.Test.Establishments
         }
 
         [Fact]
+        public void UpgradeFailsIfPlayerDoesntHaveResources()
+        {
+            var player = new Mock<IPlayer>();
+            var vertex = new Mock<IVertex>();
+            player.Setup(p => p.HasResources(Establishment.UPGRADE_RESOURCES)).Returns(false);
+            var establisment = new Establishment(player.Object, vertex.Object);
+
+            Assert.Throws<InvalidOperationException>(() => establisment.Upgrade());
+            Assert.Equal(EstablishmentLevel.Settlement, establisment.Level);
+            player.Verify(p => p.RemoveResources(Establishment.UPGRADE_RESOURCES), Times.Never);
+        }
+        
+        [Fact]
         public void UpgradeSetsLevelToCity()
         {
             var player = new Mock<IPlayer>();
             var vertex = new Mock<IVertex>();
+            player.Setup(p => p.HasResources(Establishment.UPGRADE_RESOURCES)).Returns(true);
             var establisment = new Establishment(player.Object, vertex.Object);
 
             establisment.Upgrade();
@@ -37,14 +51,31 @@ namespace VOC.Core.Test.Establishments
         }
 
         [Fact]
+        public void UpgradeRemovedResourcesFromOwner()
+        {
+            var player = new Mock<IPlayer>();
+            var vertex = new Mock<IVertex>();
+            player.Setup(p => p.HasResources(Establishment.UPGRADE_RESOURCES)).Returns(true);
+            var establisment = new Establishment(player.Object, vertex.Object);
+
+            establisment.Upgrade();
+            Assert.Equal(EstablishmentLevel.City, establisment.Level);
+            player.Verify(p => p.RemoveResources(Establishment.UPGRADE_RESOURCES), Times.Once);
+        }
+
+        [Fact]
         public void UpdgradeFailsIfLevelAlreadyCity()
         {
             var player = new Mock<IPlayer>();
             var vertex = new Mock<IVertex>();
+            player.Setup(p => p.HasResources(Establishment.UPGRADE_RESOURCES)).Returns(true);
+
             var establisment = new Establishment(player.Object, vertex.Object);
 
             establisment.Upgrade();
             Assert.Throws<InvalidOperationException>(() => establisment.Upgrade());
+            player.Verify(p => p.RemoveResources(Establishment.UPGRADE_RESOURCES), Times.Once);
+
         }
 
         [Fact]
@@ -114,9 +145,11 @@ namespace VOC.Core.Test.Establishments
         }
 
         [Fact]
-        public void UpgradedEstablismentAdds2ResourcesToPlayer()
+        public void HarvestUpgradedEstablismentAdds2ResourcesToPlayer()
         {
             var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.UPGRADE_RESOURCES)).Returns(true);
+
             var vertex = new Mock<IVertex>();
             var tileMock = new Mock<ITile>();
             tileMock.Setup(t => t.Rawmaterial).Returns(MaterialType.Grain);

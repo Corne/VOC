@@ -210,11 +210,29 @@ namespace VOC.Core.Test.Boards
         }
 
         [Fact]
+        public void BuildRoadFailsIfPlayerHasNotEnoughResources()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            player.Setup(p => p.HasResources(Road.BUILD_RESOURCES)).Returns(false);
+
+            var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
+            var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
+
+            board.BuildEstablishment(vertex, player.Object);
+
+            Assert.Throws<InvalidOperationException>(() => board.BuildRoad(edge, player.Object));
+            player.Verify(p => p.RemoveResources(Road.BUILD_RESOURCES), Times.Never);
+        }
+
+        [Fact]
         public void BuildRoadSuccesIfAdjcanentToEstablisment()
         {
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
             player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            player.Setup(p => p.HasResources(Road.BUILD_RESOURCES)).Returns(true);
 
             var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
             var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
@@ -228,6 +246,22 @@ namespace VOC.Core.Test.Boards
             Assert.Equal(player.Object, road.Owner);
         }
 
+        [Fact]
+        public void BuildRoadRemovesResourcesFromPlayerIfSucceeded()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            player.Setup(p => p.HasResources(Road.BUILD_RESOURCES)).Returns(true);
+
+            var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
+            var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
+
+            board.BuildEstablishment(vertex, player.Object);
+            var road = board.BuildRoad(edge, player.Object);
+
+            player.Verify(p => p.RemoveResources(Road.BUILD_RESOURCES));
+        }
 
         [Fact]
         public void BuildRoadSuccesIfAdjcentToDifferentPlayerRoad()
@@ -235,6 +269,8 @@ namespace VOC.Core.Test.Boards
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
             player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            player.Setup(p => p.HasResources(Road.BUILD_RESOURCES)).Returns(true);
+
 
             var edge1 = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
             var edge2 = board.Edges.First(e => e.X == -1 && e.Y == 1 && e.Side == EdgeSide.East);
@@ -258,6 +294,8 @@ namespace VOC.Core.Test.Boards
             var player1 = new Mock<IPlayer>();
             var player2 = new Mock<IPlayer>();
             player2.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            player1.Setup(p => p.HasResources(Road.BUILD_RESOURCES)).Returns(true);
+            player2.Setup(p => p.HasResources(Road.BUILD_RESOURCES)).Returns(true);
 
             var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
             var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
@@ -272,6 +310,7 @@ namespace VOC.Core.Test.Boards
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
             player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            player.Setup(p => p.HasResources(Road.BUILD_RESOURCES)).Returns(true);
 
             var edge = board.Edges.First(e => e.X == 0 && e.Y == 0 && e.Side == EdgeSide.West);
             var vertex = board.Vertices.First(v => v.X == 0 && v.Y == 0 && v.Side == VertexTileSide.Left);
@@ -287,6 +326,7 @@ namespace VOC.Core.Test.Boards
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
             player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            player.Setup(p => p.HasResources(Road.BUILD_RESOURCES)).Returns(true);
 
 
             var vertex = board.Vertices.First(v =>
@@ -306,6 +346,7 @@ namespace VOC.Core.Test.Boards
             var board = new Board(builder);
             var player = new Mock<IPlayer>();
             player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            player.Setup(p => p.HasResources(Road.BUILD_RESOURCES)).Returns(true);
 
             var edge = new Mock<IEdge>();
             edge.Setup(e => e.X).Returns(0);

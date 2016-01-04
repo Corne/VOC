@@ -86,13 +86,17 @@ namespace VOC.Core.Boards
 
             var adjacentVertices = Vertices.Where(v => v.IsAdjacentTo(edge));
             var adjacentEdges = Edges.Where(e => e.IsAdjacentTo(edge));
-            //CvB Todo: not really readable
+            //CvB Todo: fix readability
             if (establishments.All(e => !adjacentVertices.Contains(e.Vertex) || e.Owner != owner) &&
                 roads.All(r => !adjacentEdges.Contains(r.Edge) || r.Owner != owner))
                 throw new ArgumentException("Road should have an adjacent establisment or road of the player");
 
+            if (!owner.HasResources(Road.BUILD_RESOURCES))
+                throw new InvalidOperationException("Player has not enough resources to be able to build a road!");
+
             var road = new Road(edge, owner);
             roads.Add(road);
+            owner.RemoveResources(Road.BUILD_RESOURCES);
             return road;
         }
 
