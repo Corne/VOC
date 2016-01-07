@@ -9,6 +9,7 @@ namespace VOC.Core.Players
 {
     public class Player : IPlayer
     {
+        private readonly object removeResourceLock = new object();
         private readonly List<IRawMaterial> materials;
 
         public Player(string name)
@@ -48,7 +49,20 @@ namespace VOC.Core.Players
 
         public void RemoveResources(params MaterialType[] resources)
         {
-            throw new NotImplementedException();
+            if (resources == null)
+                throw new ArgumentNullException(nameof(resources));
+
+            lock (removeResourceLock)
+            {
+                if (!HasResources(resources))
+                    throw new InvalidOperationException("Player doesn't have those resources");
+
+                foreach(var resource in resources)
+                {
+                    var firstMatching = materials.First(m => m.Type == resource);
+                    materials.Remove(firstMatching);
+                }
+            }
         }
     }
 }
