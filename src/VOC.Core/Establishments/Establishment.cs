@@ -51,7 +51,7 @@ namespace VOC.Core.Establishments
                 throw new InvalidOperationException("Can't upgrade Establisment because player doesn't have the resources!");
 
             Level = EstablishmentLevel.City;
-            Owner.RemoveResources(UPGRADE_RESOURCES);
+            Owner.TakeResources(UPGRADE_RESOURCES);
         }
     }
 }

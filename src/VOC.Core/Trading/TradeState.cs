@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace VOC.Core.Trading
 {
-    public interface IMarket
+    public enum TradeState
     {
-        IEnumerable<ITrade> Requests { get; }
-
-        void Request(ITrade trade);
+        Open,
+        Canceled,
+        Processed
     }
 }

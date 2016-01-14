@@ -29,7 +29,8 @@ namespace VOC.Core.Boards
         {
             if (Rawmaterial == MaterialType.Sea || Rawmaterial == MaterialType.Unsourced)
                 throw new InvalidOperationException("Can't farm sea / unsourced tiles");
-
+            
+            //CvB Todo: need to check if there max amount of Materials In Play
             return new RawMaterial(Rawmaterial);
         }
 

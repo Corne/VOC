@@ -47,13 +47,14 @@ namespace VOC.Core.Players
             return distinctTypes.All(t => materialTypes.Where(m => m == t).Count() >= rawmaterials.Where(m => m == t).Count()); 
         }
 
-        public void RemoveResources(params MaterialType[] resources)
+        public IEnumerable<IRawMaterial> TakeResources(params MaterialType[] resources)
         {
             if (resources == null)
                 throw new ArgumentNullException(nameof(resources));
 
             lock (removeResourceLock)
             {
+                List<IRawMaterial> result = new List<IRawMaterial>();
                 if (!HasResources(resources))
                     throw new InvalidOperationException("Player doesn't have those resources");
 
@@ -61,7 +62,9 @@ namespace VOC.Core.Players
                 {
                     var firstMatching = materials.First(m => m.Type == resource);
                     materials.Remove(firstMatching);
+                    result.Add(firstMatching);
                 }
+                return result;
             }
         }
     }

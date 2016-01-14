@@ -34,7 +34,7 @@ namespace VOC.Core.Test.Establishments
 
             Assert.Throws<InvalidOperationException>(() => establisment.Upgrade());
             Assert.Equal(EstablishmentLevel.Settlement, establisment.Level);
-            player.Verify(p => p.RemoveResources(Establishment.UPGRADE_RESOURCES), Times.Never);
+            player.Verify(p => p.TakeResources(Establishment.UPGRADE_RESOURCES), Times.Never);
         }
         
         [Fact]
@@ -60,7 +60,7 @@ namespace VOC.Core.Test.Establishments
 
             establisment.Upgrade();
             Assert.Equal(EstablishmentLevel.City, establisment.Level);
-            player.Verify(p => p.RemoveResources(Establishment.UPGRADE_RESOURCES), Times.Once);
+            player.Verify(p => p.TakeResources(Establishment.UPGRADE_RESOURCES), Times.Once);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace VOC.Core.Test.Establishments
 
             establisment.Upgrade();
             Assert.Throws<InvalidOperationException>(() => establisment.Upgrade());
-            player.Verify(p => p.RemoveResources(Establishment.UPGRADE_RESOURCES), Times.Once);
+            player.Verify(p => p.TakeResources(Establishment.UPGRADE_RESOURCES), Times.Once);
 
         }
 

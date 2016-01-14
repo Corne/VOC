@@ -18,6 +18,6 @@ namespace VOC.Core.Players
 
         void AddResource(IRawMaterial rawMaterial);
         bool HasResources(params MaterialType[] rawmaterials);
-        void RemoveResources(params MaterialType[] bUILD_RESOURCES);
+        IEnumerable<IRawMaterial> TakeResources(params MaterialType[] bUILD_RESOURCES);
     }
 }

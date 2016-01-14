@@ -62,7 +62,7 @@ namespace VOC.Core.Boards
 
             var establishment = new Establishment(owner, vertex);
             establishments.Add(establishment);
-            owner.RemoveResources(Establishment.BUILD_RESOURCES);
+            owner.TakeResources(Establishment.BUILD_RESOURCES);
 
             return establishment;
         }
@@ -96,7 +96,7 @@ namespace VOC.Core.Boards
 
             var road = new Road(edge, owner);
             roads.Add(road);
-            owner.RemoveResources(Road.BUILD_RESOURCES);
+            owner.TakeResources(Road.BUILD_RESOURCES);
             return road;
         }
 

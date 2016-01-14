@@ -101,7 +101,7 @@ namespace VOC.Core.Test.Players
         public void RemoveResourcesNullException()
         {
             var player = new Player("Bob");
-            Assert.Throws<ArgumentNullException>(() => player.RemoveResources(null));
+            Assert.Throws<ArgumentNullException>(() => player.TakeResources(null));
         }
 
         [Theory]
@@ -120,7 +120,7 @@ namespace VOC.Core.Test.Players
                 player.AddResource(mock.Object);
             }
 
-            Assert.Throws<InvalidOperationException>(() => player.RemoveResources(removeResources));
+            Assert.Throws<InvalidOperationException>(() => player.TakeResources(removeResources));
             Assert.True(player.HasResources(playerResources)); //assert nothing gets removed when failing
         }
 
@@ -178,9 +178,11 @@ namespace VOC.Core.Test.Players
                 player.AddResource(mock.Object);
             }
 
-            player.RemoveResources(removeResources);
+            IEnumerable<IRawMaterial> materials = player.TakeResources(removeResources);
 
             Assert.Equal(expected, player.Inventory.Select(i => i.Type));
+            Assert.Equal(removeResources, materials.Select(m => m.Type));
+            Assert.Equal(removeResources.Length, materials.Count());
         }
     }
 

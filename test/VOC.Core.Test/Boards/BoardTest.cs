@@ -128,7 +128,7 @@ namespace VOC.Core.Test.Boards
 
             var result = board.BuildEstablishment(vertex, player.Object);
 
-            player.Verify(p => p.RemoveResources(Establishment.BUILD_RESOURCES));
+            player.Verify(p => p.TakeResources(Establishment.BUILD_RESOURCES));
         }
 
         [Fact]
@@ -223,7 +223,7 @@ namespace VOC.Core.Test.Boards
             board.BuildEstablishment(vertex, player.Object);
 
             Assert.Throws<InvalidOperationException>(() => board.BuildRoad(edge, player.Object));
-            player.Verify(p => p.RemoveResources(Road.BUILD_RESOURCES), Times.Never);
+            player.Verify(p => p.TakeResources(Road.BUILD_RESOURCES), Times.Never);
         }
 
         [Fact]
@@ -260,7 +260,7 @@ namespace VOC.Core.Test.Boards
             board.BuildEstablishment(vertex, player.Object);
             var road = board.BuildRoad(edge, player.Object);
 
-            player.Verify(p => p.RemoveResources(Road.BUILD_RESOURCES));
+            player.Verify(p => p.TakeResources(Road.BUILD_RESOURCES));
         }
 
         [Fact]
