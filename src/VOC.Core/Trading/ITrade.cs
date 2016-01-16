@@ -30,11 +30,6 @@ namespace VOC.Core.Trading
         /// <param name="player">player who accepts the trade</param>
         void Accept(IPlayer player);
         /// <summary>
-        /// Counter a trade with a new offer
-        /// </summary>
-        /// <param name="trade"></param>
-        void Counter(ITrade trade);
-        /// <summary>
         /// Cancel the trade
         /// </summary>
         void Cancel();

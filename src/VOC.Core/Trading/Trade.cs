@@ -56,18 +56,10 @@ namespace VOC.Core.Trading
                 if (State != TradeState.Open)
                     throw new InvalidOperationException("Trade can no longer be accepted, because it's no longer open!");
 
-                IEnumerable<IRawMaterial> requested = player.TakeResources(Request);
-                IEnumerable<IRawMaterial> offered = Owner.TakeResources(Offer);
-
-                foreach(var material in requested)
-                {
-                    Owner.AddResource(material);
-                }
-
-                foreach(var material in offered)
-                {
-                    player.AddResource(material);
-                }
+                IRawMaterial[] requested = player.TakeResources(Request);
+                IRawMaterial[] offered = Owner.TakeResources(Offer);
+                Owner.AddResources(requested);
+                player.AddResources(offered);
 
                 State = TradeState.Processed;
             }
@@ -75,12 +67,13 @@ namespace VOC.Core.Trading
 
         public void Cancel()
         {
-            throw new NotImplementedException();
+            lock (tradeLock)
+            {
+                if (State != TradeState.Open)
+                    throw new InvalidOperationException("Can't cancel a trade if it's not open");
+                State = TradeState.Canceled;
+            }
         }
 
-        public void Counter(ITrade trade)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

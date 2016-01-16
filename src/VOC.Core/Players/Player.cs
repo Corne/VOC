@@ -25,16 +25,22 @@ namespace VOC.Core.Players
         public IEnumerable<IRawMaterial> Inventory { get { return materials.AsReadOnly(); } }
 
 
-        public void AddResource(IRawMaterial rawMaterial)
+        public void AddResources(params IRawMaterial[] rawMaterials)
         {
-            if (rawMaterial == null)
-                throw new ArgumentNullException(nameof(rawMaterial));
+            if (rawMaterials == null)
+                throw new ArgumentNullException(nameof(rawMaterials));
 
-            if (rawMaterial.Type == MaterialType.Unsourced || rawMaterial.Type == MaterialType.Sea)
-                throw new ArgumentException("Unsourced and Sea are invalid resources");
-            //ToDo CvB: Max inventory space? 
+            foreach (var rawMaterial in rawMaterials)
+            {
+                if (rawMaterial == null)
+                    throw new ArgumentNullException(nameof(rawMaterial));
 
-            materials.Add(rawMaterial);
+                if (rawMaterial.Type == MaterialType.Unsourced || rawMaterial.Type == MaterialType.Sea)
+                    throw new ArgumentException("Unsourced and Sea are invalid resources");
+                //ToDo CvB: Max inventory space? 
+
+                materials.Add(rawMaterial);
+            }
         }
 
         public bool HasResources(params MaterialType[] rawmaterials)
@@ -47,22 +53,21 @@ namespace VOC.Core.Players
             return distinctTypes.All(t => materialTypes.Where(m => m == t).Count() >= rawmaterials.Where(m => m == t).Count()); 
         }
 
-        public IEnumerable<IRawMaterial> TakeResources(params MaterialType[] resources)
+        public IRawMaterial[] TakeResources(params MaterialType[] resources)
         {
             if (resources == null)
                 throw new ArgumentNullException(nameof(resources));
 
             lock (removeResourceLock)
             {
-                List<IRawMaterial> result = new List<IRawMaterial>();
                 if (!HasResources(resources))
                     throw new InvalidOperationException("Player doesn't have those resources");
-
-                foreach(var resource in resources)
+                IRawMaterial[] result = new IRawMaterial[resources.Length];
+                for (int i=0; i<resources.Length; i++)
                 {
-                    var firstMatching = materials.First(m => m.Type == resource);
+                    var firstMatching = materials.First(m => m.Type == resources[i]);
                     materials.Remove(firstMatching);
-                    result.Add(firstMatching);
+                    result[i] = firstMatching;
                 }
                 return result;
             }

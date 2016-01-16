@@ -141,7 +141,7 @@ namespace VOC.Core.Test.Establishments
             var establisment = new Establishment(player.Object, vertex.Object);
 
             establisment.Harvest(tile);
-            player.Verify(p => p.AddResource(It.IsAny<IRawMaterial>()), Times.Once());
+            player.Verify(p => p.AddResources(It.IsAny<IRawMaterial>()), Times.Once());
         }
 
         [Fact]
@@ -162,7 +162,7 @@ namespace VOC.Core.Test.Establishments
             establisment.Upgrade();
             establisment.Harvest(tile);
 
-            player.Verify(p => p.AddResource(It.IsAny<IRawMaterial>()), Times.Exactly(2));
+            player.Verify(p => p.AddResources(It.IsAny<IRawMaterial>()), Times.Exactly(2));
         }
     }
 }

@@ -16,8 +16,13 @@ namespace VOC.Core.Players
 
         IEnumerable<IRawMaterial> Inventory { get; }
 
-        void AddResource(IRawMaterial rawMaterial);
+        void AddResources(params IRawMaterial[] rawMaterials);
         bool HasResources(params MaterialType[] rawmaterials);
-        IEnumerable<IRawMaterial> TakeResources(params MaterialType[] bUILD_RESOURCES);
+        /// <summary>
+        /// Take resources from the player
+        /// </summary>
+        /// <param name="resources">resources from a specific materialtype</param>
+        /// <returns>an array of the same size as resources.length, with materials with all the resource types</returns>
+        IRawMaterial[] TakeResources(params MaterialType[] resources);
     }
 }

@@ -33,16 +33,42 @@ namespace VOC.Core.Test.Players
             material.Setup(m => m.Type).Returns(type);
 
             var player = new Player("Henk");
-            player.AddResource(material.Object);
+            player.AddResources(material.Object);
 
             Assert.Contains(material.Object, player.Inventory);
         }
 
+        [Theory]
+        [InlineData(new MaterialType[] { })]
+        [InlineData(new MaterialType[] { MaterialType.Brick })]
+        [InlineData(new MaterialType[] { MaterialType.Brick, MaterialType.Brick })]
+        [InlineData(new MaterialType[] { MaterialType.Wool, MaterialType.Grain })]
+        [InlineData(new MaterialType[] { MaterialType.Wool, MaterialType.Grain, MaterialType.Ore, MaterialType.Lumber })]
+        public void AddMultipleResourcesTest(IEnumerable<MaterialType> types)
+        {
+            IRawMaterial[] materails = types.Select(t => new RawMaterial(t)).ToArray();
+            var player = new Player("jkljkl");
+            player.AddResources(materails);
+
+            foreach(var material in materails)
+            {
+                Assert.Contains(material, player.Inventory);
+            }
+        }
+
         [Fact]
-        public void CantAddNullResource()
+        public void CantAddNullResources()
         {
             var player = new Player("ABC");
-            Assert.Throws<ArgumentNullException>(() => player.AddResource(null));
+            Assert.Throws<ArgumentNullException>(() => player.AddResources(null));
+        }
+
+        [Fact]
+        public void CanAddNullResource()
+        {
+            var player = new Player("Abd");
+            var materials = new IRawMaterial[] { null };
+            Assert.Throws<ArgumentNullException>(() => player.AddResources(materials));
         }
 
         [Theory]
@@ -54,7 +80,7 @@ namespace VOC.Core.Test.Players
             material.Setup(m => m.Type).Returns(type);
             var player = new Player("Henk");
 
-            Assert.Throws<ArgumentException>(() => player.AddResource(material.Object));
+            Assert.Throws<ArgumentException>(() => player.AddResources(material.Object));
         }
 
         [Fact]
@@ -90,7 +116,7 @@ namespace VOC.Core.Test.Players
             {
                 var mock = new Mock<IRawMaterial>();
                 mock.Setup(m => m.Type).Returns(material);
-                player.AddResource(mock.Object);
+                player.AddResources(mock.Object);
             }
             bool result = player.HasResources(requested);
 
@@ -117,7 +143,7 @@ namespace VOC.Core.Test.Players
             {
                 var mock = new Mock<IRawMaterial>();
                 mock.Setup(m => m.Type).Returns(resource);
-                player.AddResource(mock.Object);
+                player.AddResources(mock.Object);
             }
 
             Assert.Throws<InvalidOperationException>(() => player.TakeResources(removeResources));
@@ -175,7 +201,7 @@ namespace VOC.Core.Test.Players
             {
                 var mock = new Mock<IRawMaterial>();
                 mock.Setup(m => m.Type).Returns(resource);
-                player.AddResource(mock.Object);
+                player.AddResources(mock.Object);
             }
 
             IEnumerable<IRawMaterial> materials = player.TakeResources(removeResources);

@@ -207,17 +207,39 @@ namespace VOC.Core.Test.Trading
 
             player1.Verify(p => p.TakeResources(offer), Times.Once);
             player2.Verify(p => p.TakeResources(request), Times.Once);
-
-            foreach(var material in requestedMaterrials)
-            {
-                player1.Verify(p => p.AddResource(material));
-            }
-            foreach(var material in offeredMaterials)
-            {
-                player2.Verify(p => p.AddResource(material));
-            }
+            player1.Verify(p => p.AddResources(requestedMaterrials), Times.Once);
+            player2.Verify(p => p.AddResources(offeredMaterials), Times.Once);
 
             Assert.Equal(TradeState.Processed, trade.State);
+        }
+
+
+        [Fact]
+        public void CantCancelAfterAccepted()
+        {
+            var trade = CreateValid();
+            var player2 = new Mock<IPlayer>();
+            player2.Setup(p => p.HasResources(It.IsAny<MaterialType[]>())).Returns(true);
+            trade.Accept(player2.Object);
+
+            Assert.Throws<InvalidOperationException>(() => trade.Cancel());
+        }
+
+        [Fact]
+        public void CantCancelTwice()
+        {
+            var trade = CreateValid();
+            trade.Cancel();
+            Assert.Throws<InvalidOperationException>(() => trade.Cancel());
+        }
+
+        [Fact]
+        public void CancelTest()
+        {
+            var trade = CreateValid();
+            trade.Cancel();
+
+            Assert.Equal(TradeState.Canceled, trade.State);
         }
     }
 }

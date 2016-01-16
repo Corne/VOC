@@ -8,8 +8,8 @@ namespace VOC.Core.Trading
 {
     public interface IMarket
     {
-        IEnumerable<ITrade> Requests { get; }
+        IEnumerable<ITrade> ActiveTrades { get; }
 
-        void Request(ITrade trade);
+        void OpenTrade(ITrade trade);
     }
 }

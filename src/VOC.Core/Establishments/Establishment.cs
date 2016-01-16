@@ -38,7 +38,7 @@ namespace VOC.Core.Establishments
             for (int i = 0; i < (int)Level; i++)
             {
                 IRawMaterial material = tile.Farm();
-                Owner.AddResource(material);
+                Owner.AddResources(material);
             }
         }
 
