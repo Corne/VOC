@@ -81,6 +81,7 @@
     <Compile Include="Items\RobberTest.cs" />
     <Compile Include="Players\PlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Trading\BankTest.cs" />
     <Compile Include="Trading\MarketTest.cs" />
     <Compile Include="Trading\TradeTest.cs" />
   </ItemGroup>
