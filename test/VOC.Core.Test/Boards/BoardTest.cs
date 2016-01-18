@@ -18,6 +18,12 @@ namespace VOC.Core.Test.Boards
         private static readonly IBoardBuilder builder = new DefaultBoardBuilder();
 
         [Fact]
+        public void BoardCantBeConstructedWithoutBuilder()
+        {
+            Assert.Throws<ArgumentNullException>(() => new Board(null));
+        }
+
+        [Fact]
         public void BoardWillBeCreatedInConstructor()
         {
             var board = new Board(builder);
@@ -25,6 +31,7 @@ namespace VOC.Core.Test.Boards
             Assert.NotEmpty(board.Tiles);
             Assert.NotEmpty(board.Vertices);
             Assert.NotEmpty(board.Edges);
+            Assert.NotEmpty(board.Harbors);
             Assert.NotNull(board.Robber);
         }
 
@@ -418,6 +425,73 @@ namespace VOC.Core.Test.Boards
 
             var result = board.GetEstablishments(tile.Object);
             Assert.Equal(new[] { establisment1, establisment2 }, result);
+        }
+
+        [Fact]
+        public void CantGetHarborsForNullPlayer()
+        {
+            var board = new Board(builder);
+            Assert.Throws<ArgumentNullException>(() => board.GetHarbors(null));
+        }
+
+        [Fact]
+        public void ExpectEmptyArrayIfNoEstablismentAdjacentToHarbor()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            var result = board.GetHarbors(player.Object);
+
+            Assert.Equal(new IHarbor[] { }, result);
+        }
+
+        [Fact]
+        public void ExpectSingleIf1EstablismentAdjacentToHarbor()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
+            IHarbor harbor = board.Harbors.First();
+            IVertex vertex = board.Vertices.First(v => v.IsAdjacentTo(harbor.Edge));
+            board.BuildEstablishment(vertex, player.Object);
+            IEnumerable<IHarbor> result = board.GetHarbors(player.Object);
+
+            Assert.Equal(new IHarbor[] { harbor }, result);
+        }
+        
+        [Fact]
+        public void ExpectNoResultIfEstablismentIsFromDifferentPlayer()
+        {
+            var board = new Board(builder);
+            var player1 = new Mock<IPlayer>();
+            var player2 = new Mock<IPlayer>();
+            player1.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
+            IHarbor harbor = board.Harbors.First();
+            IVertex vertex = board.Vertices.First(v => v.IsAdjacentTo(harbor.Edge));
+            board.BuildEstablishment(vertex, player1.Object);
+
+            IEnumerable<IHarbor> result = board.GetHarbors(player2.Object);
+
+            Assert.Equal(new IHarbor[] { }, result);
+        }
+
+        [Fact]
+        public void ExpectAllHarborsToReturnIfAdjacent()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
+            foreach(var harbor in board.Harbors)
+            {
+                IVertex vertex = board.Vertices.First(v => v.IsAdjacentTo(harbor.Edge));
+                board.BuildEstablishment(vertex, player.Object);
+            }
+
+            IEnumerable<IHarbor> result = board.GetHarbors(player.Object);
+
+            Assert.Equal(board.Harbors, result);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace VOC.Core.Boards
         IEnumerable<ITile> Tiles { get; }
         IEnumerable<IVertex> Vertices { get; }
         IEnumerable<IEdge> Edges { get; }
+        IEnumerable<IHarbor> Harbors { get; }
         IEnumerable<IEstablishment> Establishments { get; }
         IEnumerable<IRoad> Roads { get; }
         IRobber Robber { get; }
@@ -50,5 +51,12 @@ namespace VOC.Core.Boards
         /// <param name="owner">owner of the road</param>
         /// <returns>The created road</returns>
         IRoad BuildRoad(IEdge edge, IPlayer owner);
+
+        /// <summary>
+        /// Get all the harbors the players has an adjacent establisment to
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        IEnumerable<IHarbor> GetHarbors(IPlayer player);
     }
 }
