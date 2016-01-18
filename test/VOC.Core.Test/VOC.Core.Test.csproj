@@ -72,6 +72,7 @@
     <Compile Include="Boards\BoardTest.cs" />
     <Compile Include="Boards\DefaultBoardBuilderTest.cs" />
     <Compile Include="Boards\EdgeTest.cs" />
+    <Compile Include="Boards\HarborTest.cs" />
     <Compile Include="Boards\RoadTest.cs" />
     <Compile Include="Boards\TileTest.cs" />
     <Compile Include="Boards\VertextTest.cs" />

@@ -44,10 +44,12 @@
     <Compile Include="Boards\Coordinate.cs" />
     <Compile Include="Boards\DefaultBoardBuilder.cs" />
     <Compile Include="Boards\Edge.cs" />
+    <Compile Include="Boards\Harbor.cs" />
     <Compile Include="Boards\IBoard.cs" />
     <Compile Include="Boards\IBoardBuilder.cs" />
     <Compile Include="Boards\IBoardComponent.cs" />
     <Compile Include="Boards\IEdge.cs" />
+    <Compile Include="Boards\IHarbor.cs" />
     <Compile Include="Boards\IRoad.cs" />
     <Compile Include="Boards\ITile.cs" />
     <Compile Include="Boards\IVertex.cs" />
