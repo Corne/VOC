@@ -13,5 +13,6 @@ namespace VOC.Core.Boards
         IEnumerable<ITile> Tiles { get; }
         IEnumerable<IVertex> Vertices { get; }
         IEnumerable<IEdge> Edges { get; }
+        IEnumerable<IHarbor> Harbors { get; }
     }
 }

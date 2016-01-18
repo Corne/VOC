@@ -151,5 +151,33 @@ namespace VOC.Core.Test.Boards
                 Assert.Equal(new[] { VertexTileSide.Left, VertexTileSide.Right }, vertices.Select(e => e.Side).ToArray());
             }
         }
+
+        [Fact]
+        public void DefaultBoardHas9Harbors()
+        {
+            var builder = new DefaultBoardBuilder();
+            builder.Build();
+
+            Assert.Equal(9, builder.Harbors.Count());
+            Assert.Equal(4, builder.Harbors.Count(h => h.Discount == MaterialType.Unsourced));
+
+            foreach(var value in Enum.GetValues(typeof(MaterialType)).OfType<MaterialType>()
+                .Except(new MaterialType[] { MaterialType.Unsourced, MaterialType.Sea }))
+            {
+                Assert.Equal(1, builder.Harbors.Count(h => h.Discount == value));
+            }
+        }
+
+        [Fact]
+        public void EachHarborHasUniqueTile()
+        {
+            var builder = new DefaultBoardBuilder();
+            builder.Build();
+
+            foreach (var harbor in builder.Harbors)
+            {
+                Assert.Equal(1, builder.Harbors.Count(h => h.Tile == harbor.Tile));
+            }
+        }
     }
 }
