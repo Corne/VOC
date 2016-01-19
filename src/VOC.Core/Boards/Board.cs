@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using VOC.Core.Establishments;
 using VOC.Core.Items;
 using VOC.Core.Items.RawMaterials;
@@ -12,6 +13,8 @@ namespace VOC.Core.Boards
 {
     public class Board : IBoard
     {
+        private static ILog logger = LogManager.GetLogger(nameof(Board));
+        
         private readonly List<IEstablishment> establishments = new List<IEstablishment>();
         private readonly List<IRoad> roads = new List<IRoad>();
 
@@ -60,6 +63,8 @@ namespace VOC.Core.Boards
             establishments.Add(establishment);
             owner.TakeResources(Establishment.BUILD_RESOURCES);
 
+            logger.Info($"Establisment Build; Player {owner.Name}, {vertex.ToString()}");
+
             return establishment;
         }
 
@@ -89,6 +94,9 @@ namespace VOC.Core.Boards
             var road = new Road(edge, owner);
             roads.Add(road);
             owner.TakeResources(Road.BUILD_RESOURCES);
+
+            logger.Info($"Road build; Player {owner.Name}, {edge.ToString()}");
+
             return road;
         }
 

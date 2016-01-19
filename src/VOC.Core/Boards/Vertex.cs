@@ -105,5 +105,10 @@ namespace VOC.Core.Boards
 
             return false;
         }
+
+        public override string ToString()
+        {
+            return $"Vertex ({X}, {Y}, {Side})";
+        }
     }
 }

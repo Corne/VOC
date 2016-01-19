@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using VOC.Core.Items.RawMaterials;
 
 namespace VOC.Core.Players
 {
     public class Player : IPlayer
     {
+        private static ILog logger = LogManager.GetLogger(nameof(Player));
+
         private readonly object removeResourceLock = new object();
         private readonly List<IRawMaterial> materials;
 
@@ -37,10 +40,11 @@ namespace VOC.Core.Players
 
                 if (rawMaterial.Type == MaterialType.Unsourced || rawMaterial.Type == MaterialType.Sea)
                     throw new ArgumentException("Unsourced and Sea are invalid resources");
-                //ToDo CvB: Max inventory space? 
 
                 materials.Add(rawMaterial);
             }
+
+            logger.Info($"Added Rawmaterials to inventory {string.Join(", ", rawMaterials.Select(r => r.Type))}");
         }
 
         public bool HasResources(params MaterialType[] rawmaterials)
@@ -50,7 +54,7 @@ namespace VOC.Core.Players
 
             var distinctTypes = rawmaterials.Distinct();
             var materialTypes = materials.Select(m => m.Type);
-            return distinctTypes.All(t => materialTypes.Where(m => m == t).Count() >= rawmaterials.Where(m => m == t).Count()); 
+            return distinctTypes.All(t => materialTypes.Where(m => m == t).Count() >= rawmaterials.Where(m => m == t).Count());
         }
 
         public IRawMaterial[] TakeResources(params MaterialType[] resources)
@@ -63,12 +67,15 @@ namespace VOC.Core.Players
                 if (!HasResources(resources))
                     throw new InvalidOperationException("Player doesn't have those resources");
                 IRawMaterial[] result = new IRawMaterial[resources.Length];
-                for (int i=0; i<resources.Length; i++)
+                for (int i = 0; i < resources.Length; i++)
                 {
                     var firstMatching = materials.First(m => m.Type == resources[i]);
                     materials.Remove(firstMatching);
                     result[i] = firstMatching;
                 }
+
+                logger.Info($"Removed resourced from player: {string.Join(", ", resources)}");
+
                 return result;
             }
         }

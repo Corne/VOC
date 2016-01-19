@@ -1,11 +1,11 @@
-﻿using VOC.Core.Items.RawMaterials;
+﻿using System;
+using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 
 namespace VOC.Core.Trading
 {
     public interface ITrade
     {
-
         /// <summary>
         /// Materials that are requested
         /// </summary>

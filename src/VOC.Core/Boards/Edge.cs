@@ -151,5 +151,10 @@ namespace VOC.Core.Boards
             }
             return false;
         }
+
+        public override string ToString()
+        {
+            return $"Edge ({X}, {Y}, {Side})";
+        }
     }
 }

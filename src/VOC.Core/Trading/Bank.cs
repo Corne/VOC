@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using VOC.Core.Boards;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
@@ -11,6 +12,8 @@ namespace VOC.Core.Trading
 {
     public class Bank : IBank
     {
+        private static ILog logger = LogManager.GetLogger(nameof(Bank));
+
         private static readonly MaterialType[] VALID_RESOURCES = Enum.GetValues(typeof(MaterialType))
             .Cast<MaterialType>()
             .Except(new MaterialType[] { MaterialType.Unsourced, MaterialType.Sea })
@@ -39,6 +42,8 @@ namespace VOC.Core.Trading
 
             player.TakeResources(investment);
             player.AddResources(new RawMaterial(request));
+
+            logger.Info($"{player.Name} bought {request} for {offer}({investment.Count()})");
         }
 
         public MaterialType[] GetInvestmentCost(MaterialType offer, IPlayer player)

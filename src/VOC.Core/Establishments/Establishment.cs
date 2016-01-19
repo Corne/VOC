@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using VOC.Core.Boards;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
@@ -14,6 +15,8 @@ namespace VOC.Core.Establishments
     /// </summary>
     public class Establishment : IEstablishment
     {
+        private static ILog logger = LogManager.GetLogger(nameof(Establishment));
+
         public static readonly MaterialType[] BUILD_RESOURCES = { MaterialType.Lumber, MaterialType.Brick, MaterialType.Grain, MaterialType.Wool };
         public static readonly MaterialType[] UPGRADE_RESOURCES = { MaterialType.Grain, MaterialType.Grain, MaterialType.Ore, MaterialType.Ore, MaterialType.Ore };
 
@@ -40,6 +43,7 @@ namespace VOC.Core.Establishments
                 IRawMaterial material = tile.Farm();
                 Owner.AddResources(material);
             }
+            logger.Info($"Harvesting {tile.ToString()}({(int)Level}x) for player {Owner.Name}");
         }
 
         public void Upgrade()
@@ -52,6 +56,7 @@ namespace VOC.Core.Establishments
 
             Level = EstablishmentLevel.City;
             Owner.TakeResources(UPGRADE_RESOURCES);
+            logger.Info($"Upgraded Establisment ({Vertex.ToString()}) to City");
         }
     }
 }

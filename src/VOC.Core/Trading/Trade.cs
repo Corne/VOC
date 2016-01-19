@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 
@@ -10,6 +11,8 @@ namespace VOC.Core.Trading
 {
     public class Trade : ITrade
     {
+        private static ILog logger = LogManager.GetLogger(nameof(Trade));
+
         private object tradeLock = new object();
         private static readonly MaterialType[] INVALID_MATERIALS = { MaterialType.Sea, MaterialType.Unsourced };
 
@@ -63,6 +66,7 @@ namespace VOC.Core.Trading
 
                 State = TradeState.Processed;
             }
+            logger.Info($"Trade accepted From {Owner.Name} To {player.Name}. Offer {string.Join(", ", Offer)}, Request {string.Join(", ", Request)}");
         }
 
         public void Cancel()
@@ -73,6 +77,7 @@ namespace VOC.Core.Trading
                     throw new InvalidOperationException("Can't cancel a trade if it's not open");
                 State = TradeState.Canceled;
             }
+            logger.Info("Trade canceled");
         }
 
     }

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 
 namespace VOC.Core.Trading
 {
     public class Market : IMarket
     {
+        private static ILog logger = LogManager.GetLogger(nameof(Market));
+
         private readonly HashSet<ITrade> trades = new HashSet<ITrade>();
 
         public IEnumerable<ITrade> ActiveTrades
@@ -22,6 +25,8 @@ namespace VOC.Core.Trading
             if (trade.State != TradeState.Open)
                 throw new ArgumentException("Can't open trade on the market, if the trade is not in an open state");
             trades.Add(trade);
+
+            logger.Info($"Trade opened");
         }
     }
 }

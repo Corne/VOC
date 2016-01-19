@@ -92,5 +92,10 @@ namespace VOC.Core.Boards
 
             return false;
         }
+
+        public override string ToString()
+        {
+            return $"Tile ({X}, {Y}) : ({Rawmaterial}, {Number})";
+        }
     }
 }

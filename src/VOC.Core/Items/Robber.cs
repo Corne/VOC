@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using VOC.Core.Boards;
 using VOC.Core.Items.RawMaterials;
 
@@ -10,6 +11,8 @@ namespace VOC.Core.Items
 {
     public class Robber : IRobber
     {
+        private static ILog logger = LogManager.GetLogger(nameof(Robber));
+
         public ITile CurrentTile { get; private set; }
 
         public Robber(ITile initialTile)
@@ -31,6 +34,7 @@ namespace VOC.Core.Items
                 throw new ArgumentException("Robber can't placed on a sea tile!");
 
             CurrentTile = tile;
+            logger.Info($"Robber moved to {CurrentTile}");
         }
     }
 }
