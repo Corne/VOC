@@ -280,10 +280,5 @@ namespace VOC.Core.Test.Trading
             Assert.Equal(expected, result);
         }
 
-        [Fact]
-        public void BreakBuildTest()
-        {
-            Assert.True(false);
-        }
     }
 }
