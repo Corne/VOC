@@ -279,5 +279,11 @@ namespace VOC.Core.Test.Trading
             MaterialType[] expected = { MaterialType.Grain, MaterialType.Grain, MaterialType.Grain, MaterialType.Grain };
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void BreakBuildTest()
+        {
+            Assert.True(false);
+        }
     }
 }
