@@ -13,5 +13,6 @@ namespace VOC.Core.Games.Turns
         IPlayer Player { get; }
         ITurnState State { get; }
 
+        bool DevelopmentCardPlayed { get; }
     }
 }
