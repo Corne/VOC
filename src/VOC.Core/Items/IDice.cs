@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace VOC.Core.Items
 {
-    public interface IDevelopmentCard
+    public interface IDice
     {
 
+        event EventHandler<DiceRoll> Rolled;
+        DiceRoll Roll();
 
     }
 }

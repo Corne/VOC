@@ -10,12 +10,14 @@ namespace VOC.Core.Items
 {
     public interface IRobber
     {
-        ITile CurrentTile { get; }
+        event EventHandler<ITile> Moved;
 
+        ITile CurrentTile { get; }
         /// <summary>
         /// Move the robber to a new tile
         /// </summary>
         /// <param name="tile"></param>
         void Move(ITile tile);
+
     }
 }

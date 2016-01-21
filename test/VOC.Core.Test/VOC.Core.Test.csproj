@@ -77,6 +77,9 @@
     <Compile Include="Boards\TileTest.cs" />
     <Compile Include="Boards\VertextTest.cs" />
     <Compile Include="Establishments\EstablismentTest.cs" />
+    <Compile Include="Games\Turns\States\MoveRobberStateTest.cs" />
+    <Compile Include="Games\Turns\States\RollStateTest.cs" />
+    <Compile Include="Games\Turns\TurnTest.cs" />
     <Compile Include="Items\DieTest.cs" />
     <Compile Include="Items\RawMaterials\RawMaterialProviderTest.cs" />
     <Compile Include="Items\RobberTest.cs" />
@@ -95,6 +98,7 @@
       <Name>VOC.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

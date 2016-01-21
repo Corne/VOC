@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VOC.Core.Items
+namespace VOC.Core.Games.Turns.States
 {
-    public interface IDevelopmentCard
+    public class StateProvider
     {
-
-
     }
 }
