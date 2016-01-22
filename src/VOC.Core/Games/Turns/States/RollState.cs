@@ -8,7 +8,7 @@ using VOC.Core.Players;
 
 namespace VOC.Core.Games.Turns.States
 {
-    public class RollState : ITurnState
+    public class RollState : ITurnState, IFlowSate
     {
         private readonly IDice dice;
         private readonly ITurn turn;
@@ -29,6 +29,8 @@ namespace VOC.Core.Games.Turns.States
             get { return new StateCommand[] { StateCommand.RollDice, StateCommand.PlayDevelopmentCard }; }
         }
 
+        public bool Completed { get; private set; }
+
         public void Start()
         {
             Stop();
@@ -38,7 +40,7 @@ namespace VOC.Core.Games.Turns.States
         private void Dice_Rolled(object sender, DiceRoll roll)
         {
             Stop();
-
+            Completed = true;
             if (roll.Result == 7)
                 turn.SetState<RobberDiscardState>();
             else

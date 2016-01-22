@@ -20,5 +20,6 @@ namespace VOC.Core.Games.Turns.States
         PlayDevelopmentCard,
         Trade,
         NextState,
+        DiscardResources,
     }
 }

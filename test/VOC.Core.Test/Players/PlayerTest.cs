@@ -38,6 +38,20 @@ namespace VOC.Core.Test.Players
             Assert.Contains(material.Object, player.Inventory);
         }
 
+        [Fact]
+        public void AddResourceTriggersInventoryChanged()
+        {
+            var material = new Mock<IRawMaterial>();
+            material.Setup(m => m.Type).Returns(MaterialType.Brick);
+
+            var player = new Player("Henk");
+            bool changed = false;
+            player.InventoryChanged += (sender, args) => { changed = true; };
+            player.AddResources(material.Object);
+
+            Assert.True(changed);
+        }
+
         [Theory]
         [InlineData(new MaterialType[] { })]
         [InlineData(new MaterialType[] { MaterialType.Brick })]
@@ -209,6 +223,29 @@ namespace VOC.Core.Test.Players
             Assert.Equal(expected, player.Inventory.Select(i => i.Type));
             Assert.Equal(removeResources, materials.Select(m => m.Type));
             Assert.Equal(removeResources.Length, materials.Count());
+        }
+
+        [Fact]
+        public void RemoveReousrcesTriggersInventoryChanged()
+        {
+            var playerResources = new MaterialType[] { MaterialType.Brick };
+            var removeResources = new MaterialType[] { MaterialType.Brick };
+
+            var player = new Player("Henk");
+
+
+            foreach (var resource in playerResources)
+            {
+                var mock = new Mock<IRawMaterial>();
+                mock.Setup(m => m.Type).Returns(resource);
+                player.AddResources(mock.Object);
+            }
+
+            bool triggered = false;
+            player.InventoryChanged += (sender, args) => { triggered = true; };
+            IEnumerable<IRawMaterial> materials = player.TakeResources(removeResources);
+
+            Assert.True(triggered);
         }
     }
 

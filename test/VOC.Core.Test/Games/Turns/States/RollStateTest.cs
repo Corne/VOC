@@ -131,5 +131,19 @@ namespace VOC.Core.Test.Games.Turns.States
             turn.Verify(t => t.NextFlowState(), Times.Once);
             turn.Verify(t => t.SetState<RobberDiscardState>(), Times.Never);
         }
+
+        [Fact]
+        public void ExpectRollStateToBeCompletedAfterDiceRoll()
+        {
+            var dice = CreateDice(5);
+            var turn = new Mock<ITurn>();
+
+            var state = new RollState(turn.Object, dice);
+            state.Start();
+
+            dice.Roll();
+
+            Assert.True(state.Completed);
+        }
     }
 }
