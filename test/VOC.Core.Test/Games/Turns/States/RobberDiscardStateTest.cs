@@ -70,9 +70,56 @@ namespace VOC.Core.Test.Games.Turns.States
             var state = new RobberDiscardState(turn.Object, players);
             state.Start();
             //expect 4 removed
-            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 4).Select(i => new Mock<IRawMaterial>().Object));
-
             
+            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 4).Select(i => new Mock<IRawMaterial>().Object));
+            player.Raise(p => p.InventoryChanged += null, EventArgs.Empty);
+
+            turn.Verify(t => t.SetState<MoveRobberState>(), Times.Once);
+
+        }
+
+
+        [Theory]
+        [InlineData(8, 4)]
+        [InlineData(9, 5)]
+        [InlineData(10, 5)]
+        [InlineData(11, 6)]
+        public void ExpectedRemoveResourcesIsHalfROundedDown(int initial, int expected)
+        {
+            var turn = new Mock<ITurn>();
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, initial).Select(i => new Mock<IRawMaterial>().Object));
+            var players = new List<IPlayer>() { player.Object };
+
+
+            var state = new RobberDiscardState(turn.Object, players);
+            state.Start();
+            //expect 4 removed
+
+            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, expected).Select(i => new Mock<IRawMaterial>().Object));
+            player.Raise(p => p.InventoryChanged += null, EventArgs.Empty);
+
+            turn.Verify(t => t.SetState<MoveRobberState>(), Times.Once);
+
+        }
+
+        [Fact]
+        public void ExpectNoStateChangeIfPlayerRemovedNotEnoughResources()
+        {
+            var turn = new Mock<ITurn>();
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 8).Select(i => new Mock<IRawMaterial>().Object));
+            var players = new List<IPlayer>() { player.Object };
+
+
+            var state = new RobberDiscardState(turn.Object, players);
+            state.Start();
+
+            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 5).Select(i => new Mock<IRawMaterial>().Object));
+            player.Raise(p => p.InventoryChanged += null, EventArgs.Empty);
+
+            turn.Verify(t => t.SetState<MoveRobberState>(), Times.Never);
+
         }
 
         [Fact]
@@ -89,11 +136,17 @@ namespace VOC.Core.Test.Games.Turns.States
         public void ExpectNoStateTransitionIfStpped()
         {
             var turn = new Mock<ITurn>();
-            var players = new List<IPlayer>();
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 8).Select(i => new Mock<IRawMaterial>().Object));
+            var players = new List<IPlayer>() { player.Object };
+
             var state = new RobberDiscardState(turn.Object, players);
 
             state.Start();
             state.Stop();
+
+            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 4).Select(i => new Mock<IRawMaterial>().Object));
+            player.Raise(p => p.InventoryChanged += null, EventArgs.Empty);
 
             turn.Verify(t => t.SetState<MoveRobberState>(), Times.Never);
         }
@@ -102,13 +155,65 @@ namespace VOC.Core.Test.Games.Turns.States
         public void ExpectOneSetStateCallAfterMultipleStartCalls()
         {
             var turn = new Mock<ITurn>();
-            var players = new List<IPlayer>();
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 8).Select(i => new Mock<IRawMaterial>().Object));
+            var players = new List<IPlayer>() { player.Object };
             var state = new RobberDiscardState(turn.Object, players);
 
             state.Start();
             state.Start();
 
+            player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 4).Select(i => new Mock<IRawMaterial>().Object));
+            player.Raise(p => p.InventoryChanged += null, EventArgs.Empty);
+
             turn.Verify(t => t.SetState<MoveRobberState>(), Times.Once);
+        }
+
+
+        [Fact]
+        public void ExpectStateChangeIfAllPlayersRemovedResources()
+        {
+            var turn = new Mock<ITurn>();
+            var player1 = new Mock<IPlayer>();
+            var player2 = new Mock<IPlayer>();
+
+            player1.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 8).Select(i => new Mock<IRawMaterial>().Object));
+            player2.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 9).Select(i => new Mock<IRawMaterial>().Object));
+            var players = new List<IPlayer>() { player1.Object, player2.Object };
+            var state = new RobberDiscardState(turn.Object, players);
+
+            state.Start();
+
+            player1.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 4).Select(i => new Mock<IRawMaterial>().Object));
+            player2.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 5).Select(i => new Mock<IRawMaterial>().Object));
+
+            player1.Raise(p => p.InventoryChanged += null, EventArgs.Empty);
+            player2.Raise(p => p.InventoryChanged += null, EventArgs.Empty);
+
+            turn.Verify(t => t.SetState<MoveRobberState>(), Times.Once);
+        }
+
+        [Fact]
+        public void ExpectNoStateChangeIfNotAllPlayersRemovedResources()
+        {
+            var turn = new Mock<ITurn>();
+            var player1 = new Mock<IPlayer>();
+            var player2 = new Mock<IPlayer>();
+
+            player1.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 8).Select(i => new Mock<IRawMaterial>().Object));
+            player2.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 9).Select(i => new Mock<IRawMaterial>().Object));
+            var players = new List<IPlayer>() { player1.Object, player2.Object };
+            var state = new RobberDiscardState(turn.Object, players);
+
+            state.Start();
+
+            player1.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 4).Select(i => new Mock<IRawMaterial>().Object));
+            player2.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 6).Select(i => new Mock<IRawMaterial>().Object));
+
+            player1.Raise(p => p.InventoryChanged += null, EventArgs.Empty);
+            player2.Raise(p => p.InventoryChanged += null, EventArgs.Empty);
+
+            turn.Verify(t => t.SetState<MoveRobberState>(), Times.Never);
         }
     }
 }
