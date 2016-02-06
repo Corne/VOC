@@ -33,7 +33,7 @@ namespace VOC.Core.Test.Games.Turns.States
         {
             var dice = new Mock<IDice>();
             var diceroll = new DiceRoll(new int[] { result });
-            dice.Setup(d => d.Roll()).Callback(() => dice.Raise(d => d.Rolled += null, diceroll)).Returns(diceroll);
+            dice.Setup(d => d.Current).Returns(diceroll);
             return dice.Object;
         }
 
@@ -48,9 +48,7 @@ namespace VOC.Core.Test.Games.Turns.States
             var turn = new Mock<ITurn>();
 
             var state = new RollState(turn.Object, dice);
-            state.Start();
-
-            dice.Roll();
+            state.AfterExecute(StateCommand.RollDice);
 
             turn.Verify(t => t.NextFlowState(), Times.Once);
             turn.Verify(t => t.SetState<RobberDiscardState>(), Times.Never);
@@ -62,9 +60,7 @@ namespace VOC.Core.Test.Games.Turns.States
             var dice = CreateDice(7);
             var turn = new Mock<ITurn>();
             var state = new RollState(turn.Object, dice);
-            state.Start();
-
-            dice.Roll();
+            state.AfterExecute(StateCommand.RollDice);
 
             turn.Verify(t => t.NextFlowState(), Times.Never);
             turn.Verify(t => t.SetState<RobberDiscardState>(), Times.Once);
@@ -84,66 +80,27 @@ namespace VOC.Core.Test.Games.Turns.States
             turn.Verify(t => t.SetState<RobberDiscardState>(), Times.Never);
         }
 
-        [Fact]
-        public void ExpectNothingToHappenIfStateStopped()
+        public static IEnumerable<object> UnusedStateCommands
         {
-            var dice = CreateDice(5);
+            get
+            {
+                return Enum.GetValues(typeof(StateCommand))
+                  .Cast<StateCommand>()
+                  .Except(new[] { StateCommand.RollDice })
+                  .Select(x => new object[] { x });
+            }
+        }
+
+        [Theory, MemberData(nameof(UnusedStateCommands))]
+        public void ExpectNothingToHappenIfCommandNotRollDice(StateCommand command)
+        {
+            var dice = CreateDice(7);
             var turn = new Mock<ITurn>();
-
             var state = new RollState(turn.Object, dice);
-            state.Start();
-            state.Stop();
-
-            dice.Roll();
+            state.AfterExecute(command);
 
             turn.Verify(t => t.NextFlowState(), Times.Never);
             turn.Verify(t => t.SetState<RobberDiscardState>(), Times.Never);
-        }
-
-        [Fact]
-        public void ExpectNothingToHappenAfterDiceRollHasBeenProcessed()
-        {
-            var dice = CreateDice(5);
-            var turn = new Mock<ITurn>();
-
-            var state = new RollState(turn.Object, dice);
-            state.Start();
-
-            dice.Roll();
-            dice.Roll(); //should trigger nothing
-
-            turn.Verify(t => t.NextFlowState(), Times.Once);
-            turn.Verify(t => t.SetState<RobberDiscardState>(), Times.Never);
-        }
-
-        [Fact]
-        public void ExpectMultipleStartCallsToHaveNoDifferentEffectAs1Call()
-        {
-            var dice = CreateDice(5);
-            var turn = new Mock<ITurn>();
-
-            var state = new RollState(turn.Object, dice);
-            state.Start();
-            state.Start();
-
-            dice.Roll();
-
-            turn.Verify(t => t.NextFlowState(), Times.Once);
-            turn.Verify(t => t.SetState<RobberDiscardState>(), Times.Never);
-        }
-
-        [Fact]
-        public void ExpectRollStateToBeCompletedAfterDiceRoll()
-        {
-            var dice = CreateDice(5);
-            var turn = new Mock<ITurn>();
-
-            var state = new RollState(turn.Object, dice);
-            state.Start();
-
-            dice.Roll();
-
-            Assert.True(state.Completed);
         }
     }
 }

@@ -29,21 +29,10 @@ namespace VOC.Core.Games.Turns.States
             get { return new StateCommand[] { StateCommand.MoveRobber }; }
         }
 
-        public void Start()
+        public void AfterExecute(StateCommand command)
         {
-            Stop();
-            robber.Moved += Robber_Moved;
-        }
-
-        private void Robber_Moved(object sender, Boards.ITile e)
-        {
-            Stop();
-            turn.SetState<RobberStealState>();
-        }
-
-        public void Stop()
-        {
-            robber.Moved -= Robber_Moved;
+            if (command == StateCommand.MoveRobber)
+                turn.SetState<RobberStealState>();
         }
     }
 }

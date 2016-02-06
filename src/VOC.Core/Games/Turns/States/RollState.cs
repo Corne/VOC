@@ -31,25 +31,19 @@ namespace VOC.Core.Games.Turns.States
 
         public bool Completed { get; private set; }
 
-        public void Start()
+        public void AfterExecute(StateCommand command)
         {
-            Stop();
-            dice.Rolled += Dice_Rolled;
-        }
+            //todo DevelopmentCard?
+            if (command != StateCommand.RollDice)
+                return;
 
-        private void Dice_Rolled(object sender, DiceRoll roll)
-        {
-            Stop();
             Completed = true;
-            if (roll.Result == 7)
+            if (dice.Current.Result == 7)
                 turn.SetState<RobberDiscardState>();
             else
                 turn.NextFlowState();
         }
 
-        public void Stop()
-        {
-            dice.Rolled -= Dice_Rolled;
-        }
+
     }
 }

@@ -16,7 +16,6 @@ namespace VOC.Core.Players
 
         IEnumerable<IRawMaterial> Inventory { get; }
 
-        event EventHandler InventoryChanged;
 
         void AddResources(params IRawMaterial[] rawMaterials);
         bool HasResources(params MaterialType[] rawmaterials);

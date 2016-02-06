@@ -89,23 +89,6 @@ namespace VOC.Core.Test.Items
             Assert.Equal(input.Object, robber.CurrentTile);
         }
 
-        [Fact]
-        public void MoveRaisesMoved()
-        {
-            var initial = new Mock<ITile>();
-            initial.Setup(t => t.Rawmaterial).Returns(MaterialType.Unsourced);
-
-            var input = new Mock<ITile>();
-            input.Setup(t => t.Rawmaterial).Returns(MaterialType.Grain);
-
-            var robber = new Robber(initial.Object);
-            ITile result = null;
-            robber.Moved += (sender, args) => { result = args; };
-
-            robber.Move(input.Object);
-
-            Assert.Equal(input.Object, result);
-        }
 
     }
 }

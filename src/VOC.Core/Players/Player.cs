@@ -15,8 +15,6 @@ namespace VOC.Core.Players
         private readonly object removeResourceLock = new object();
         private readonly List<IRawMaterial> materials;
 
-        public event EventHandler InventoryChanged;
-
         public Player(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -46,7 +44,6 @@ namespace VOC.Core.Players
                 materials.Add(rawMaterial);
             }
 
-            InventoryChanged?.Invoke(this, EventArgs.Empty);
             logger.Info($"Added Rawmaterials to inventory {string.Join(", ", rawMaterials.Select(r => r.Type))}");
         }
 
@@ -78,7 +75,6 @@ namespace VOC.Core.Players
                 }
 
                 logger.Info($"Removed resourced from player: {string.Join(", ", resources)}");
-                InventoryChanged?.Invoke(this, EventArgs.Empty);
 
                 return result;
             }

@@ -23,6 +23,20 @@ namespace VOC.Core.Games.Turns.States
 
             this.turn = turn;
             this.players = players;
+
+
+            desiredInventorySizes = new Dictionary<IPlayer, int>();
+            foreach (var player in players)
+            {
+                if (player.Inventory.Count() > 7)
+                {
+                    double inveotryCount = player.Inventory.Count();
+                    int desired = Convert.ToInt32(Math.Round(inveotryCount / 2, MidpointRounding.AwayFromZero));
+                    desiredInventorySizes.Add(player, desired);
+                }
+            }
+
+            CheckStateChange();
         }
 
         public IEnumerable<StateCommand> Commands
@@ -33,59 +47,31 @@ namespace VOC.Core.Games.Turns.States
             }
         }
 
-        public void Start()
-        {
-
-
-            desiredInventorySizes = new Dictionary<IPlayer, int>();
-            foreach(var player in players)
-            {
-                player.InventoryChanged -= Player_InventoryChanged;
-                if(player.Inventory.Count() > 7)
-                {
-                    double inveotryCount = player.Inventory.Count();
-                    int desired = Convert.ToInt32(Math.Round(inveotryCount/2, MidpointRounding.AwayFromZero));
-                    desiredInventorySizes.Add(player, desired);
-                    player.InventoryChanged += Player_InventoryChanged;
-                }
-            }
-
-            CheckStateChange();
-        }
-
-        private void Player_InventoryChanged(object sender, EventArgs e)
-        {
-            if (desiredInventorySizes == null)
-                throw new InvalidOperationException("Inventory sizes should never be null when listening to Player Inventory Changes");
-
-            var player = sender as IPlayer;
-            if (player == null)
-                throw new ArgumentException("Sender should be player");
-
-            if (!desiredInventorySizes.ContainsKey(player))
-                throw new InvalidOperationException("No change expected from this player");
-
-            if (player.Inventory.Count() <= desiredInventorySizes[player])
-                desiredInventorySizes.Remove(player);
-
-            CheckStateChange();
-        }
-
         private void CheckStateChange()
         {
             if (!desiredInventorySizes.Any())
             {
-                Stop();
                 turn.SetState<MoveRobberState>();
             }
         }
 
-        public void Stop()
+
+        public void AfterExecute(StateCommand command)
         {
-            foreach (var player in players)
+            if (command != StateCommand.DiscardResources)
+                return;
+
+            var removeList = new List<IPlayer>();
+            foreach (var player in desiredInventorySizes)
             {
-                player.InventoryChanged -= Player_InventoryChanged;
+                if (player.Key.Inventory.Count() <= player.Value)
+                    removeList.Add(player.Key);
             }
+            foreach (var player in removeList)
+            {
+                desiredInventorySizes.Remove(player);
+            }
+            CheckStateChange();
         }
     }
 }

@@ -8,9 +8,7 @@ namespace VOC.Core.Items
 {
     public interface IDice
     {
-
-        event EventHandler<DiceRoll> Rolled;
-        DiceRoll Roll();
-
+        void Roll();
+        DiceRoll Current { get; }
     }
 }

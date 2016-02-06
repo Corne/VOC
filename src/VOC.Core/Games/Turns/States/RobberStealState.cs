@@ -16,12 +16,7 @@ namespace VOC.Core.Games.Turns.States
             }
         }
 
-        public void Start()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Stop()
+        public void AfterExecute(StateCommand command)
         {
             throw new NotImplementedException();
         }

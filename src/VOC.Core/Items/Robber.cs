@@ -13,7 +13,6 @@ namespace VOC.Core.Items
     {
         private static ILog logger = LogManager.GetLogger(nameof(Robber));
 
-        public event EventHandler<ITile> Moved;
 
         public ITile CurrentTile { get; private set; }
 
@@ -36,7 +35,6 @@ namespace VOC.Core.Items
                 throw new ArgumentException("Robber can't placed on a sea tile!");
 
             CurrentTile = tile;
-            Moved?.Invoke(this, CurrentTile);
             logger.Info($"Robber moved to {CurrentTile}");
         }
     }

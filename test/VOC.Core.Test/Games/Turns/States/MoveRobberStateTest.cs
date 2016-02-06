@@ -31,7 +31,6 @@ namespace VOC.Core.Test.Games.Turns.States
         private IRobber CreateRobber()
         {
             var robber = new Mock<IRobber>();
-            robber.Setup(r => r.Move(It.IsAny<ITile>())).Raises(r => r.Moved += null, null, new Mock<ITile>().Object);
             return robber.Object;
         }
 
@@ -42,69 +41,32 @@ namespace VOC.Core.Test.Games.Turns.States
             var robber = CreateRobber();
 
             var state = new MoveRobberState(turn.Object, robber);
-            state.Start();
-
-            robber.Move(new Mock<ITile>().Object);
+            state.AfterExecute(StateCommand.MoveRobber);
 
             turn.Verify(t => t.SetState<RobberStealState>(), Times.Once);
         }
 
-        [Fact]
-        public void StateNotStartedShouldNotSetState()
+        public static IEnumerable<object> UnusedStateCommands
+        {
+            get
+            {
+                return Enum.GetValues(typeof(StateCommand))
+                  .Cast<StateCommand>()
+                  .Except(new[] { StateCommand.MoveRobber })
+                  .Select(x => new object[] { x });
+            }
+        }
+
+        [Theory, MemberData(nameof(UnusedStateCommands))]
+        public void ExpectNothingToHappenIfCommandNotMoveRobber(StateCommand command)
         {
             var turn = new Mock<ITurn>();
             var robber = CreateRobber();
 
             var state = new MoveRobberState(turn.Object, robber);
-
-            robber.Move(new Mock<ITile>().Object);
+            state.AfterExecute(command);
 
             turn.Verify(t => t.SetState<RobberStealState>(), Times.Never);
-        }
-
-        [Fact]
-        public void StoppedStateShouldNotSetState()
-        {
-            var turn = new Mock<ITurn>();
-            var robber = CreateRobber();
-
-            var state = new MoveRobberState(turn.Object, robber);
-            state.Start();
-            state.Stop();
-
-            robber.Move(new Mock<ITile>().Object);
-
-            turn.Verify(t => t.SetState<RobberStealState>(), Times.Never);
-        }
-
-        [Fact]
-        public void TwiceStartedShouldStillCallSetStateOnce()
-        {
-            var turn = new Mock<ITurn>();
-            var robber = CreateRobber();
-
-            var state = new MoveRobberState(turn.Object, robber);
-            state.Start();
-            state.Start();
-
-            robber.Move(new Mock<ITile>().Object);
-
-            turn.Verify(t => t.SetState<RobberStealState>(), Times.Once);
-        }
-
-        [Fact]
-        public void MoveTwiceShouldStillCallSetStateOnce()
-        {
-            var turn = new Mock<ITurn>();
-            var robber = CreateRobber();
-
-            var state = new MoveRobberState(turn.Object, robber);
-            state.Start();
-
-            robber.Move(new Mock<ITile>().Object);
-            robber.Move(new Mock<ITile>().Object);
-
-            turn.Verify(t => t.SetState<RobberStealState>(), Times.Once);
         }
     }
 }

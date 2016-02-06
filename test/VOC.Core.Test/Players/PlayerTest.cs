@@ -38,19 +38,6 @@ namespace VOC.Core.Test.Players
             Assert.Contains(material.Object, player.Inventory);
         }
 
-        [Fact]
-        public void AddResourceTriggersInventoryChanged()
-        {
-            var material = new Mock<IRawMaterial>();
-            material.Setup(m => m.Type).Returns(MaterialType.Brick);
-
-            var player = new Player("Henk");
-            bool changed = false;
-            player.InventoryChanged += (sender, args) => { changed = true; };
-            player.AddResources(material.Object);
-
-            Assert.True(changed);
-        }
 
         [Theory]
         [InlineData(new MaterialType[] { })]
@@ -64,7 +51,7 @@ namespace VOC.Core.Test.Players
             var player = new Player("jkljkl");
             player.AddResources(materails);
 
-            foreach(var material in materails)
+            foreach (var material in materails)
             {
                 Assert.Contains(material, player.Inventory);
             }
@@ -153,7 +140,7 @@ namespace VOC.Core.Test.Players
         {
             var player = new Player("Henk");
 
-            foreach(var resource in playerResources)
+            foreach (var resource in playerResources)
             {
                 var mock = new Mock<IRawMaterial>();
                 mock.Setup(m => m.Type).Returns(resource);
@@ -166,31 +153,31 @@ namespace VOC.Core.Test.Players
 
         [Theory]
         [InlineData(
-            new MaterialType[] { }, 
-            new MaterialType[] { }, 
+            new MaterialType[] { },
+            new MaterialType[] { },
             new MaterialType[] { })]
         [InlineData(
-            new MaterialType[] { MaterialType.Brick }, 
-            new MaterialType[] { }, 
+            new MaterialType[] { MaterialType.Brick },
+            new MaterialType[] { },
             new MaterialType[] { MaterialType.Brick })]
         [InlineData(
-            new MaterialType[] { MaterialType.Brick }, 
-            new MaterialType[] { MaterialType.Brick }, 
+            new MaterialType[] { MaterialType.Brick },
+            new MaterialType[] { MaterialType.Brick },
             new MaterialType[] { })]
 
         [InlineData(
-            new MaterialType[] { MaterialType.Wool, MaterialType.Ore }, 
-            new MaterialType[] { MaterialType.Wool, MaterialType.Ore }, 
+            new MaterialType[] { MaterialType.Wool, MaterialType.Ore },
+            new MaterialType[] { MaterialType.Wool, MaterialType.Ore },
             new MaterialType[] { })]
 
         [InlineData(
-            new MaterialType[] { MaterialType.Grain, MaterialType.Grain }, 
-            new MaterialType[] { MaterialType.Grain }, 
+            new MaterialType[] { MaterialType.Grain, MaterialType.Grain },
+            new MaterialType[] { MaterialType.Grain },
             new MaterialType[] { MaterialType.Grain })]
 
         [InlineData(
-            new MaterialType[] { MaterialType.Grain, MaterialType.Grain }, 
-            new MaterialType[] { MaterialType.Grain }, 
+            new MaterialType[] { MaterialType.Grain, MaterialType.Grain },
+            new MaterialType[] { MaterialType.Grain },
             new MaterialType[] { MaterialType.Grain })]
 
         [InlineData(
@@ -201,7 +188,7 @@ namespace VOC.Core.Test.Players
         [InlineData(
             new MaterialType[] { MaterialType.Ore, MaterialType.Grain, MaterialType.Lumber, MaterialType.Wool },
             new MaterialType[] { MaterialType.Ore, MaterialType.Grain, MaterialType.Lumber, MaterialType.Wool },
-            new MaterialType[] {  })]
+            new MaterialType[] { })]
 
         [InlineData(
             new MaterialType[] { MaterialType.Ore, MaterialType.Ore, MaterialType.Ore, MaterialType.Lumber, MaterialType.Wool },
@@ -225,28 +212,6 @@ namespace VOC.Core.Test.Players
             Assert.Equal(removeResources.Length, materials.Count());
         }
 
-        [Fact]
-        public void RemoveReousrcesTriggersInventoryChanged()
-        {
-            var playerResources = new MaterialType[] { MaterialType.Brick };
-            var removeResources = new MaterialType[] { MaterialType.Brick };
-
-            var player = new Player("Henk");
-
-
-            foreach (var resource in playerResources)
-            {
-                var mock = new Mock<IRawMaterial>();
-                mock.Setup(m => m.Type).Returns(resource);
-                player.AddResources(mock.Object);
-            }
-
-            bool triggered = false;
-            player.InventoryChanged += (sender, args) => { triggered = true; };
-            IEnumerable<IRawMaterial> materials = player.TakeResources(removeResources);
-
-            Assert.True(triggered);
-        }
     }
 
 

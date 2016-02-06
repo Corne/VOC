@@ -20,12 +20,9 @@ namespace VOC.Core.Games.Turns.States
             }
         }
 
-        public void Start()
+        public void AfterExecute(StateCommand command)
         {
-        }
-
-        public void Stop()
-        {
+            throw new NotImplementedException();
         }
     }
 }

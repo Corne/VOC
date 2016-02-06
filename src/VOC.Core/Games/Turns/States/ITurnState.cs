@@ -14,7 +14,8 @@ namespace VOC.Core.Games.Turns.States
         /// </summary>
         IEnumerable<StateCommand> Commands { get; }
 
-        void Start();
-        void Stop();
+
+        void AfterExecute(StateCommand command);
+
     }
 }

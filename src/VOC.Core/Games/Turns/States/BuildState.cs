@@ -24,6 +24,11 @@ namespace VOC.Core.Games.Turns.States
 
         public bool Completed { get; set; }
 
+        public void AfterExecute(StateCommand command)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Start()
         {
         }
