@@ -493,5 +493,51 @@ namespace VOC.Core.Test.Boards
 
             Assert.Equal(board.Harbors, result);
         }
+
+        [Fact]
+        public void GetPlayersExceptionIfTileNull()
+        {
+            var board = new Board(builder);
+            Assert.Throws<ArgumentNullException>(() => board.GetPlayers(null));
+        }
+
+        [Fact]
+        public void GetPlayersTest()
+        {
+            var board = new Board(builder);
+            var player1 = new Mock<IPlayer>();
+            player1.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
+            var player2 = new Mock<IPlayer>();
+            player2.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
+            var tile = builder.Tiles.First(t => t.X == 1 && t.Y == 1);
+            var vertex1 = board.Vertices.First(v => v.IsAdjacentTo(tile) && v.Side == VertexTileSide.Left && v.X == 1 && v.Y == 1);
+            var vertex2 = board.Vertices.First(v => v.IsAdjacentTo(tile) && v.Side == VertexTileSide.Right && v.X == 1 && v.Y == 1);
+            board.BuildEstablishment(vertex1, player1.Object);
+            board.BuildEstablishment(vertex2, player2.Object);
+
+            var players = board.GetPlayers(tile);
+
+            Assert.Equal(new[] { player1.Object, player2.Object }, players);
+        }
+
+        [Fact]
+        public void GetPlayersGivesNoDuplicates()
+        {
+            var board = new Board(builder);
+            var player1 = new Mock<IPlayer>();
+            player1.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
+            var tile = builder.Tiles.First(t => t.X == 1 && t.Y == 1);
+            var vertex1 = board.Vertices.First(v => v.IsAdjacentTo(tile) && v.Side == VertexTileSide.Left && v.X == 1 && v.Y == 1);
+            var vertex2 = board.Vertices.First(v => v.IsAdjacentTo(tile) && v.Side == VertexTileSide.Right && v.X == 1 && v.Y == 1);
+            board.BuildEstablishment(vertex1, player1.Object);
+            board.BuildEstablishment(vertex2, player1.Object);
+
+            var players = board.GetPlayers(tile);
+
+            Assert.Equal(new[] { player1.Object }, players);
+        }
     }
 }

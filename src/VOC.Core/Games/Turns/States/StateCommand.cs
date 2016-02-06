@@ -21,5 +21,6 @@ namespace VOC.Core.Games.Turns.States
         Trade,
         NextState,
         DiscardResources,
+        StealResource,
     }
 }

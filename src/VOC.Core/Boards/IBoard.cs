@@ -35,6 +35,12 @@ namespace VOC.Core.Boards
         IEnumerable<IEstablishment> GetEstablishments(ITile tile);
 
         /// <summary>
+        /// Returns a set of players that are adjacent to the given tile
+        /// </summary>
+        /// <param name="tile">tile</param>
+        /// <returns>set of players</returns>
+        IEnumerable<IPlayer> GetPlayers(ITile tile);
+        /// <summary>
         /// Build an establisment
         /// CvB ToDo: validate if this is the correct place for this method
         /// </summary>

@@ -121,5 +121,10 @@ namespace VOC.Core.Boards
             var playerEstablisments = Establishments.Where(e => e.Owner == player).ToList();
             return Harbors.Where(harbor => playerEstablisments.Any(e => e.Vertex.IsAdjacentTo(harbor.Edge)));
         }
+
+        public IEnumerable<IPlayer> GetPlayers(ITile tile)
+        {
+            return GetEstablishments(tile).Select(e => e.Owner).Distinct().ToList();
+        }
     }
 }
