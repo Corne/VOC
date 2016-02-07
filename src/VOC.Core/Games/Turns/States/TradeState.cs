@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace VOC.Core.Games.Turns.States
 {
-    public class TradeState : ITurnState
+    public class TradeState : ITurnState, IFlowSate
     {
+        private readonly ITurn turn;
+
+        public TradeState(ITurn turn)
+        {
+            if (turn == null)
+                throw new ArgumentNullException(nameof(turn));
+            this.turn = turn;
+        }
+
         public IEnumerable<StateCommand> Commands
         {
             get
@@ -20,9 +29,15 @@ namespace VOC.Core.Games.Turns.States
             }
         }
 
+        public bool Completed { get; private set; }
+
         public void AfterExecute(StateCommand command)
         {
-            throw new NotImplementedException();
+            if (command == StateCommand.NextState)
+            {
+                Completed = true;
+                turn.NextFlowState();
+            }
         }
     }
 }

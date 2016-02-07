@@ -10,7 +10,6 @@ namespace VOC.Core.Games.Turns.States
     public class RobberStealState : ITurnState
     {
         private readonly ITurn turn;
-        private readonly IBoard board;
 
         public RobberStealState(ITurn turn, IBoard board)
         {

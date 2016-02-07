@@ -37,8 +37,8 @@ namespace VOC.Core.Games.Turns.States
         {
             if (command == StateCommand.NextState)
             {
-                turn.NextFlowState();
                 Completed = true;
+                turn.NextFlowState();
             }
         }
 
