@@ -8,6 +8,15 @@ namespace VOC.Core.Games.Turns.States
 {
     public class BuildState : ITurnState, IFlowSate
     {
+        private readonly ITurn turn;
+
+        public BuildState(ITurn turn)
+        {
+            if (turn == null)
+                throw new ArgumentNullException(nameof(turn));
+            this.turn = turn;
+        }
+
         public IEnumerable<StateCommand> Commands
         {
             get
@@ -17,7 +26,7 @@ namespace VOC.Core.Games.Turns.States
                     StateCommand.BuildEstablisment,
                     StateCommand.UpdgradeEstablisment,
                     StateCommand.PlayDevelopmentCard,
-                    StateCommand.NextState //maybe cleaner to have a seperate end turn?
+                    StateCommand.NextState
                 };
             }
         }
@@ -26,15 +35,12 @@ namespace VOC.Core.Games.Turns.States
 
         public void AfterExecute(StateCommand command)
         {
-            throw new NotImplementedException();
+            if (command == StateCommand.NextState)
+            {
+                turn.NextFlowState();
+                Completed = true;
+            }
         }
 
-        public void Start()
-        {
-        }
-
-        public void Stop()
-        {
-        }
     }
 }
