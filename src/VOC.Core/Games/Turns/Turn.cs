@@ -12,7 +12,19 @@ namespace VOC.Core.Games.Turns
     public class Turn : ITurn
     {
         private readonly IStateProvider stateprovider;
-        private ITurnState currentState;
+        private ITurnState _currentState;
+        private ITurnState currentState
+        {
+            get { return _currentState; }
+            set
+            {
+                if (_currentState != value)
+                {
+                    _currentState = value;
+                    StateChanged?.Invoke(this, value);
+                }
+            }
+        }
 
         public Turn(IPlayer player, IStateProvider stateprovider)
         {
@@ -33,7 +45,9 @@ namespace VOC.Core.Games.Turns
 
         public void NextFlowState()
         {
-            throw new NotImplementedException();
+            if (currentState == null)
+                throw new InvalidOperationException("Can't switch states if turn is not active");
+            currentState = stateprovider.GetNext();
         }
 
         public void SetState<T>() where T : ITurnState
@@ -47,12 +61,13 @@ namespace VOC.Core.Games.Turns
                 throw new InvalidOperationException("Can't start an already started turn");
 
             currentState = stateprovider.GetNext();
-            StateChanged?.Invoke(this, currentState);
         }
 
         public bool CanExecute(StateCommand command)
         {
-            throw new NotImplementedException();
+            if (currentState == null)
+                return false;
+            return currentState.Commands.Contains(command);
         }
 
         public void End()
