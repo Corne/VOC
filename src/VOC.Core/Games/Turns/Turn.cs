@@ -52,7 +52,9 @@ namespace VOC.Core.Games.Turns
 
         public void SetState<T>() where T : ITurnState
         {
-            throw new NotImplementedException();
+            if (currentState == null)
+                throw new InvalidOperationException("Can't switch states if turn is not active");
+            currentState = stateprovider.Get<T>();
         }
 
         public void Start()

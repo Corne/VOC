@@ -111,7 +111,7 @@ namespace VOC.Core.Test.Games.Turns
         }
 
         [Fact]
-        public void ExpectExceptionOnNextFlowStateIfStateNotStarted()
+        public void ExpectExceptionOnNextFlowStateIfTurnNotStarted()
         {
             var player = new Mock<IPlayer>();
             var state1 = new Mock<ITurnState>();
@@ -148,6 +148,45 @@ namespace VOC.Core.Test.Games.Turns
 
             Assert.True(stateChanged);
             provider.Verify(p => p.GetNext(), Times.Exactly(2));
+        }
+
+        [Fact]
+        public void ExpectExceptionOnSetStateIfTurnNotStarted()
+        {
+            var player = new Mock<IPlayer>();
+            var state1 = new Mock<ITurnState>();
+            var state2 = new Mock<ITurnState>();
+            var stateQueue = new Queue<ITurnState>(new[] { state1.Object, state2.Object });
+            var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.GetNext()).Returns(stateQueue.Dequeue());
+
+            var turn = new Turn(player.Object, provider.Object);
+            Assert.Throws<InvalidOperationException>(() => turn.SetState<MoveRobberState>());
+        }
+
+        [Fact]
+        public void ExpectSetStateToCallStateProviderForTheNextState()
+        {
+            var player = new Mock<IPlayer>();
+            var state1 = new Mock<ITurnState>();
+            var state2 = new Mock<ITurnState>();
+            var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.GetNext()).Returns(state1.Object);
+            provider.Setup(p => p.Get<ITurnState>()).Returns(state2.Object);
+
+            var turn = new Turn(player.Object, provider.Object);
+            turn.Start();
+
+            bool stateChanged = false;
+            turn.StateChanged += (sender, args) =>
+            {
+                stateChanged = true;
+                Assert.Equal(state2.Object, args);
+            };
+            turn.SetState<ITurnState>();
+
+            Assert.True(stateChanged);
+            provider.Verify(p => p.Get<ITurnState>());
         }
     }
 }
