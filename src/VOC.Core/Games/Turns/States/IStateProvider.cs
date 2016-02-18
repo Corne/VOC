@@ -9,6 +9,8 @@ namespace VOC.Core.Games.Turns.States
     public interface IStateProvider
     {
         ITurnState Get<T>() where T : ITurnState;
+
+        bool HasNext();
         ITurnState GetNext();
     }
 }

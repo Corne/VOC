@@ -42,39 +42,27 @@ namespace VOC.Core.Games.Turns
         public IPlayer Player { get; }
 
         public event EventHandler<ITurnState> StateChanged;
+        public event EventHandler Ended;
 
         public void NextFlowState()
         {
-            if (currentState == null)
-                throw new InvalidOperationException("Can't switch states if turn is not active");
-            currentState = stateprovider.GetNext();
+            if (stateprovider.HasNext())
+                currentState = stateprovider.GetNext();
+            else
+                Ended?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetState<T>() where T : ITurnState
         {
-            if (currentState == null)
-                throw new InvalidOperationException("Can't switch states if turn is not active");
             currentState = stateprovider.Get<T>();
         }
 
-        public void Start()
-        {
-            if (currentState != null)
-                throw new InvalidOperationException("Can't start an already started turn");
-
-            currentState = stateprovider.GetNext();
-        }
 
         public bool CanExecute(StateCommand command)
         {
             if (currentState == null)
                 return false;
             return currentState.Commands.Contains(command);
-        }
-
-        public void End()
-        {
-            throw new NotImplementedException();
         }
 
         public void PlayDevelopmentCard(IDevelopmentCard card)

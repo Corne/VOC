@@ -63,6 +63,7 @@
     <Compile Include="Establishments\EstablishmentLevel.cs" />
     <Compile Include="Establishments\Establishment.cs" />
     <Compile Include="Establishments\IEstablishment.cs" />
+    <Compile Include="Games\Turns\ITurnProvider.cs" />
     <Compile Include="Games\Turns\States\IFlowSate.cs" />
     <Compile Include="Games\Turns\States\IStateProvider.cs" />
     <Compile Include="Games\Turns\States\RobberDiscardState.cs" />

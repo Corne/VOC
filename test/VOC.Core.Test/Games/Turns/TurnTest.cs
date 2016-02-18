@@ -37,42 +37,6 @@ namespace VOC.Core.Test.Games.Turns
             Assert.Equal(player.Object, turn.Player);
         }
 
-
-        [Fact]
-        public void StartSetsFirstFlowState()
-        {
-            var player = new Mock<IPlayer>();
-            var state = new Mock<ITurnState>();
-            var provider = new Mock<IStateProvider>();
-            provider.Setup(p => p.GetNext()).Returns(state.Object);
-
-            var turn = new Turn(player.Object, provider.Object);
-
-            ITurnState result = null;
-            int triggerCount = 0;
-            turn.StateChanged += (sender, arg) => { result = arg; triggerCount++; };
-            turn.Start();
-
-            provider.Verify(p => p.GetNext(), Times.Once);
-            Assert.Equal(state.Object, result);
-            Assert.Equal(1, triggerCount);
-        }
-
-        [Fact]
-        public void CantStartAnAlreadyStartedTurn()
-        {
-            var player = new Mock<IPlayer>();
-            var state = new Mock<ITurnState>();
-            var provider = new Mock<IStateProvider>();
-            provider.Setup(p => p.GetNext()).Returns(state.Object);
-
-            var turn = new Turn(player.Object, provider.Object);
-            turn.Start();
-
-            Assert.Throws<InvalidOperationException>(() => turn.Start());
-        }
-
-
         [Theory]
         [InlineData(StateCommand.BuildEstablisment)]
         [InlineData(StateCommand.BuildRoad)]
@@ -100,29 +64,15 @@ namespace VOC.Core.Test.Games.Turns
             var state = new Mock<ITurnState>();
             state.Setup(s => s.Commands).Returns(stateCommands);
             var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
             provider.Setup(p => p.GetNext()).Returns(state.Object);
 
             var turn = new Turn(player.Object, provider.Object);
-            turn.Start();
+            turn.NextFlowState();
 
             bool result = turn.CanExecute(command);
 
             Assert.Equal(expected, result);
-        }
-
-        [Fact]
-        public void ExpectExceptionOnNextFlowStateIfTurnNotStarted()
-        {
-            var player = new Mock<IPlayer>();
-            var state1 = new Mock<ITurnState>();
-            var state2 = new Mock<ITurnState>();
-            var stateQueue = new Queue<ITurnState>(new[] { state1.Object, state2.Object });
-            var provider = new Mock<IStateProvider>();
-            provider.Setup(p => p.GetNext()).Returns(stateQueue.Dequeue());
-
-            var turn = new Turn(player.Object, provider.Object);
-            Assert.Throws<InvalidOperationException>(() => turn.NextFlowState());
-
         }
 
         [Fact]
@@ -133,36 +83,42 @@ namespace VOC.Core.Test.Games.Turns
             var state2 = new Mock<ITurnState>();
             var stateQueue = new Queue<ITurnState>(new[] { state1.Object, state2.Object });
             var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
             provider.Setup(p => p.GetNext()).Returns(() => stateQueue.Dequeue());
 
             var turn = new Turn(player.Object, provider.Object);
-            turn.Start();
 
             bool stateChanged = false;
             turn.StateChanged += (sender, args) =>
             {
                 stateChanged = true;
-                Assert.Equal(state2.Object, args);
+                Assert.Equal(state1.Object, args);
             };
             turn.NextFlowState();
 
             Assert.True(stateChanged);
-            provider.Verify(p => p.GetNext(), Times.Exactly(2));
+            provider.Verify(p => p.GetNext());
         }
 
         [Fact]
-        public void ExpectExceptionOnSetStateIfTurnNotStarted()
+        public void ExpectToEndTurnifNoNextFlowState()
         {
             var player = new Mock<IPlayer>();
             var state1 = new Mock<ITurnState>();
-            var state2 = new Mock<ITurnState>();
-            var stateQueue = new Queue<ITurnState>(new[] { state1.Object, state2.Object });
+
             var provider = new Mock<IStateProvider>();
-            provider.Setup(p => p.GetNext()).Returns(stateQueue.Dequeue());
+            provider.Setup(p => p.HasNext()).Returns(false);
+            provider.Setup(p => p.GetNext()).Returns(state1.Object);
 
             var turn = new Turn(player.Object, provider.Object);
-            Assert.Throws<InvalidOperationException>(() => turn.SetState<MoveRobberState>());
+            bool ended = false;
+            turn.Ended += (sender, args) => { ended = true; };
+
+            turn.NextFlowState();
+            provider.Verify(p => p.GetNext(), Times.Never);
+            Assert.True(ended);     
         }
+
 
         [Fact]
         public void ExpectSetStateToCallStateProviderForTheNextState()
@@ -175,8 +131,6 @@ namespace VOC.Core.Test.Games.Turns
             provider.Setup(p => p.Get<ITurnState>()).Returns(state2.Object);
 
             var turn = new Turn(player.Object, provider.Object);
-            turn.Start();
-
             bool stateChanged = false;
             turn.StateChanged += (sender, args) =>
             {
