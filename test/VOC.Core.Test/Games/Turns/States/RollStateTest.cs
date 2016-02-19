@@ -24,7 +24,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void RollStateCantBeCreatedWitoutDice()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             Assert.Throws<ArgumentNullException>(() => new RollState(turn.Object, null));
         }
 
@@ -45,10 +45,10 @@ namespace VOC.Core.Test.Games.Turns.States
         public void ExpectNextFlowStateIfDiceResultNot7(int diceResult)
         {
             var dice = CreateDice(diceResult);
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
 
             var state = new RollState(turn.Object, dice);
-            state.AfterExecute(StateCommand.RollDice);
+            state.AfterExecute(GameCommand.RollDice);
 
             turn.Verify(t => t.NextFlowState(), Times.Once);
             turn.Verify(t => t.SetState<RobberDiscardState>(), Times.Never);
@@ -58,9 +58,9 @@ namespace VOC.Core.Test.Games.Turns.States
         public void ExpectSetStateRobberIfDiceResult7()
         {
             var dice = CreateDice(7);
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var state = new RollState(turn.Object, dice);
-            state.AfterExecute(StateCommand.RollDice);
+            state.AfterExecute(GameCommand.RollDice);
 
             turn.Verify(t => t.NextFlowState(), Times.Never);
             turn.Verify(t => t.SetState<RobberDiscardState>(), Times.Once);
@@ -70,7 +70,7 @@ namespace VOC.Core.Test.Games.Turns.States
         public void ExpectNothingToHappenIfStateNotStarted()
         {
             var dice = CreateDice(5);
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
 
             var state = new RollState(turn.Object, dice);
 
@@ -84,18 +84,18 @@ namespace VOC.Core.Test.Games.Turns.States
         {
             get
             {
-                return Enum.GetValues(typeof(StateCommand))
-                  .Cast<StateCommand>()
-                  .Except(new[] { StateCommand.RollDice })
+                return Enum.GetValues(typeof(GameCommand))
+                  .Cast<GameCommand>()
+                  .Except(new[] { GameCommand.RollDice })
                   .Select(x => new object[] { x });
             }
         }
 
         [Theory, MemberData(nameof(UnusedStateCommands))]
-        public void ExpectNothingToHappenIfCommandNotRollDice(StateCommand command)
+        public void ExpectNothingToHappenIfCommandNotRollDice(GameCommand command)
         {
             var dice = CreateDice(7);
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var state = new RollState(turn.Object, dice);
             state.AfterExecute(command);
 

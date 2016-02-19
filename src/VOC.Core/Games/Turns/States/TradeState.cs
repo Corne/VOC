@@ -8,32 +8,32 @@ namespace VOC.Core.Games.Turns.States
 {
     public class TradeState : ITurnState, IFlowSate
     {
-        private readonly ITurn turn;
+        private readonly IGameTurn turn;
 
-        public TradeState(ITurn turn)
+        public TradeState(IGameTurn turn)
         {
             if (turn == null)
                 throw new ArgumentNullException(nameof(turn));
             this.turn = turn;
         }
 
-        public IEnumerable<StateCommand> Commands
+        public IEnumerable<GameCommand> Commands
         {
             get
             {
-                return new StateCommand[] {
-                    StateCommand.Trade,
-                    StateCommand.PlayDevelopmentCard,
-                    StateCommand.NextState
+                return new GameCommand[] {
+                    GameCommand.Trade,
+                    GameCommand.PlayDevelopmentCard,
+                    GameCommand.NextState
                 };
             }
         }
 
         public bool Completed { get; private set; }
 
-        public void AfterExecute(StateCommand command)
+        public void AfterExecute(GameCommand command)
         {
-            if (command == StateCommand.NextState)
+            if (command == GameCommand.NextState)
             {
                 Completed = true;
                 turn.NextFlowState();

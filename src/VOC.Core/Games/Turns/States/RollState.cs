@@ -11,9 +11,9 @@ namespace VOC.Core.Games.Turns.States
     public class RollState : ITurnState, IFlowSate
     {
         private readonly IDice dice;
-        private readonly ITurn turn;
+        private readonly IGameTurn turn;
 
-        public RollState(ITurn turn, IDice dice)
+        public RollState(IGameTurn turn, IDice dice)
         {
             if (turn == null)
                 throw new ArgumentNullException(nameof(turn));
@@ -24,17 +24,17 @@ namespace VOC.Core.Games.Turns.States
             this.dice = dice;
         }
 
-        public IEnumerable<StateCommand> Commands
+        public IEnumerable<GameCommand> Commands
         {
-            get { return new StateCommand[] { StateCommand.RollDice, StateCommand.PlayDevelopmentCard }; }
+            get { return new GameCommand[] { GameCommand.RollDice, GameCommand.PlayDevelopmentCard }; }
         }
 
         public bool Completed { get; private set; }
 
-        public void AfterExecute(StateCommand command)
+        public void AfterExecute(GameCommand command)
         {
             //todo DevelopmentCard?
-            if (command != StateCommand.RollDice)
+            if (command != GameCommand.RollDice)
                 return;
 
             Completed = true;

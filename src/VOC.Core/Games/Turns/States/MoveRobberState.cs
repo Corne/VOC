@@ -10,10 +10,10 @@ namespace VOC.Core.Games.Turns.States
 {
     public class MoveRobberState : ITurnState
     {
-        private readonly ITurn turn;
+        private readonly IGameTurn turn;
         private readonly IRobber robber;
 
-        public MoveRobberState(ITurn turn, IRobber robber)
+        public MoveRobberState(IGameTurn turn, IRobber robber)
         {
             if (turn == null)
                 throw new ArgumentNullException(nameof(turn));
@@ -24,14 +24,14 @@ namespace VOC.Core.Games.Turns.States
             this.robber = robber;
         }
 
-        public IEnumerable<StateCommand> Commands
+        public IEnumerable<GameCommand> Commands
         {
-            get { return new StateCommand[] { StateCommand.MoveRobber }; }
+            get { return new GameCommand[] { GameCommand.MoveRobber }; }
         }
 
-        public void AfterExecute(StateCommand command)
+        public void AfterExecute(GameCommand command)
         {
-            if (command == StateCommand.MoveRobber)
+            if (command == GameCommand.MoveRobber)
                 turn.SetState<RobberStealState>();
         }
     }

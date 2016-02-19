@@ -9,7 +9,7 @@ using VOC.Core.Players;
 
 namespace VOC.Core.Games.Turns
 {
-    public class Turn : ITurn
+    public class Turn : IGameTurn
     {
         private readonly IStateProvider stateprovider;
         private ITurnState _currentState;
@@ -58,16 +58,23 @@ namespace VOC.Core.Games.Turns
         }
 
 
-        public bool CanExecute(StateCommand command)
+        public bool CanExecute(GameCommand command)
         {
             if (currentState == null)
                 return false;
             return currentState.Commands.Contains(command);
         }
 
+        public void AfterExecute(GameCommand command)
+        {
+            currentState.AfterExecute(command);
+        }
+
         public void PlayDevelopmentCard(IDevelopmentCard card)
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

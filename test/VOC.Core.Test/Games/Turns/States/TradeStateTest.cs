@@ -21,10 +21,10 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void ExpectNextFlowStateIfNExtStateCommnad()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var state = new TradeState(turn.Object);
 
-            state.AfterExecute(StateCommand.NextState);
+            state.AfterExecute(GameCommand.NextState);
 
             Assert.True(state.Completed);
             turn.Verify(t => t.NextFlowState());
@@ -34,17 +34,17 @@ namespace VOC.Core.Test.Games.Turns.States
         {
             get
             {
-                return Enum.GetValues(typeof(StateCommand))
-                  .Cast<StateCommand>()
-                  .Except(new[] { StateCommand.NextState })
+                return Enum.GetValues(typeof(GameCommand))
+                  .Cast<GameCommand>()
+                  .Except(new[] { GameCommand.NextState })
                   .Select(x => new object[] { x });
             }
         }
 
         [Theory, MemberData(nameof(UnusedStateCommands))]
-        public void ExpectNothingToHappenIfCommandNotNextState(StateCommand command)
+        public void ExpectNothingToHappenIfCommandNotNextState(GameCommand command)
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var state = new TradeState(turn.Object);
 
             state.AfterExecute(command);

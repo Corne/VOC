@@ -12,10 +12,10 @@ namespace VOC.Core.Games.Turns.States
         /// <summary>
         /// List of commands that can be executed during this state
         /// </summary>
-        IEnumerable<StateCommand> Commands { get; }
+        IEnumerable<GameCommand> Commands { get; }
 
 
-        void AfterExecute(StateCommand command);
+        void AfterExecute(GameCommand command);
 
     }
 }

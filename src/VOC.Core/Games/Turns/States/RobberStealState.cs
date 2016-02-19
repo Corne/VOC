@@ -9,9 +9,9 @@ namespace VOC.Core.Games.Turns.States
 {
     public class RobberStealState : ITurnState
     {
-        private readonly ITurn turn;
+        private readonly IGameTurn turn;
 
-        public RobberStealState(ITurn turn, IBoard board)
+        public RobberStealState(IGameTurn turn, IBoard board)
         {
             if (turn == null)
                 throw new ArgumentNullException(nameof(turn));
@@ -27,17 +27,17 @@ namespace VOC.Core.Games.Turns.States
                 turn.NextFlowState();
         }
 
-        public IEnumerable<StateCommand> Commands
+        public IEnumerable<GameCommand> Commands
         {
             get
             {
-                return new[] { StateCommand.StealResource };
+                return new[] { GameCommand.StealResource };
             }
         }
 
-        public void AfterExecute(StateCommand command)
+        public void AfterExecute(GameCommand command)
         {
-            if (command == StateCommand.StealResource)
+            if (command == GameCommand.StealResource)
                 turn.NextFlowState();
         }
     }

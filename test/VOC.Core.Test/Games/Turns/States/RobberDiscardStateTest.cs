@@ -17,7 +17,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void RobberDiscardCantBeCreatedWithoutPlayers()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             Assert.Throws<ArgumentNullException>(() => new RobberDiscardState(turn.Object, null));
             
         }
@@ -32,7 +32,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void ExpectStateTransitionIfNoPlayers()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var players = new List<IPlayer>();
             var state = new RobberDiscardState(turn.Object, players);
 
@@ -43,7 +43,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void ExpectStateTransitionIfNoPlayerToMuchResources()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var player1 = new Mock<IPlayer>();
             var player2 = new Mock<IPlayer>();
 
@@ -59,7 +59,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void ExpectStateTransitionAfterPlayerDiscardedTheirResources()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var player = new Mock<IPlayer>();
             player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 8).Select(i => new Mock<IRawMaterial>().Object));
             var players = new List<IPlayer>() { player.Object };
@@ -67,7 +67,7 @@ namespace VOC.Core.Test.Games.Turns.States
             var state = new RobberDiscardState(turn.Object, players);
                         
             player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 4).Select(i => new Mock<IRawMaterial>().Object));
-            state.AfterExecute(StateCommand.DiscardResources);
+            state.AfterExecute(GameCommand.DiscardResources);
             turn.Verify(t => t.SetState<MoveRobberState>(), Times.Once);
         }
 
@@ -79,7 +79,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [InlineData(11, 6)]
         public void ExpectedRemoveResourcesIsHalfROundedDown(int initial, int expected)
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var player = new Mock<IPlayer>();
             player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, initial).Select(i => new Mock<IRawMaterial>().Object));
             var players = new List<IPlayer>() { player.Object };
@@ -89,7 +89,7 @@ namespace VOC.Core.Test.Games.Turns.States
             //expect 4 removed
 
             player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, expected).Select(i => new Mock<IRawMaterial>().Object));
-            state.AfterExecute(StateCommand.DiscardResources);
+            state.AfterExecute(GameCommand.DiscardResources);
 
             turn.Verify(t => t.SetState<MoveRobberState>(), Times.Once);
 
@@ -98,7 +98,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void ExpectNoStateChangeIfPlayerRemovedNotEnoughResources()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var player = new Mock<IPlayer>();
             player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 8).Select(i => new Mock<IRawMaterial>().Object));
             var players = new List<IPlayer>() { player.Object };
@@ -107,7 +107,7 @@ namespace VOC.Core.Test.Games.Turns.States
             var state = new RobberDiscardState(turn.Object, players);
 
             player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 5).Select(i => new Mock<IRawMaterial>().Object));
-            state.AfterExecute(StateCommand.DiscardResources);
+            state.AfterExecute(GameCommand.DiscardResources);
 
             turn.Verify(t => t.SetState<MoveRobberState>(), Times.Never);
 
@@ -116,7 +116,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void ExpectStateChangeIfAllPlayersRemovedResources()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var player1 = new Mock<IPlayer>();
             var player2 = new Mock<IPlayer>();
 
@@ -126,11 +126,11 @@ namespace VOC.Core.Test.Games.Turns.States
             var state = new RobberDiscardState(turn.Object, players);
 
             player1.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 4).Select(i => new Mock<IRawMaterial>().Object));
-            state.AfterExecute(StateCommand.DiscardResources);
+            state.AfterExecute(GameCommand.DiscardResources);
             turn.Verify(t => t.SetState<MoveRobberState>(), Times.Never);
 
             player2.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 5).Select(i => new Mock<IRawMaterial>().Object));
-            state.AfterExecute(StateCommand.DiscardResources);
+            state.AfterExecute(GameCommand.DiscardResources);
 
             turn.Verify(t => t.SetState<MoveRobberState>(), Times.Once);
         }
@@ -138,7 +138,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void ExpectNoStateChangeIfNotAllPlayersRemovedResources()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var player1 = new Mock<IPlayer>();
             var player2 = new Mock<IPlayer>();
 
@@ -148,10 +148,10 @@ namespace VOC.Core.Test.Games.Turns.States
             var state = new RobberDiscardState(turn.Object, players);
 
             player1.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 4).Select(i => new Mock<IRawMaterial>().Object));
-            state.AfterExecute(StateCommand.DiscardResources);
+            state.AfterExecute(GameCommand.DiscardResources);
 
             player2.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 6).Select(i => new Mock<IRawMaterial>().Object));
-            state.AfterExecute(StateCommand.DiscardResources);
+            state.AfterExecute(GameCommand.DiscardResources);
 
             turn.Verify(t => t.SetState<MoveRobberState>(), Times.Never);
         }
@@ -160,17 +160,17 @@ namespace VOC.Core.Test.Games.Turns.States
         {
             get
             {
-                return Enum.GetValues(typeof(StateCommand))
-                  .Cast<StateCommand>()
-                  .Except(new[] { StateCommand.DiscardResources })
+                return Enum.GetValues(typeof(GameCommand))
+                  .Cast<GameCommand>()
+                  .Except(new[] { GameCommand.DiscardResources })
                   .Select(x => new object[] { x });
             }
         }
 
         [Theory, MemberData(nameof(UnusedStateCommands))]
-        public void ExpectNothingToHappenIfCommandNotDiscardResources(StateCommand command)
+        public void ExpectNothingToHappenIfCommandNotDiscardResources(GameCommand command)
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var player = new Mock<IPlayer>();
             player.Setup(p => p.Inventory).Returns(Enumerable.Range(0, 8).Select(i => new Mock<IRawMaterial>().Object));
             var players = new List<IPlayer>() { player.Object };

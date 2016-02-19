@@ -17,7 +17,7 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void RobberStateCantBeCreatedWithoutRobber()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             Assert.Throws<ArgumentNullException>(() => new MoveRobberState(turn.Object, null));
         }
 
@@ -37,11 +37,11 @@ namespace VOC.Core.Test.Games.Turns.States
         [Fact]
         public void AfterRobberMoveTransitionToRobberStealingState()
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var robber = CreateRobber();
 
             var state = new MoveRobberState(turn.Object, robber);
-            state.AfterExecute(StateCommand.MoveRobber);
+            state.AfterExecute(GameCommand.MoveRobber);
 
             turn.Verify(t => t.SetState<RobberStealState>(), Times.Once);
         }
@@ -50,17 +50,17 @@ namespace VOC.Core.Test.Games.Turns.States
         {
             get
             {
-                return Enum.GetValues(typeof(StateCommand))
-                  .Cast<StateCommand>()
-                  .Except(new[] { StateCommand.MoveRobber })
+                return Enum.GetValues(typeof(GameCommand))
+                  .Cast<GameCommand>()
+                  .Except(new[] { GameCommand.MoveRobber })
                   .Select(x => new object[] { x });
             }
         }
 
         [Theory, MemberData(nameof(UnusedStateCommands))]
-        public void ExpectNothingToHappenIfCommandNotMoveRobber(StateCommand command)
+        public void ExpectNothingToHappenIfCommandNotMoveRobber(GameCommand command)
         {
-            var turn = new Mock<ITurn>();
+            var turn = new Mock<IGameTurn>();
             var robber = CreateRobber();
 
             var state = new MoveRobberState(turn.Object, robber);

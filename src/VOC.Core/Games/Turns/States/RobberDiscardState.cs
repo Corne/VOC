@@ -9,12 +9,12 @@ namespace VOC.Core.Games.Turns.States
 {
     public class RobberDiscardState : ITurnState
     {
-        private readonly ITurn turn;
+        private readonly IGameTurn turn;
         private readonly IEnumerable<IPlayer> players;
 
         private Dictionary<IPlayer, int> desiredInventorySizes;
 
-        public RobberDiscardState(ITurn turn, IEnumerable<IPlayer> players)
+        public RobberDiscardState(IGameTurn turn, IEnumerable<IPlayer> players)
         {
             if (turn == null)
                 throw new ArgumentNullException(nameof(turn));
@@ -39,11 +39,11 @@ namespace VOC.Core.Games.Turns.States
             CheckStateChange();
         }
 
-        public IEnumerable<StateCommand> Commands
+        public IEnumerable<GameCommand> Commands
         {
             get
             {
-                return new StateCommand[] { StateCommand.DiscardResources };
+                return new GameCommand[] { GameCommand.DiscardResources };
             }
         }
 
@@ -56,9 +56,9 @@ namespace VOC.Core.Games.Turns.States
         }
 
 
-        public void AfterExecute(StateCommand command)
+        public void AfterExecute(GameCommand command)
         {
-            if (command != StateCommand.DiscardResources)
+            if (command != GameCommand.DiscardResources)
                 return;
 
             var removeList = new List<IPlayer>();

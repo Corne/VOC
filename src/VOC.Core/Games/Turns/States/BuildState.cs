@@ -8,34 +8,34 @@ namespace VOC.Core.Games.Turns.States
 {
     public class BuildState : ITurnState, IFlowSate
     {
-        private readonly ITurn turn;
+        private readonly IGameTurn turn;
 
-        public BuildState(ITurn turn)
+        public BuildState(IGameTurn turn)
         {
             if (turn == null)
                 throw new ArgumentNullException(nameof(turn));
             this.turn = turn;
         }
 
-        public IEnumerable<StateCommand> Commands
+        public IEnumerable<GameCommand> Commands
         {
             get
             {
-                return new StateCommand[] {
-                    StateCommand.BuildRoad,
-                    StateCommand.BuildEstablisment,
-                    StateCommand.UpdgradeEstablisment,
-                    StateCommand.PlayDevelopmentCard,
-                    StateCommand.NextState
+                return new GameCommand[] {
+                    GameCommand.BuildRoad,
+                    GameCommand.BuildEstablisment,
+                    GameCommand.UpdgradeEstablisment,
+                    GameCommand.PlayDevelopmentCard,
+                    GameCommand.NextState
                 };
             }
         }
 
         public bool Completed { get; set; }
 
-        public void AfterExecute(StateCommand command)
+        public void AfterExecute(GameCommand command)
         {
-            if (command == StateCommand.NextState)
+            if (command == GameCommand.NextState)
             {
                 Completed = true;
                 turn.NextFlowState();

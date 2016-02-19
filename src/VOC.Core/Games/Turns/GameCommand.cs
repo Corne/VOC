@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VOC.Core.Games.Turns.States
+namespace VOC.Core.Games.Turns
 {
     /// <summary>
     /// List of commands user can execute during a turn
     /// Each state should specifiy which command can be executed during that state
     /// </summary>
-    public enum StateCommand
+    public enum GameCommand
     {
         RollDice,
         BuildRoad,

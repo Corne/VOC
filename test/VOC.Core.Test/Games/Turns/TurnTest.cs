@@ -38,11 +38,11 @@ namespace VOC.Core.Test.Games.Turns
         }
 
         [Theory]
-        [InlineData(StateCommand.BuildEstablisment)]
-        [InlineData(StateCommand.BuildRoad)]
-        [InlineData(StateCommand.DiscardResources)]
-        [InlineData(StateCommand.MoveRobber)]
-        public void ExpectCanExecuteAlwaysFalseIfIfTurnNotStarted(StateCommand command)
+        [InlineData(GameCommand.BuildEstablisment)]
+        [InlineData(GameCommand.BuildRoad)]
+        [InlineData(GameCommand.DiscardResources)]
+        [InlineData(GameCommand.MoveRobber)]
+        public void ExpectCanExecuteAlwaysFalseIfIfTurnNotStarted(GameCommand command)
         {
             var player = new Mock<IPlayer>();
             var provider = new Mock<IStateProvider>();
@@ -52,13 +52,13 @@ namespace VOC.Core.Test.Games.Turns
         }
 
         [Theory]
-        [InlineData(StateCommand.BuildEstablisment, new StateCommand[] { }, false)]
-        [InlineData(StateCommand.BuildEstablisment, new StateCommand[] { StateCommand.BuildEstablisment }, true)]
-        [InlineData(StateCommand.RollDice, new StateCommand[] { StateCommand.RollDice }, true)]
-        [InlineData(StateCommand.RollDice, new StateCommand[] { StateCommand.MoveRobber }, false)]
-        [InlineData(StateCommand.PlayDevelopmentCard, new StateCommand[] { StateCommand.MoveRobber, StateCommand.PlayDevelopmentCard, StateCommand.StealResource }, true)]
-        [InlineData(StateCommand.PlayDevelopmentCard, new StateCommand[] { StateCommand.MoveRobber, StateCommand.UpdgradeEstablisment, StateCommand.StealResource }, false)]
-        public void CanExecuteIfCurrentStateHasCommand(StateCommand command, IEnumerable<StateCommand> stateCommands, bool expected)
+        [InlineData(GameCommand.BuildEstablisment, new GameCommand[] { }, false)]
+        [InlineData(GameCommand.BuildEstablisment, new GameCommand[] { GameCommand.BuildEstablisment }, true)]
+        [InlineData(GameCommand.RollDice, new GameCommand[] { GameCommand.RollDice }, true)]
+        [InlineData(GameCommand.RollDice, new GameCommand[] { GameCommand.MoveRobber }, false)]
+        [InlineData(GameCommand.PlayDevelopmentCard, new GameCommand[] { GameCommand.MoveRobber, GameCommand.PlayDevelopmentCard, GameCommand.StealResource }, true)]
+        [InlineData(GameCommand.PlayDevelopmentCard, new GameCommand[] { GameCommand.MoveRobber, GameCommand.UpdgradeEstablisment, GameCommand.StealResource }, false)]
+        public void CanExecuteIfCurrentStateHasCommand(GameCommand command, IEnumerable<GameCommand> stateCommands, bool expected)
         {
             var player = new Mock<IPlayer>();
             var state = new Mock<ITurnState>();
@@ -127,6 +127,7 @@ namespace VOC.Core.Test.Games.Turns
             var state1 = new Mock<ITurnState>();
             var state2 = new Mock<ITurnState>();
             var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
             provider.Setup(p => p.GetNext()).Returns(state1.Object);
             provider.Setup(p => p.Get<ITurnState>()).Returns(state2.Object);
 
@@ -141,6 +142,22 @@ namespace VOC.Core.Test.Games.Turns
 
             Assert.True(stateChanged);
             provider.Verify(p => p.Get<ITurnState>());
+        }
+
+        [Fact]
+        public void ExpectAfterExectueToDelegateCallToCurrentState()
+        {
+            var player = new Mock<IPlayer>();
+            var state1 = new Mock<ITurnState>();
+            var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
+            provider.Setup(p => p.GetNext()).Returns(state1.Object);
+
+            var turn = new Turn(player.Object, provider.Object);
+            turn.NextFlowState();
+            turn.AfterExecute(GameCommand.RollDice);
+
+            state1.Verify(s => s.AfterExecute(GameCommand.RollDice));
         }
     }
 }

@@ -63,6 +63,8 @@
     <Compile Include="Establishments\EstablishmentLevel.cs" />
     <Compile Include="Establishments\Establishment.cs" />
     <Compile Include="Establishments\IEstablishment.cs" />
+    <Compile Include="Games\Turns\HighRollTurn.cs" />
+    <Compile Include="Games\Turns\IGameTurn.cs" />
     <Compile Include="Games\Turns\ITurnProvider.cs" />
     <Compile Include="Games\Turns\States\IFlowSate.cs" />
     <Compile Include="Games\Turns\States\IStateProvider.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Games\Turns\States\MoveRobberState.cs" />
     <Compile Include="Games\Turns\States\RobberStealState.cs" />
     <Compile Include="Games\Turns\States\StateProvider.cs" />
+    <Compile Include="Games\Turns\TurnProvider.cs" />
     <Compile Include="Items\DiceRoll.cs" />
     <Compile Include="Games\Game.cs" />
     <Compile Include="Games\IDistributer.cs" />
@@ -78,7 +81,7 @@
     <Compile Include="Games\Turns\States\BuildState.cs" />
     <Compile Include="Games\Turns\States\ITurnState.cs" />
     <Compile Include="Games\Turns\States\RollState.cs" />
-    <Compile Include="Games\Turns\States\StateCommand.cs" />
+    <Compile Include="Games\Turns\GameCommand.cs" />
     <Compile Include="Games\Turns\States\TradeState.cs" />
     <Compile Include="Games\Turns\Turn.cs" />
     <Compile Include="Items\Die.cs" />
