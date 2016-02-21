@@ -65,6 +65,8 @@
     <Compile Include="Establishments\IEstablishment.cs" />
     <Compile Include="Games\Turns\HighRollTurn.cs" />
     <Compile Include="Games\Turns\IGameTurn.cs" />
+    <Compile Include="Games\Turns\IHighRollTurn.cs" />
+    <Compile Include="Games\Turns\ITurnFactory.cs" />
     <Compile Include="Games\Turns\ITurnProvider.cs" />
     <Compile Include="Games\Turns\States\IFlowSate.cs" />
     <Compile Include="Games\Turns\States\IStateProvider.cs" />

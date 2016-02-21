@@ -15,18 +15,56 @@ namespace VOC.Core.Test.Games.Turns
         [Fact]
         public void TurnProviderCantBeCreatedWithoutPlayers()
         {
-            Assert.Throws<ArgumentNullException>(() => new TurnProvider(null));
+            var factory = new Mock<ITurnFactory>();
+            Assert.Throws<ArgumentNullException>(() => new TurnProvider(null, factory.Object));
         }
 
-        //[Fact]
-        //public void GetNextReturnsTurnWithHighRollProvider()
-        //{
-        //    var players = new HashSet<IPlayer>();
-        //    players.Add(new Mock<IPlayer>().Object);
-        //    var provider = new TurnProvider(players);
 
-        //    var turn = provider.GetNext();
-        //    Assert.IsType<HighRollTurn>(turn);
-        //}
+        private ISet<IPlayer> CreatePlayers(int count)
+        {
+            var players = Enumerable.Range(0, count).Select(i => new Mock<IPlayer>().Object);
+            return new HashSet<IPlayer>(players);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void ExpectExceptionIfPlayerCountBelow2(int count)
+        {
+            var factory = new Mock<ITurnFactory>();
+            var players = CreatePlayers(count);
+            Assert.Throws<ArgumentException>(() => new TurnProvider(players, factory.Object));
+        }
+
+        [Fact]
+        public void TurnProviderCantBeCreatedWithoutFactory()
+        {
+            var players = CreatePlayers(2);
+            Assert.Throws<ArgumentNullException>(() => new TurnProvider(players, null));
+        }
+
+        private Mock<ITurnFactory> CreateFactory(IPlayer player)
+        {
+            var factory = new Mock<ITurnFactory>();
+            factory.Setup(f => f.Create<IHighRollTurn>(player))
+                .Returns<IPlayer>(p =>
+                {
+                    var turn = new Mock<IHighRollTurn>();
+                    turn.Setup(t => t.Player).Returns(p);
+                    return turn.Object;
+                });
+            return factory;
+        }
+
+        [Fact]
+        public void GetNextReturnsTurnWithHighRollProvider()
+        {
+            var players = CreatePlayers(2);
+            var factory = CreateFactory(players.First());
+            var provider = new TurnProvider(players, factory.Object);
+
+            var turn = provider.GetNext();
+            Assert.IsAssignableFrom<IHighRollTurn>(turn);
+        }
     }
 }

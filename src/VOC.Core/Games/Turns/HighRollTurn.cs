@@ -9,7 +9,7 @@ using VOC.Core.Players;
 
 namespace VOC.Core.Games.Turns
 {
-    public class HighRollTurn : ITurn
+    public class HighRollTurn : ITurn, IHighRollTurn
     {
         private readonly IDice dice;
 
