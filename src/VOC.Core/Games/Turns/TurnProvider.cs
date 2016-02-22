@@ -9,9 +9,13 @@ namespace VOC.Core.Games.Turns
 {
     public class TurnProvider : ITurnProvider
     {
+        private enum ProviderState { HighRoll, Build, Game }
 
         private readonly ISet<IPlayer> players;
         private readonly ITurnFactory factory;
+        private ProviderState state = ProviderState.HighRoll;
+        private Queue<IPlayer> playerQueue;
+
         public TurnProvider(ISet<IPlayer> players, ITurnFactory factory)
         {
             if (players == null)
@@ -26,7 +30,50 @@ namespace VOC.Core.Games.Turns
 
         public ITurn GetNext()
         {
-            return factory.Create<IHighRollTurn>(players.First());
+            switch (state)
+            {
+                case ProviderState.HighRoll:
+                    return GetNextHighRoll();
+                case ProviderState.Build:
+                    return GetNextBuildturn();
+                default:
+                    return GetNextGameTurn();
+            }
+        }
+
+        private IHighRollTurn GetNextHighRoll()
+        {
+            if (playerQueue == null)
+                playerQueue = new Queue<IPlayer>(players);
+
+            var turn = factory.Create<IHighRollTurn>(playerQueue.Dequeue());
+
+            //CvB Todo: we should also set player-order based on highroll results
+            if (!playerQueue.Any())
+                state = ProviderState.Build;
+
+            return turn;
+        }
+
+        private IBuildTurn GetNextBuildturn()
+        {
+            if (!playerQueue.Any())
+                playerQueue = new Queue<IPlayer>(players.Concat(players));
+
+            var turn = factory.Create<IBuildTurn>(playerQueue.Dequeue());
+
+            if (!playerQueue.Any())
+                state = ProviderState.Game;
+
+            return turn;
+        }
+
+        private IGameTurn GetNextGameTurn()
+        {
+            if (!playerQueue.Any())
+                playerQueue = new Queue<IPlayer>(players);
+
+            return factory.Create<IGameTurn>(playerQueue.Dequeue());
         }
     }
 }

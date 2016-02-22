@@ -43,28 +43,98 @@ namespace VOC.Core.Test.Games.Turns
             Assert.Throws<ArgumentNullException>(() => new TurnProvider(players, null));
         }
 
-        private Mock<ITurnFactory> CreateFactory(IPlayer player)
+        private Mock<ITurnFactory> CreateFactory()
         {
             var factory = new Mock<ITurnFactory>();
-            factory.Setup(f => f.Create<IHighRollTurn>(player))
+            factory.Setup(f => f.Create<IHighRollTurn>(It.IsAny<IPlayer>()))
                 .Returns<IPlayer>(p =>
                 {
                     var turn = new Mock<IHighRollTurn>();
+                    turn.Setup(t => t.Player).Returns(p);
+                    turn.Setup(t => t.Result).Returns(5);
+                    return turn.Object;
+                });
+            factory.Setup(f => f.Create<IBuildTurn>(It.IsAny<IPlayer>()))
+                .Returns<IPlayer>(p =>
+                {
+                    var turn = new Mock<IBuildTurn>();
+                    turn.Setup(t => t.Player).Returns(p);
+                    return turn.Object;
+                });
+            factory.Setup(f => f.Create<IGameTurn>(It.IsAny<IPlayer>()))
+                .Returns<IPlayer>(p =>
+                {
+                    var turn = new Mock<IGameTurn>();
                     turn.Setup(t => t.Player).Returns(p);
                     return turn.Object;
                 });
             return factory;
         }
 
-        [Fact]
-        public void GetNextReturnsTurnWithHighRollProvider()
+        [Theory]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(10)]
+        public void GetNextReturnsHighRollTurnForEachPlayerOnce(int count)
         {
-            var players = CreatePlayers(2);
-            var factory = CreateFactory(players.First());
+            var players = CreatePlayers(count);
+            var factory = CreateFactory();
             var provider = new TurnProvider(players, factory.Object);
 
-            var turn = provider.GetNext();
-            Assert.IsAssignableFrom<IHighRollTurn>(turn);
+            for (int i = 0; i < count; i++)
+            {
+                var turn = provider.GetNext();
+                Assert.IsAssignableFrom<IHighRollTurn>(turn);
+            }
+        }
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(10)]
+        public void ExpectForEachPlayer2BuildTurnsAfterHighRollTurn(int count)
+        {
+            var players = CreatePlayers(count);
+            var factory = CreateFactory();
+            var provider = new TurnProvider(players, factory.Object);
+
+            for (int i = 0; i < count; i++)
+            {
+                provider.GetNext();
+            }
+
+            for(int i=0; i<count*2; i++)
+            {
+                var turn = provider.GetNext();
+                Assert.IsAssignableFrom<IBuildTurn>(turn);
+            }
+        }
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(10)]
+        public void ExpectEveryTurnAfterBuildTurnToBeGameTurn(int count)
+        {
+            var players = CreatePlayers(count);
+            var factory = CreateFactory();
+            var provider = new TurnProvider(players, factory.Object);
+
+            for (int i = 0; i < count; i++)
+            {
+                provider.GetNext();
+            }
+
+            for (int i = 0; i < count * 2; i++)
+            {
+                provider.GetNext();
+            }
+
+            for(int i =0; i < count*count; i++)
+            {
+                var turn = provider.GetNext();
+                Assert.IsAssignableFrom<IGameTurn>(turn);
+            }
         }
     }
 }
