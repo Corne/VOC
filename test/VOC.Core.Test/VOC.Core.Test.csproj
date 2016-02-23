@@ -78,6 +78,7 @@
     <Compile Include="Boards\VertextTest.cs" />
     <Compile Include="Establishments\EstablismentTest.cs" />
     <Compile Include="Games\GameTest.cs" />
+    <Compile Include="Games\Turns\BuildTurnTest.cs" />
     <Compile Include="Games\Turns\HighRollTurnTest.cs" />
     <Compile Include="Games\Turns\States\BuildStateTest.cs" />
     <Compile Include="Games\Turns\States\MoveRobberStateTest.cs" />
