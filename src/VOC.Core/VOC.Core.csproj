@@ -71,6 +71,7 @@
     <Compile Include="Games\Turns\ITurnFactory.cs" />
     <Compile Include="Games\Turns\ITurnProvider.cs" />
     <Compile Include="Games\Turns\States\IFlowSate.cs" />
+    <Compile Include="Games\Turns\States\IStateFactory.cs" />
     <Compile Include="Games\Turns\States\IStateProvider.cs" />
     <Compile Include="Games\Turns\States\RobberDiscardState.cs" />
     <Compile Include="Games\Turns\States\MoveRobberState.cs" />
