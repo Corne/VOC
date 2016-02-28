@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Moq;
 using VOC.Core.Games.Turns;
 using VOC.Core.Games.Turns.States;
+using VOC.Core.Items;
+using VOC.Core.Items.Cards;
 using VOC.Core.Players;
 using Xunit;
 
@@ -158,6 +160,124 @@ namespace VOC.Core.Test.Games.Turns
             turn.AfterExecute(GameCommand.RollDice);
 
             state1.Verify(s => s.AfterExecute(GameCommand.RollDice));
+        }
+
+        [Fact]
+        public void ExpectPlayDevelopmentCardToFailIfNoCurrentState()
+        {
+            var player = new Mock<IPlayer>();
+            var state1 = new Mock<ITurnState>();
+            var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
+            provider.Setup(p => p.GetNext()).Returns(state1.Object);
+            state1.Setup(s => s.Commands).Returns(new GameCommand[] { GameCommand.PlayDevelopmentCard });
+
+            var card = new Mock<IDevelopmentCard>();
+            card.Setup(c => c.Type).Returns(DevelopmentCardType.RoadBuilding);
+
+            var turn = new Turn(player.Object, provider.Object);
+
+            Assert.Throws<InvalidOperationException>(() => turn.PlayDevelopmentCard(card.Object));
+        }
+
+        [Fact]
+        public void ExpectPlayDevelopmentCardToFailIfCurrentStateCantExecute()
+        {
+            var player = new Mock<IPlayer>();
+            var state1 = new Mock<ITurnState>();
+            var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
+            provider.Setup(p => p.GetNext()).Returns(state1.Object);
+            state1.Setup(s => s.Commands).Returns(new GameCommand[] { GameCommand.BuildRoad });
+
+            var card = new Mock<IDevelopmentCard>();
+            card.Setup(c => c.Type).Returns(DevelopmentCardType.RoadBuilding);
+
+            var turn = new Turn(player.Object, provider.Object);
+            turn.NextFlowState();
+
+            Assert.Throws<InvalidOperationException>(() => turn.PlayDevelopmentCard(card.Object));
+        }
+
+        [Fact]
+        public void ExpectPlayDevelopmentCardToFailIfNull()
+        {
+            var player = new Mock<IPlayer>();
+            var state1 = new Mock<ITurnState>();
+            var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
+            provider.Setup(p => p.GetNext()).Returns(state1.Object);
+            state1.Setup(s => s.Commands).Returns(new GameCommand[] { GameCommand.PlayDevelopmentCard });
+
+            var turn = new Turn(player.Object, provider.Object);
+            turn.NextFlowState();
+
+            Assert.Throws<ArgumentNullException>(() => turn.PlayDevelopmentCard(null));
+        }
+
+        [Fact]
+        public void ExpectPlayDevelopmentCardToFailIfCardIsVictoryPoint()
+        {
+            var player = new Mock<IPlayer>();
+            var state1 = new Mock<ITurnState>();
+            var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
+            provider.Setup(p => p.GetNext()).Returns(state1.Object);
+            state1.Setup(s => s.Commands).Returns(new GameCommand[] { GameCommand.PlayDevelopmentCard });
+
+            var card = new Mock<IDevelopmentCard>();
+            card.Setup(c => c.Type).Returns(DevelopmentCardType.VictoryPoint);
+            var turn = new Turn(player.Object, provider.Object);
+            turn.NextFlowState();
+
+            Assert.Throws<ArgumentException>(() => turn.PlayDevelopmentCard(card.Object));
+        }
+
+        [Theory]
+        [InlineData(DevelopmentCardType.Knight)]
+        [InlineData(DevelopmentCardType.Monopoly)]
+        [InlineData(DevelopmentCardType.RoadBuilding)]
+        [InlineData(DevelopmentCardType.YearOfPlenty)]
+        public void ExpectPlayDevelopmentCardToSetDevelomentCardState(DevelopmentCardType type)
+        {
+            var player = new Mock<IPlayer>();
+            var state1 = new Mock<ITurnState>();
+            var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
+            provider.Setup(p => p.GetNext()).Returns(state1.Object);
+            state1.Setup(s => s.Commands).Returns(new GameCommand[] { GameCommand.PlayDevelopmentCard });
+
+            var card = new Mock<IDevelopmentCard>();
+            card.Setup(c => c.Type).Returns(type);
+            var turn = new Turn(player.Object, provider.Object);
+            turn.NextFlowState();
+
+            bool changed = false;
+            turn.StateChanged += (sender, args) => { changed = true; };
+
+            turn.PlayDevelopmentCard(card.Object);
+
+            provider.Verify(p => p.Get(type));
+            Assert.True(changed);
+        }
+
+        [Fact]
+        public void CantPlayDevelopmentMultipleDevelopmentCardsIn1Turn()
+        {
+            var player = new Mock<IPlayer>();
+            var state1 = new Mock<ITurnState>();
+            var provider = new Mock<IStateProvider>();
+            provider.Setup(p => p.HasNext()).Returns(true);
+            provider.Setup(p => p.GetNext()).Returns(state1.Object);
+            state1.Setup(s => s.Commands).Returns(new GameCommand[] { GameCommand.PlayDevelopmentCard });
+
+            var card = new Mock<IDevelopmentCard>();
+            card.Setup(c => c.Type).Returns(DevelopmentCardType.Monopoly);
+            var turn = new Turn(player.Object, provider.Object);
+            turn.NextFlowState();
+
+            turn.PlayDevelopmentCard(card.Object);
+            Assert.Throws<InvalidOperationException>(() => turn.PlayDevelopmentCard(card.Object));
         }
     }
 }

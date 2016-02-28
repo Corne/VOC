@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VOC.Core.Games.Turns.States;
 using VOC.Core.Items;
+using VOC.Core.Items.Cards;
 
 namespace VOC.Core.Games.Turns
 {

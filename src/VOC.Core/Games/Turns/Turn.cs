@@ -2,6 +2,7 @@
 using System.Linq;
 using VOC.Core.Games.Turns.States;
 using VOC.Core.Items;
+using VOC.Core.Items.Cards;
 using VOC.Core.Players;
 
 namespace VOC.Core.Games.Turns
@@ -54,7 +55,6 @@ namespace VOC.Core.Games.Turns
             currentState = stateprovider.Get<T>();
         }
 
-
         public bool CanExecute(GameCommand command)
         {
             if (currentState == null)
@@ -69,7 +69,20 @@ namespace VOC.Core.Games.Turns
 
         public void PlayDevelopmentCard(IDevelopmentCard card)
         {
-            throw new NotImplementedException();
+            //CvB todo: can't play cards that were bought in this turn (not here?)
+            if (card == null)
+                throw new ArgumentNullException(nameof(card));
+            if (DevelopmentCardPlayed)
+                throw new InvalidOperationException("Can't play multiple development cards in 1 turn");
+            if (card.Type == DevelopmentCardType.VictoryPoint)
+                throw new ArgumentException("Cant play victory point cards");
+            if (!CanExecute(GameCommand.PlayDevelopmentCard))
+                throw new InvalidOperationException("Current turnstate can't execute a developmentcard");
+
+            currentState = stateprovider.Get(card.Type);
+            //CvB Todo: set card as played (not here?)
+
+            DevelopmentCardPlayed = true;
         }
 
 

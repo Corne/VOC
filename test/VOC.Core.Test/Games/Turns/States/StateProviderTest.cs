@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Moq;
-using VOC.Core.Games.Turns;
 using VOC.Core.Games.Turns.States;
-using VOC.Core.Items;
 using Xunit;
 
 namespace VOC.Core.Test.Games.Turns.States
