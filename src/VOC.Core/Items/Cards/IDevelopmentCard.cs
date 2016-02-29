@@ -9,6 +9,6 @@ namespace VOC.Core.Items.Cards
     public interface IDevelopmentCard
     {
         DevelopmentCardType Type { get; }
-
+        bool Playable { get; }
     }
 }
