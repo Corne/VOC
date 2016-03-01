@@ -26,7 +26,18 @@ namespace VOC.Core.Games.Turns.States
 
         public ITurnState Get(DevelopmentCardType card)
         {
-            throw new NotImplementedException();
+            switch (card)
+            {
+                case DevelopmentCardType.Knight:
+                    return factory.Create<MoveRobberState>();
+                case DevelopmentCardType.Monopoly:
+                    return factory.Create<MonopolyState>();
+                case DevelopmentCardType.RoadBuilding:
+                    return factory.Create<RoadBuildingState>();
+                case DevelopmentCardType.YearOfPlenty:
+                    return factory.Create<YearOfPlentyState>();
+            }
+            throw new ArgumentException("Not supported card");
         }
 
         public ITurnState Get<T>() where T : ITurnState

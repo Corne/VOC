@@ -73,10 +73,13 @@
     <Compile Include="Games\Turns\States\IFlowSate.cs" />
     <Compile Include="Games\Turns\States\IStateFactory.cs" />
     <Compile Include="Games\Turns\States\IStateProvider.cs" />
+    <Compile Include="Games\Turns\States\MonopolyState.cs" />
+    <Compile Include="Games\Turns\States\RoadBuildingState.cs" />
     <Compile Include="Games\Turns\States\RobberDiscardState.cs" />
     <Compile Include="Games\Turns\States\MoveRobberState.cs" />
     <Compile Include="Games\Turns\States\RobberStealState.cs" />
     <Compile Include="Games\Turns\States\StateProvider.cs" />
+    <Compile Include="Games\Turns\States\YearOfPlentyState.cs" />
     <Compile Include="Games\Turns\TurnProvider.cs" />
     <Compile Include="Items\Cards\DevelopmentCard.cs" />
     <Compile Include="Items\Cards\DevelopmentCardType.cs" />
