@@ -8,17 +8,23 @@ namespace VOC.Core.Games.Turns.States
 {
     public class MonopolyState : ITurnState
     {
-        public IEnumerable<GameCommand> Commands
+        private readonly IGameTurn turn;
+
+        public MonopolyState(IGameTurn turn)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            if (turn == null)
+                throw new ArgumentNullException(nameof(turn));
+            this.turn = turn;
         }
+
+        public IEnumerable<GameCommand> Commands { get { yield return GameCommand.Monopoly; } }
 
         public void AfterExecute(GameCommand command)
         {
-            throw new NotImplementedException();
+            if (command != GameCommand.Monopoly)
+                return;
+
+            turn.NextFlowState();
         }
     }
 }

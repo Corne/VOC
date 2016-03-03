@@ -25,7 +25,7 @@ namespace VOC.Core.Test.Games.Turns.States
             factory.Setup(f => f.Create<MoveRobberState>())
                 .Returns(new MoveRobberState(new Mock<IGameTurn>().Object, new Mock<IRobber>().Object));
             factory.Setup(f => f.Create<MonopolyState>())
-                .Returns(new MonopolyState());
+                .Returns(new MonopolyState(new Mock<IGameTurn>().Object));
             factory.Setup(f => f.Create<RoadBuildingState>())
                 .Returns(new RoadBuildingState(new Mock<IGameTurn>().Object));
             factory.Setup(f => f.Create<YearOfPlentyState>())

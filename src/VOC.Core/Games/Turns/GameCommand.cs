@@ -22,5 +22,6 @@ namespace VOC.Core.Games.Turns
         NextState,
         DiscardResources,
         StealResource,
+        Monopoly,
     }
 }

@@ -81,6 +81,7 @@
     <Compile Include="Games\Turns\BuildTurnTest.cs" />
     <Compile Include="Games\Turns\HighRollTurnTest.cs" />
     <Compile Include="Games\Turns\States\BuildStateTest.cs" />
+    <Compile Include="Games\Turns\States\MonopolyStateTest.cs" />
     <Compile Include="Games\Turns\States\MoveRobberStateTest.cs" />
     <Compile Include="Games\Turns\States\RoadBuildingStateTest.cs" />
     <Compile Include="Games\Turns\States\RobberDiscardStateTest.cs" />
