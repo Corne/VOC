@@ -23,5 +23,6 @@ namespace VOC.Core.Games.Turns
         DiscardResources,
         StealResource,
         Monopoly,
+        YearOfPlenty,
     }
 }

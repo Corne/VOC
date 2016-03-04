@@ -89,6 +89,7 @@
     <Compile Include="Games\Turns\States\RollStateTest.cs" />
     <Compile Include="Games\Turns\States\StateProviderTest.cs" />
     <Compile Include="Games\Turns\States\TradeStateTest.cs" />
+    <Compile Include="Games\Turns\States\YearOfPlentyStateTest.cs" />
     <Compile Include="Games\Turns\TurnProviderTest.cs" />
     <Compile Include="Games\Turns\TurnTest.cs" />
     <Compile Include="Items\Cards\DevelopmentCardTest.cs" />
