@@ -11,7 +11,7 @@ namespace VOC.Core.Games
         /// Event that triggers when the game is finished, 
         /// will send the player that won as argument
         /// </summary>
-        event EventHandler<IPlayer> Finished;
+       // event EventHandler<IPlayer> Finished;
         /// <summary>
         /// Event that will trigger when a new turn starts
         /// </summary>

@@ -29,7 +29,7 @@ namespace VOC.Core.Test.Games.Turns.States
             factory.Setup(f => f.Create<RoadBuildingState>())
                 .Returns(new RoadBuildingState(new Mock<IGameTurn>().Object));
             factory.Setup(f => f.Create<YearOfPlentyState>())
-                .Returns(new Mock<YearOfPlentyState>().Object);
+                .Returns(new YearOfPlentyState(new Mock<IGameTurn>().Object));
             return factory.Object;
         }
 

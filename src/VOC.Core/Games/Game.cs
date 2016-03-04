@@ -30,7 +30,6 @@ namespace VOC.Core.Games
 
         public IEnumerable<IPlayer> Players { get { return players.ToList().AsReadOnly(); } }
 
-        public event EventHandler<IPlayer> Finished;
         public event EventHandler<ITurn> TurnStarted;
 
 
