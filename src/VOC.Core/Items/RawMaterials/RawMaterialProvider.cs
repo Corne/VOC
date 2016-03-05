@@ -6,7 +6,7 @@ using VOC.Core.Games;
 
 namespace VOC.Core.Items.RawMaterials
 {
-    public class RawMaterialProvider : IDistributer
+    public class RawMaterialProvider : IRawmaterialProvider
     {
         private readonly IBoard board;
 

@@ -13,7 +13,7 @@ namespace VOC.Core.Test.Items
         [Fact]
         public void ThrowTest()
         {
-            var die = new Die();
+            var die = new Die(new Random());
             int result = die.Throw();
 
             Assert.True(result >= 1 && result <= 6, $"Expected value between 1 and 6, actual: {result}");

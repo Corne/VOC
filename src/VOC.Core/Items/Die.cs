@@ -9,9 +9,9 @@ namespace VOC.Core.Items
     public class Die : IDie
     {
         private readonly Random random;
-        public Die()
+        public Die(Random random)
         {
-            random = new Random();
+            this.random = random;
         }
 
         public int Throw()
