@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Players;
 
@@ -48,6 +49,22 @@ namespace VOC.Core.Games
             currentTurn = provider.GetNext();
             currentTurn.Ended += CurrentTurn_Ended;
             TurnStarted?.Invoke(this, currentTurn);
+        }
+
+        //CvB Todo: Possible refactor to move this to turn?
+        public void Execute(IPlayerCommand command)
+        {
+            if (command == null)
+                throw new ArgumentNullException(nameof(command));
+            if (currentTurn == null)
+                throw new InvalidOperationException("Game not started");
+            if (command.Player != currentTurn.Player)
+                throw new InvalidOperationException("This player can't execute a command at the moment");
+            if (!currentTurn.CanExecute(command.Type))
+                throw new ArgumentException("Can't execute this command in current state");
+
+            command.Execute();
+            currentTurn.AfterExecute(command.Type);
         }
     }
 }

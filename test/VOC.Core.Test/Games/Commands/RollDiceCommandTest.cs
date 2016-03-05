@@ -7,6 +7,7 @@ using Moq;
 using VOC.Core.Games.Commands;
 using VOC.Core.Items;
 using VOC.Core.Items.RawMaterials;
+using VOC.Core.Players;
 using Xunit;
 
 namespace VOC.Core.Test.Games.Commands
@@ -16,17 +17,26 @@ namespace VOC.Core.Test.Games.Commands
         [Fact]
         public void RollDiceCommandCantBeCreatedWithoutDice()
         {
+            var player = new Mock<IPlayer>();
             var provider = new Mock<IRawmaterialProvider>();
-            Assert.Throws<ArgumentNullException>(() => new RollDiceCommand(null, provider.Object));
+            Assert.Throws<ArgumentNullException>(() => new RollDiceCommand(player.Object, null, provider.Object));
         }
 
         [Fact]
         public void RollDiceCommandCantBeCreatedWithoutProvider()
         {
             var dice = new Mock<IDice>();
-            Assert.Throws<ArgumentNullException>(() => new RollDiceCommand(dice.Object, null));
+            var player = new Mock<IPlayer>();
+            Assert.Throws<ArgumentNullException>(() => new RollDiceCommand(player.Object, dice.Object, null));
         }
 
+        [Fact]
+        public void CantConstructCommandWithoutPlayer()
+        {
+            var provider = new Mock<IRawmaterialProvider>();
+            var dice = new Mock<IDice>();
+            Assert.Throws<ArgumentNullException>(() => new RollDiceCommand(null, dice.Object, provider.Object));
+        }
 
         [Theory]
         [InlineData(2)]
@@ -35,11 +45,13 @@ namespace VOC.Core.Test.Games.Commands
         [InlineData(12)]
         public void ExecuteProvidesMaterialsIfResultNot7(int value)
         {
+            var player = new Mock<IPlayer>();
             var dice = new Mock<IDice>();
             var provider = new Mock<IRawmaterialProvider>();
+
             dice.Setup(d => d.Current).Returns(new DiceRoll(new int[] { value }));
 
-            var command = new RollDiceCommand(dice.Object, provider.Object);
+            var command = new RollDiceCommand(player.Object, dice.Object, provider.Object);
             command.Execute();
 
             dice.Verify(d => d.Roll());
@@ -49,11 +61,12 @@ namespace VOC.Core.Test.Games.Commands
         [Fact]
         public void ExpectNoDistributeIfDiceResult7()
         {
+            var player = new Mock<IPlayer>();
             var dice = new Mock<IDice>();
             var provider = new Mock<IRawmaterialProvider>();
             dice.Setup(d => d.Current).Returns(new DiceRoll(new int[] { 7 }));
 
-            var command = new RollDiceCommand(dice.Object, provider.Object);
+            var command = new RollDiceCommand(player.Object, dice.Object, provider.Object);
             command.Execute();
 
             provider.Verify(p => p.Distribute(It.IsAny<int>()), Times.Never);

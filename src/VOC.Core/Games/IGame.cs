@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Players;
 
@@ -24,5 +25,7 @@ namespace VOC.Core.Games
         /// Start the game
         /// </summary>
         void Start();
+
+        void Execute(IPlayerCommand command);
     }
 }

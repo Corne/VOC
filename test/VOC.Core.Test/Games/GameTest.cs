@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using VOC.Core.Games;
+using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Players;
 using Xunit;
@@ -113,6 +114,103 @@ namespace VOC.Core.Test.Games
 
             provider.Verify(p => p.GetNext(), Times.Exactly(2));
             Assert.Equal(2, turnSwitches);
+        }
+
+        [Fact]
+        public void ExecuteFailsIfCommandNull()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var game = new Game(players, provider.Object);
+            game.Start();
+
+            Assert.Throws<ArgumentNullException>(() => game.Execute(null));
+        }
+        
+        [Fact]
+        public void ExecuteFailsIfPlayerNotEqualsCurrentTurnPlayer()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            turn.Setup(t => t.Player).Returns(players.First());
+            turn.Setup(t => t.CanExecute(It.IsAny<GameCommand>())).Returns(true);
+
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var command = new Mock<IPlayerCommand>();
+            command.Setup(c => c.Player).Returns(players.Skip(1).First());
+
+            var game = new Game(players, provider.Object);
+            game.Start();
+
+            Assert.Throws<InvalidOperationException>(() => game.Execute(command.Object));
+        }
+
+        [Fact]
+        public void ExecuteFailsIfCurrentTurnCantExecuteCommand()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            var player = players.First();
+            turn.Setup(t => t.Player).Returns(player);
+            turn.Setup(t => t.CanExecute(It.IsAny<GameCommand>())).Returns(false);
+
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var command = new Mock<IPlayerCommand>();
+            command.Setup(c => c.Player).Returns(player);
+
+            var game = new Game(players, provider.Object);
+            game.Start();
+
+            Assert.Throws<ArgumentException>(() => game.Execute(command.Object));
+        }
+
+        [Fact]
+        public void ExecuteFailsIfGameNotStarted()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            turn.Setup(t => t.Player).Returns(players.First());
+            turn.Setup(t => t.CanExecute(It.IsAny<GameCommand>())).Returns(true);
+
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var command = new Mock<IPlayerCommand>();
+            command.Setup(c => c.Player).Returns(players.First());
+
+            var game = new Game(players, provider.Object);
+
+            Assert.Throws<InvalidOperationException>(() => game.Execute(command.Object));
+        }
+
+        [Fact]
+        public void ExecuteTest()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            turn.Setup(t => t.Player).Returns(players.First());
+            turn.Setup(t => t.CanExecute(It.IsAny<GameCommand>())).Returns(true);
+
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var command = new Mock<IPlayerCommand>();
+            command.Setup(c => c.Player).Returns(players.First());
+
+            var game = new Game(players, provider.Object);
+            game.Start();
+
+            game.Execute(command.Object);
+
+            command.Verify(c => c.Execute());
+            turn.Verify(t => t.AfterExecute(It.IsAny<GameCommand>()));
         }
     }
 }
