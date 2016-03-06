@@ -61,6 +61,7 @@ namespace VOC.Core.Boards
 
             var establishment = new Establishment(owner, vertex);
             establishments.Add(establishment);
+            //CvB Todo: This is not correct to do this here, because of development cards.... Move to Command class
             owner.TakeResources(Establishment.BUILD_RESOURCES);
 
             logger.Info($"Establisment Build; Player {owner.Name}, {vertex.ToString()}");
@@ -88,12 +89,9 @@ namespace VOC.Core.Boards
             if (establishments.All(e => !adjacentVertices.Contains(e.Vertex) || e.Owner != owner) &&
                 roads.All(r => !adjacentEdges.Contains(r.Edge) || r.Owner != owner))
                 throw new ArgumentException("Road should have an adjacent establisment or road of the player");
-            if (!owner.HasResources(Road.BUILD_RESOURCES))
-                throw new InvalidOperationException("Player has not enough resources to be able to build a road!");
 
             var road = new Road(edge, owner);
             roads.Add(road);
-            owner.TakeResources(Road.BUILD_RESOURCES);
 
             logger.Info($"Road build; Player {owner.Name}, {edge.ToString()}");
 
