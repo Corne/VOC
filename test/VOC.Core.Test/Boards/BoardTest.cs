@@ -97,17 +97,7 @@ namespace VOC.Core.Test.Boards
             Assert.Throws<ArgumentNullException>(() => board.BuildEstablishment(vertex, null));
         }
 
-        [Fact]
-        public void BuildEstablistmentFailsIfPlayerNotEnoughtResources()
-        {
-            var board = new Board(builder);
-            var vertex = builder.Vertices.First(t => t.X == 0 && t.Y == 0);
 
-            var player = new Mock<IPlayer>();
-            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(false);
-
-            Assert.Throws<InvalidOperationException>(() => board.BuildEstablishment(vertex, player.Object));
-        }
 
         [Fact]
         public void BuildEstablismentTest()
@@ -124,19 +114,7 @@ namespace VOC.Core.Test.Boards
             Assert.Equal(vertex, result.Vertex);
         }
 
-        [Fact]
-        public void BuildEstablismentRemovedResourcesFromPlayer()
-        {
-            var board = new Board(builder);
-            var player = new Mock<IPlayer>();
-            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
 
-            var vertex = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
-
-            var result = board.BuildEstablishment(vertex, player.Object);
-
-            player.Verify(p => p.TakeResources(Establishment.BUILD_RESOURCES));
-        }
 
         [Fact]
         public void BuildEstablishmentFailsIfAlreadyEstablismentOnVertex()

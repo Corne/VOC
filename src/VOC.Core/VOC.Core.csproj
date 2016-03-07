@@ -63,6 +63,7 @@
     <Compile Include="Establishments\EstablishmentLevel.cs" />
     <Compile Include="Establishments\Establishment.cs" />
     <Compile Include="Establishments\IEstablishment.cs" />
+    <Compile Include="Games\Commands\BuildEstablishmentCommand.cs" />
     <Compile Include="Games\Commands\BuildRoadCommand.cs" />
     <Compile Include="Games\Commands\IPlayerCommand.cs" />
     <Compile Include="Games\Commands\RollDiceCommand.cs" />

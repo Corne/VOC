@@ -56,13 +56,11 @@ namespace VOC.Core.Boards
                 throw new ArgumentException("Invalid vertex, establishment can't be placed next to another establishment");
             if (tiles.All(t => t.Rawmaterial == MaterialType.Sea))
                 throw new ArgumentException("Can't place an establishment on sea!");
-            if (!owner.HasResources(Establishment.BUILD_RESOURCES))
-                throw new InvalidOperationException("Can't build a house for this player, because there are not enough resources");
+
 
             var establishment = new Establishment(owner, vertex);
             establishments.Add(establishment);
-            //CvB Todo: This is not correct to do this here, because of development cards.... Move to Command class
-            owner.TakeResources(Establishment.BUILD_RESOURCES);
+
 
             logger.Info($"Establisment Build; Player {owner.Name}, {vertex.ToString()}");
 
