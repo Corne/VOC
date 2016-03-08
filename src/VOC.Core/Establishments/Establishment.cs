@@ -51,11 +51,7 @@ namespace VOC.Core.Establishments
             if (Level != EstablishmentLevel.Settlement)
                 throw new InvalidOperationException($"Can only upgrade from a settlement to a city, current level is {Level}");
 
-            if (!Owner.HasResources(UPGRADE_RESOURCES))
-                throw new InvalidOperationException("Can't upgrade Establisment because player doesn't have the resources!");
-
             Level = EstablishmentLevel.City;
-            Owner.TakeResources(UPGRADE_RESOURCES);
             logger.Info($"Upgraded Establisment ({Vertex.ToString()}) to City");
         }
     }

@@ -80,6 +80,7 @@
     <Compile Include="Games\Commands\BuildEstablishmentCommandTest.cs" />
     <Compile Include="Games\Commands\BuildRoadCommandTest.cs" />
     <Compile Include="Games\Commands\RollDiceCommandTest.cs" />
+    <Compile Include="Games\Commands\UpgradeEstablishmentCommandTest.cs" />
     <Compile Include="Games\GameTest.cs" />
     <Compile Include="Games\Turns\BuildTurnTest.cs" />
     <Compile Include="Games\Turns\HighRollTurnTest.cs" />

@@ -23,44 +23,17 @@ namespace VOC.Core.Test.Establishments
 
             Assert.Equal(EstablishmentLevel.Settlement, establisment.Level);
         }
-
-        [Fact]
-        public void UpgradeFailsIfPlayerDoesntHaveResources()
-        {
-            var player = new Mock<IPlayer>();
-            var vertex = new Mock<IVertex>();
-            player.Setup(p => p.HasResources(Establishment.UPGRADE_RESOURCES)).Returns(false);
-            var establisment = new Establishment(player.Object, vertex.Object);
-
-            Assert.Throws<InvalidOperationException>(() => establisment.Upgrade());
-            Assert.Equal(EstablishmentLevel.Settlement, establisment.Level);
-            player.Verify(p => p.TakeResources(Establishment.UPGRADE_RESOURCES), Times.Never);
-        }
         
         [Fact]
         public void UpgradeSetsLevelToCity()
         {
             var player = new Mock<IPlayer>();
             var vertex = new Mock<IVertex>();
-            player.Setup(p => p.HasResources(Establishment.UPGRADE_RESOURCES)).Returns(true);
             var establisment = new Establishment(player.Object, vertex.Object);
 
             establisment.Upgrade();
 
             Assert.Equal(EstablishmentLevel.City, establisment.Level);
-        }
-
-        [Fact]
-        public void UpgradeRemovedResourcesFromOwner()
-        {
-            var player = new Mock<IPlayer>();
-            var vertex = new Mock<IVertex>();
-            player.Setup(p => p.HasResources(Establishment.UPGRADE_RESOURCES)).Returns(true);
-            var establisment = new Establishment(player.Object, vertex.Object);
-
-            establisment.Upgrade();
-            Assert.Equal(EstablishmentLevel.City, establisment.Level);
-            player.Verify(p => p.TakeResources(Establishment.UPGRADE_RESOURCES), Times.Once);
         }
 
         [Fact]
@@ -68,14 +41,11 @@ namespace VOC.Core.Test.Establishments
         {
             var player = new Mock<IPlayer>();
             var vertex = new Mock<IVertex>();
-            player.Setup(p => p.HasResources(Establishment.UPGRADE_RESOURCES)).Returns(true);
 
             var establisment = new Establishment(player.Object, vertex.Object);
 
             establisment.Upgrade();
             Assert.Throws<InvalidOperationException>(() => establisment.Upgrade());
-            player.Verify(p => p.TakeResources(Establishment.UPGRADE_RESOURCES), Times.Once);
-
         }
 
         [Fact]

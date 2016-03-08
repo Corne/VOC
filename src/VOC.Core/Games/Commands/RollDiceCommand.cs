@@ -36,6 +36,7 @@ namespace VOC.Core.Games.Commands
             Dice.Roll();
 
             int result = Dice.Current.Result;
+            //CvB Todo: Maybe cleaner to just do provider logic here?
             if (result != 7)
                 provider.Distribute(result);
         }
