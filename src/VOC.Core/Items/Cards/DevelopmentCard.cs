@@ -9,6 +9,7 @@ namespace VOC.Core.Items.Cards
 {
     public class DevelopmentCard : IDevelopmentCard
     {
+        private bool _playable;
         private ITurn turn;
         public DevelopmentCard(DevelopmentCardType type, ITurn boughtTurn)
         {
@@ -20,7 +21,7 @@ namespace VOC.Core.Items.Cards
             Type = type;
 
             if (type == DevelopmentCardType.VictoryPoint)
-                Playable = true;
+                _playable = true;
             else {
                 turn = boughtTurn;
                 turn.Ended += Turn_Ended;
@@ -34,11 +35,11 @@ namespace VOC.Core.Items.Cards
                 turn.Ended -= Turn_Ended;
                 turn = null;
             }
-            Playable = true;
+            _playable = true;
         }
 
-        public bool Playable { get; private set; }
-
+        public bool Playable { get { return _playable && !Played; } }
         public DevelopmentCardType Type { get; }
+        public bool Played { get; set; }
     }
 }

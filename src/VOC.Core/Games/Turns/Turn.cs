@@ -80,8 +80,6 @@ namespace VOC.Core.Games.Turns
                 throw new InvalidOperationException("Current turnstate can't execute a developmentcard");
 
             currentState = stateprovider.Get(card.Type);
-            //CvB Todo: set card as played (not here?)
-
             DevelopmentCardPlayed = true;
         }
 

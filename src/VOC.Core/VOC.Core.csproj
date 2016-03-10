@@ -67,6 +67,7 @@
     <Compile Include="Games\Commands\BuildRoadCommand.cs" />
     <Compile Include="Games\Commands\IPlayerCommand.cs" />
     <Compile Include="Games\Commands\MoveRobberCommand.cs" />
+    <Compile Include="Games\Commands\PlayDevelopmentCardCommand.cs" />
     <Compile Include="Games\Commands\RollDiceCommand.cs" />
     <Compile Include="Games\Commands\UpgradeEstablishmentCommand.cs" />
     <Compile Include="Games\Turns\BuildTurn.cs" />

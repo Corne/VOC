@@ -10,5 +10,6 @@ namespace VOC.Core.Items.Cards
     {
         DevelopmentCardType Type { get; }
         bool Playable { get; }
+        bool Played { get; set; }
     }
 }
