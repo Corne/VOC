@@ -66,6 +66,7 @@
     <Compile Include="Games\Commands\AcceptTradeCommand.cs" />
     <Compile Include="Games\Commands\BuildEstablishmentCommand.cs" />
     <Compile Include="Games\Commands\BuildRoadCommand.cs" />
+    <Compile Include="Games\Commands\CancelTradeCommand.cs" />
     <Compile Include="Games\Commands\IPlayerCommand.cs" />
     <Compile Include="Games\Commands\MoveRobberCommand.cs" />
     <Compile Include="Games\Commands\OpenTradeCommand.cs" />
