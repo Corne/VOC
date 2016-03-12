@@ -51,14 +51,14 @@ namespace VOC.Core.Games
             TurnStarted?.Invoke(this, currentTurn);
         }
 
-        //CvB Todo: Possible refactor to move this to turn?
         public void Execute(IPlayerCommand command)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
             if (currentTurn == null)
                 throw new InvalidOperationException("Game not started");
-            if (command.Player != currentTurn.Player)
+            //CvB Todo: make exception for trade???
+            if (command.Player != currentTurn.Player) 
                 throw new InvalidOperationException("This player can't execute a command at the moment");
             if (!currentTurn.CanExecute(command.Type))
                 throw new ArgumentException("Can't execute this command in current state");
