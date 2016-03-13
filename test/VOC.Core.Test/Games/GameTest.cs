@@ -151,6 +151,29 @@ namespace VOC.Core.Test.Games
         }
 
         [Fact]
+        public void ExecuteSucceedsWithDifferentPlayerIfCommandIsTrade()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            turn.Setup(t => t.Player).Returns(players.First());
+            turn.Setup(t => t.CanExecute(It.IsAny<GameCommand>())).Returns(true);
+
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var command = new Mock<IPlayerCommand>();
+            command.Setup(c => c.Player).Returns(players.Skip(1).First());
+            command.Setup(c => c.Type).Returns(GameCommand.Trade);
+
+            var game = new Game(players, provider.Object);
+            game.Start();
+            game.Execute(command.Object);
+
+            command.Verify(c => c.Execute());
+            turn.Verify(t => t.AfterExecute(It.IsAny<GameCommand>()));
+        }
+
+        [Fact]
         public void ExecuteFailsIfCurrentTurnCantExecuteCommand()
         {
             var players = CreateFakePlayers(3);
@@ -212,5 +235,7 @@ namespace VOC.Core.Test.Games
             command.Verify(c => c.Execute());
             turn.Verify(t => t.AfterExecute(It.IsAny<GameCommand>()));
         }
+
+
     }
 }

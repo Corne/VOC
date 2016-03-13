@@ -57,8 +57,8 @@ namespace VOC.Core.Games
                 throw new ArgumentNullException(nameof(command));
             if (currentTurn == null)
                 throw new InvalidOperationException("Game not started");
-            //CvB Todo: make exception for trade???
-            if (command.Player != currentTurn.Player) 
+
+            if (command.Player != currentTurn.Player && command.Type != GameCommand.Trade) 
                 throw new InvalidOperationException("This player can't execute a command at the moment");
             if (!currentTurn.CanExecute(command.Type))
                 throw new ArgumentException("Can't execute this command in current state");
