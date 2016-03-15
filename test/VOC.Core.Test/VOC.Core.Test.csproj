@@ -87,6 +87,7 @@
     <Compile Include="Games\Commands\OpenTradeCommandTest.cs" />
     <Compile Include="Games\Commands\PlayDevelopmentCardCommandTest.cs" />
     <Compile Include="Games\Commands\RollDiceCommandTest.cs" />
+    <Compile Include="Games\Commands\StealResourceCommandTest.cs" />
     <Compile Include="Games\Commands\UpgradeEstablishmentCommandTest.cs" />
     <Compile Include="Games\GameTest.cs" />
     <Compile Include="Games\Turns\BuildTurnTest.cs" />

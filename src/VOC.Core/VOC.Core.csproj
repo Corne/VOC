@@ -74,6 +74,7 @@
     <Compile Include="Games\Commands\OpenTradeCommand.cs" />
     <Compile Include="Games\Commands\PlayDevelopmentCardCommand.cs" />
     <Compile Include="Games\Commands\RollDiceCommand.cs" />
+    <Compile Include="Games\Commands\StealResourceCommand.cs" />
     <Compile Include="Games\Commands\UpgradeEstablishmentCommand.cs" />
     <Compile Include="Games\Turns\BuildTurn.cs" />
     <Compile Include="Games\Turns\HighRollTurn.cs" />
