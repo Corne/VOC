@@ -64,6 +64,7 @@
     <Compile Include="Establishments\Establishment.cs" />
     <Compile Include="Establishments\IEstablishment.cs" />
     <Compile Include="Games\Commands\AcceptTradeCommand.cs" />
+    <Compile Include="Games\Commands\BuildDevelopmentRoadCommand.cs" />
     <Compile Include="Games\Commands\BuildEstablishmentCommand.cs" />
     <Compile Include="Games\Commands\BuildRoadCommand.cs" />
     <Compile Include="Games\Commands\CancelTradeCommand.cs" />
