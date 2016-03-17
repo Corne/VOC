@@ -176,11 +176,6 @@ namespace VOC.Core.Test.Players
             new MaterialType[] { MaterialType.Grain })]
 
         [InlineData(
-            new MaterialType[] { MaterialType.Grain, MaterialType.Grain },
-            new MaterialType[] { MaterialType.Grain },
-            new MaterialType[] { MaterialType.Grain })]
-
-        [InlineData(
             new MaterialType[] { MaterialType.Grain, MaterialType.Grain, MaterialType.Lumber, MaterialType.Wool },
             new MaterialType[] { MaterialType.Grain, MaterialType.Lumber },
             new MaterialType[] { MaterialType.Grain, MaterialType.Wool })]
