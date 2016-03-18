@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using log4net;
 using VOC.Core.Boards;
+using VOC.Core.Games.Turns;
+using VOC.Core.Items.Cards;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 
@@ -12,14 +14,15 @@ namespace VOC.Core.Trading
 {
     public class Bank : IBank
     {
+        public static readonly MaterialType[] DEVELOPMENTCARD_COST = { MaterialType.Ore, MaterialType.Wool, MaterialType.Grain };
         private static ILog logger = LogManager.GetLogger(nameof(Bank));
-
         private static readonly MaterialType[] VALID_RESOURCES = Enum.GetValues(typeof(MaterialType))
-            .Cast<MaterialType>()
-            .Except(new MaterialType[] { MaterialType.Unsourced, MaterialType.Sea })
-            .ToArray();
+                .Cast<MaterialType>()
+                .Except(new MaterialType[] { MaterialType.Unsourced, MaterialType.Sea })
+                .ToArray();
 
         private readonly IBoard board;
+        private readonly DevelopmentCardDeck deck = new DevelopmentCardDeck();
 
         public Bank(IBoard board)
         {
@@ -61,6 +64,20 @@ namespace VOC.Core.Trading
             return new MaterialType[] { offer, offer, offer, offer };
         }
 
+        // 25 Development Cards (14 Knight/Soldier Cards, 6 Progress Cards, 5 Victory Point Cards)
+        //ore, wool and grain
+        public void BuyDevelopmentCard(IPlayer player, ITurn turn)
+        {
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+            if (turn == null)
+                throw new ArgumentNullException(nameof(turn));
+            if (!player.HasResources(DEVELOPMENTCARD_COST))
+                throw new InvalidOperationException("Player does not have the resources to buy a Development Card");
+
+            player.TakeResources(DEVELOPMENTCARD_COST);
+            player.AddCard(new DevelopmentCard(deck.Pop(), turn));
+        }
 
     }
 }

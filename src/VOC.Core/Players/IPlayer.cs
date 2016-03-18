@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VOC.Core.Items.Cards;
 using VOC.Core.Items.RawMaterials;
 
 namespace VOC.Core.Players
@@ -24,5 +25,6 @@ namespace VOC.Core.Players
         /// <param name="resources">resources from a specific materialtype</param>
         /// <returns>an array of the same size as resources.length, with materials with all the resource types</returns>
         IRawMaterial[] TakeResources(params MaterialType[] resources);
+        void AddCard(IDevelopmentCard developmentCard);
     }
 }

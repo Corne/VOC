@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VOC.Core.Games.Turns;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 
@@ -27,5 +28,7 @@ namespace VOC.Core.Trading
         /// <param name="player">player </param>
         /// <returns>Array of MaterialTypes (of type offer) that will be needed to make an offer</returns>
         MaterialType[] GetInvestmentCost(MaterialType offer, IPlayer player);
+
+        void BuyDevelopmentCard(IPlayer player, ITurn turn);
     }
 }

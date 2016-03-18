@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using VOC.Core.Boards;
+using VOC.Core.Games.Turns;
+using VOC.Core.Items.Cards;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 using VOC.Core.Trading;
@@ -280,5 +282,71 @@ namespace VOC.Core.Test.Trading
             Assert.Equal(expected, result);
         }
 
+
+        public static IEnumerable<object> DevelopmentNullParams
+        {
+            get
+            {
+                yield return new object[] { null, new Mock<ITurn>().Object };
+                yield return new object[] { new Mock<IPlayer>().Object, null };
+            }
+        }
+
+        [Theory, MemberData(nameof(DevelopmentNullParams))]
+        public void BuyDevelopmentCantBeCalledWithoutPlayer(IPlayer player, ITurn turn)
+        {
+            var board = new Mock<IBoard>();
+            var bank = new Bank(board.Object);
+
+            Assert.Throws<ArgumentNullException>(() => bank.BuyDevelopmentCard(player, turn));
+        }
+
+        [Fact]
+        public void BuyDevelopmentCardFailsIfPlayerHasNoResources()
+        {
+            var board = new Mock<IBoard>();
+            var player = new Mock<IPlayer>();
+            var turn = new Mock<ITurn>();
+            player.Setup(p => p.HasResources(Bank.DEVELOPMENTCARD_COST)).Returns(false);
+
+            var bank = new Bank(board.Object);
+
+            Assert.Throws<InvalidOperationException>(() => bank.BuyDevelopmentCard(player.Object, turn.Object));
+        }
+
+        [Fact]
+        public void BuyDevelopmentCardTest()
+        {
+            var board = new Mock<IBoard>();
+            var player = new Mock<IPlayer>();
+            var turn = new Mock<ITurn>();
+
+            player.Setup(p => p.HasResources(Bank.DEVELOPMENTCARD_COST)).Returns(true);
+
+            var bank = new Bank(board.Object);
+
+            bank.BuyDevelopmentCard(player.Object, turn.Object);
+
+            player.Verify(p => p.TakeResources(Bank.DEVELOPMENTCARD_COST));
+            player.Verify(p => p.AddCard(It.IsAny<IDevelopmentCard>()));
+        }
+
+        [Fact]
+        public void BuyCardFailsWhenNoMoreCardsLeft()
+        {
+            var board = new Mock<IBoard>();
+            var player = new Mock<IPlayer>();
+            var turn = new Mock<ITurn>();
+
+            player.Setup(p => p.HasResources(Bank.DEVELOPMENTCARD_COST)).Returns(true);
+
+            var bank = new Bank(board.Object);
+
+            for (int i=0; i<25; i++)
+            {
+                bank.BuyDevelopmentCard(player.Object, turn.Object);
+            }
+            Assert.Throws<InvalidOperationException>(() => bank.BuyDevelopmentCard(player.Object, turn.Object));
+        }
     }
 }

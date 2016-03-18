@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
+using VOC.Core.Items.Cards;
 using VOC.Core.Items.RawMaterials;
 
 namespace VOC.Core.Players
@@ -78,6 +79,11 @@ namespace VOC.Core.Players
 
                 return result;
             }
+        }
+
+        public void AddCard(IDevelopmentCard developmentCard)
+        {
+            throw new NotImplementedException();
         }
     }
 }

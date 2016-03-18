@@ -98,6 +98,7 @@
     <Compile Include="Games\Turns\States\YearOfPlentyState.cs" />
     <Compile Include="Games\Turns\TurnProvider.cs" />
     <Compile Include="Items\Cards\DevelopmentCard.cs" />
+    <Compile Include="Items\Cards\DevelopmentCardDeck.cs" />
     <Compile Include="Items\Cards\DevelopmentCardType.cs" />
     <Compile Include="Items\Dice.cs" />
     <Compile Include="Items\DiceRoll.cs" />
