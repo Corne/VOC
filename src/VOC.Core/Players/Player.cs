@@ -14,7 +14,8 @@ namespace VOC.Core.Players
         private static ILog logger = LogManager.GetLogger(nameof(Player));
 
         private readonly object removeResourceLock = new object();
-        private readonly List<IRawMaterial> materials;
+        private readonly ISet<IRawMaterial> materials;
+        private readonly ISet<IDevelopmentCard> cards;
 
         public Player(string name)
         {
@@ -22,12 +23,13 @@ namespace VOC.Core.Players
                 throw new ArgumentException("Player should have a name");
 
             Name = name;
-            materials = new List<IRawMaterial>();
+            materials = new HashSet<IRawMaterial>();
+            cards = new HashSet<IDevelopmentCard>();
         }
 
         public string Name { get; }
-        public IEnumerable<IRawMaterial> Inventory { get { return materials.AsReadOnly(); } }
-
+        public IEnumerable<IRawMaterial> Inventory { get { return materials.ToList().AsReadOnly(); } }
+        public IEnumerable<IDevelopmentCard> Cards { get { return cards.ToList().AsReadOnly(); } }
 
         public void AddResources(params IRawMaterial[] rawMaterials)
         {
@@ -83,7 +85,9 @@ namespace VOC.Core.Players
 
         public void AddCard(IDevelopmentCard developmentCard)
         {
-            throw new NotImplementedException();
+            if (developmentCard == null)
+                throw new ArgumentNullException(nameof(developmentCard));
+            cards.Add(developmentCard);
         }
     }
 }

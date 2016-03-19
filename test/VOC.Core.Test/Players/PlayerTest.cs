@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
+using VOC.Core.Items.Cards;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 using Xunit;
@@ -207,6 +208,22 @@ namespace VOC.Core.Test.Players
             Assert.Equal(removeResources.Length, materials.Count());
         }
 
+        [Fact]
+        public void CantAddNullCard()
+        {
+            var player = new Player("Bob");
+            Assert.Throws<ArgumentNullException>(() => player.AddCard(null));
+        }
+
+        [Fact]
+        public void AddAddsToCards()
+        {
+            var player = new Player("Henk");
+            var card = new Mock<IDevelopmentCard>();
+            player.AddCard(card.Object);
+
+            Assert.Contains(card.Object, player.Cards);
+        }
     }
 
 

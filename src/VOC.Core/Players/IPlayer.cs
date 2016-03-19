@@ -16,6 +16,7 @@ namespace VOC.Core.Players
         string Name { get; }
 
         IEnumerable<IRawMaterial> Inventory { get; }
+        IEnumerable<IDevelopmentCard> Cards { get; }
 
         void AddResources(params IRawMaterial[] rawMaterials);
         bool HasResources(params MaterialType[] rawmaterials);
