@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VOC.Core.Games;
+using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Players;
 using Xunit;
@@ -21,10 +22,18 @@ namespace VOC.Core.Intergration.GameFlow
             var player4 = new Player("Kees");
             var players = new HashSet<IPlayer>() { player1, player2, player3, player4 };
 
-            using (var factory = new GameFactory())
+            using (var factory = new GameContainer())
             {
                 var game = factory.Create(players);
                 Assert.Equal(players, game.Players);
+
+                int turnstartCount = 0;
+                game.TurnStarted += (sender, args) => turnstartCount++;
+
+                game.Start();
+                Assert.Equal(1, turnstartCount);
+
+                //var command = new RollDiceCommand(player1, )
             }
         }
     }

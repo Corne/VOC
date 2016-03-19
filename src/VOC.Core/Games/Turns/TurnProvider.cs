@@ -13,6 +13,7 @@ namespace VOC.Core.Games.Turns
 
         private readonly ISet<IPlayer> players;
         private readonly ITurnFactory factory;
+        private readonly List<IHighRollTurn> highrollresults = new List<IHighRollTurn>();
         private ProviderState state = ProviderState.HighRoll;
         private Queue<IPlayer> playerQueue;
 
@@ -47,12 +48,25 @@ namespace VOC.Core.Games.Turns
                 playerQueue = new Queue<IPlayer>(players);
 
             var turn = factory.Create<IHighRollTurn>(playerQueue.Dequeue());
-
-            //CvB Todo: we should also set player-order based on highroll results
+            highrollresults.Add(turn);
+            //CvB Todo: we should reset when multiple with highest value?
             if (!playerQueue.Any())
+            {
+                OrderPlayersByHighRollResult();
                 state = ProviderState.Build;
+            }
 
             return turn;
+        }
+
+        private void OrderPlayersByHighRollResult()
+        {
+            players.Clear();
+            var max = highrollresults.Aggregate((r1, r2) => r1.Result >= r2.Result ? r1 : r2);
+            foreach (var player in highrollresults.SkipWhile(r => r != max).Concat(highrollresults.TakeWhile(r => r != max)))
+            {
+                players.Add(player.Player);
+            }
         }
 
         private IBuildTurn GetNextBuildturn()

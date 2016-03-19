@@ -83,7 +83,7 @@
     <Compile Include="Games\Commands\StealResourceCommand.cs" />
     <Compile Include="Games\Commands\UpgradeEstablishmentCommand.cs" />
     <Compile Include="Games\Commands\YearOfPlentyCommand.cs" />
-    <Compile Include="Games\GameFactory.cs" />
+    <Compile Include="Games\GameContainer.cs" />
     <Compile Include="Games\Turns\BuildTurn.cs" />
     <Compile Include="Games\Turns\HighRollTurn.cs" />
     <Compile Include="Games\Turns\IBuildTurn.cs" />

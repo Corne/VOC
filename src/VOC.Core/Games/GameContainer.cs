@@ -11,14 +11,14 @@ using VOC.Core.Players;
 
 namespace VOC.Core.Games
 {
-    public class GameFactory : IDisposable
+    public class GameContainer : IDisposable
     {
         private readonly ContainerBuilder builder;
         private readonly IContainer container;
 
-        private readonly ISet<ILifetimeScope> childscopes = new HashSet<ILifetimeScope>();
+        private readonly IDictionary<IGame, ILifetimeScope> childscopes = new Dictionary<IGame, ILifetimeScope>();
 
-        public GameFactory()
+        public GameContainer()
         {
             builder = new ContainerBuilder();
 
@@ -43,19 +43,28 @@ namespace VOC.Core.Games
 
         public IGame Create(ISet<IPlayer> players)
         {
-            //CVB TODO: SHOULD CLEAN UP GAMES EARLIER
             var scope = container.BeginLifetimeScope();
-            childscopes.Add(scope);
+            var game = scope.Resolve<IGame>(new TypedParameter(typeof(ISet<IPlayer>), players));
+            childscopes[game] = scope;
 
-            return scope.Resolve<IGame>(new TypedParameter(typeof(ISet<IPlayer>), players));
+            return game;
+        }
+
+        public void Cleanup(IGame game)
+        {
+            if(childscopes.ContainsKey(game))
+            {
+                var scope = childscopes[game];
+                childscopes.Remove(game);
+                scope.Dispose();
+            }
         }
 
         public void Dispose()
         {
-
-            foreach(var scope in childscopes)
+            while(childscopes.Any())
             {
-                scope.Dispose();
+                Cleanup(childscopes.First().Key);
             }
             container.Dispose();
         }

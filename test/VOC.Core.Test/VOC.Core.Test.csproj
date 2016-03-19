@@ -92,7 +92,7 @@
     <Compile Include="Games\Commands\StealResourceCommandTest.cs" />
     <Compile Include="Games\Commands\UpgradeEstablishmentCommandTest.cs" />
     <Compile Include="Games\Commands\YearOfPlentyCommandTest.cs" />
-    <Compile Include="Games\GameFactoryTest.cs" />
+    <Compile Include="Games\GameContainerTest.cs" />
     <Compile Include="Games\GameTest.cs" />
     <Compile Include="Games\Turns\BuildTurnTest.cs" />
     <Compile Include="Games\Turns\HighRollTurnTest.cs" />
