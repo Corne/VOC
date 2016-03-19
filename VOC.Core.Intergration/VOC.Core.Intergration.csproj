@@ -1,14 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{384A557D-190F-452D-9610-6D6E9E510360}</ProjectGuid>
+    <ProjectGuid>{12E09568-B52F-4516-ACBD-548D05EAC8BF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VOC.Core.Test</RootNamespace>
-    <AssemblyName>VOC.Core.Test</AssemblyName>
+    <RootNamespace>VOC.Core.Intergration</RootNamespace>
+    <AssemblyName>VOC.Core.Intergration</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -17,8 +16,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,25 +35,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+      <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
+      <HintPath>..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
+      <HintPath>..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+      <HintPath>..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -69,65 +62,19 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Boards\BoardTest.cs" />
-    <Compile Include="Boards\DefaultBoardBuilderTest.cs" />
-    <Compile Include="Boards\EdgeTest.cs" />
-    <Compile Include="Boards\HarborTest.cs" />
-    <Compile Include="Boards\RoadTest.cs" />
-    <Compile Include="Boards\TileTest.cs" />
-    <Compile Include="Boards\VertextTest.cs" />
-    <Compile Include="Establishments\EstablismentTest.cs" />
-    <Compile Include="Games\Commands\AcceptTradeCommandTest.cs" />
-    <Compile Include="Games\Commands\BuildDevelopmentRoadCommandTest.cs" />
-    <Compile Include="Games\Commands\BuildEstablishmentCommandTest.cs" />
-    <Compile Include="Games\Commands\BuildRoadCommandTest.cs" />
-    <Compile Include="Games\Commands\CancelTradeCommandTest.cs" />
-    <Compile Include="Games\Commands\DiscardResourcesCommandTest.cs" />
-    <Compile Include="Games\Commands\MonopolyCommandTest.cs" />
-    <Compile Include="Games\Commands\MoveRobberCommandTest.cs" />
-    <Compile Include="Games\Commands\NextStateCommandTest.cs" />
-    <Compile Include="Games\Commands\OpenTradeCommandTest.cs" />
-    <Compile Include="Games\Commands\PlayDevelopmentCardCommandTest.cs" />
-    <Compile Include="Games\Commands\RollDiceCommandTest.cs" />
-    <Compile Include="Games\Commands\StealResourceCommandTest.cs" />
-    <Compile Include="Games\Commands\UpgradeEstablishmentCommandTest.cs" />
-    <Compile Include="Games\Commands\YearOfPlentyCommandTest.cs" />
-    <Compile Include="Games\GameFactoryTest.cs" />
-    <Compile Include="Games\GameTest.cs" />
-    <Compile Include="Games\Turns\BuildTurnTest.cs" />
-    <Compile Include="Games\Turns\HighRollTurnTest.cs" />
-    <Compile Include="Games\Turns\States\BuildStateTest.cs" />
-    <Compile Include="Games\Turns\States\MonopolyStateTest.cs" />
-    <Compile Include="Games\Turns\States\MoveRobberStateTest.cs" />
-    <Compile Include="Games\Turns\States\RoadBuildingStateTest.cs" />
-    <Compile Include="Games\Turns\States\RobberDiscardStateTest.cs" />
-    <Compile Include="Games\Turns\States\RobberStealStateTest.cs" />
-    <Compile Include="Games\Turns\States\RollStateTest.cs" />
-    <Compile Include="Games\Turns\States\StateProviderTest.cs" />
-    <Compile Include="Games\Turns\States\TradeStateTest.cs" />
-    <Compile Include="Games\Turns\States\YearOfPlentyStateTest.cs" />
-    <Compile Include="Games\Turns\TurnProviderTest.cs" />
-    <Compile Include="Games\Turns\TurnTest.cs" />
-    <Compile Include="Items\Cards\DevelopmentCardTest.cs" />
-    <Compile Include="Items\DieTest.cs" />
-    <Compile Include="Items\RawMaterials\RawMaterialProviderTest.cs" />
-    <Compile Include="Items\RobberTest.cs" />
-    <Compile Include="Players\PlayerTest.cs" />
+    <Compile Include="GameFlow\SetupPhaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Trading\BankTest.cs" />
-    <Compile Include="Trading\MarketTest.cs" />
-    <Compile Include="Trading\TradeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\src\VOC.Core\VOC.Core.csproj">
+    <ProjectReference Include="..\src\VOC.Core\VOC.Core.csproj">
       <Project>{cb746d91-1de3-4831-beb7-3f0bb08ef191}</Project>
       <Name>VOC.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
@@ -148,12 +95,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

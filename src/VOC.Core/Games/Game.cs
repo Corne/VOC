@@ -66,5 +66,12 @@ namespace VOC.Core.Games
             command.Execute();
             currentTurn.AfterExecute(command.Type);
         }
+
+        private void UpdateAchievements()
+        {
+            //CvB TODO: longest road, biggest army
+        }
+
+        //todo get victory points
     }
 }
