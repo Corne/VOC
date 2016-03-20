@@ -122,5 +122,20 @@ namespace VOC.Core.Boards
         {
             return GetEstablishments(tile).Select(e => e.Owner).Distinct().ToList();
         }
+
+        public ITile FindTile(int x, int y)
+        {
+            return Tiles.SingleOrDefault(t => t.X == x && t.Y == y);
+        }
+
+        public IVertex FindVertex(int x, int y, VertexTileSide side)
+        {
+            return Vertices.SingleOrDefault(v => v.X == x && v.Y == y && v.Side == side);
+        }
+
+        public IEdge FindEdge(int x, int y, EdgeSide side)
+        {
+            return Edges.SingleOrDefault(e => e.X == x && e.Y == y && e.Side == side);
+        }
     }
 }

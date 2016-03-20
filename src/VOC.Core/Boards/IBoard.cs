@@ -20,6 +20,10 @@ namespace VOC.Core.Boards
         IEnumerable<IRoad> Roads { get; }
         IRobber Robber { get; }
 
+        ITile FindTile(int x, int y);
+        IVertex FindVertex(int x, int y, VertexTileSide side);
+        IEdge FindEdge(int x, int y, EdgeSide side);
+
         /// <summary>
         /// Get all tiles that have the specific number, exluding tiles blocked by the robber
         /// </summary>
