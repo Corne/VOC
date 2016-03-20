@@ -19,6 +19,8 @@ namespace VOC.Core.Games.Commands
                 throw new ArgumentNullException(nameof(player));
             if (trade == null)
                 throw new ArgumentNullException(nameof(trade));
+            if (trade.Owner != player)
+                throw new ArgumentException("Executing player should be the owner of the trade");
             Player = player;
             this.trade = trade;
         }

@@ -18,6 +18,11 @@ namespace VOC.Core.Trading
             get { return trades.Where(t => t.State == TradeState.Open).ToList(); }
         }
 
+        public ITrade Find(Guid guid)
+        {
+            return trades.SingleOrDefault(t => t.Id == guid);
+        }
+
         public void OpenTrade(ITrade trade)
         {
             if (trade == null)

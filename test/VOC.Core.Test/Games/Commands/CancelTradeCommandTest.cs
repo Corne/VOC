@@ -29,10 +29,23 @@ namespace VOC.Core.Test.Games.Commands
         }
 
         [Fact]
+        public void OnlyOwnerCanCancelTrade()
+        {
+            var owner = new Mock<IPlayer>();
+            var player = new Mock<IPlayer>();
+            var trade = new Mock<ITrade>();
+            trade.Setup(t => t.Owner).Returns(owner.Object);
+
+            Assert.Throws<ArgumentException>(() => new CancelTradeCommand(player.Object, trade.Object));
+        }
+
+        [Fact]
         public void ExecuteCancelsTrade()
         {
             var player = new Mock<IPlayer>();
             var trade = new Mock<ITrade>();
+            trade.Setup(t => t.Owner).Returns(player.Object);
+
             var command = new CancelTradeCommand(player.Object, trade.Object);
             command.Execute();
 

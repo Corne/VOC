@@ -22,7 +22,7 @@ namespace VOC.Core.Games.Commands
         public AcceptTradeCommand NewAcceptTrade(IPlayer player, Guid id)
         {
             var market = scope.Resolve<IMarket>();
-            var trade = market.ActiveTrades.FirstOrDefault(t => t.Id == id);
+            var trade = market.Find(id);
             if (trade == null)
                 throw new ArgumentException("No trade found for given id");
             return new AcceptTradeCommand(player, trade);
@@ -31,10 +31,37 @@ namespace VOC.Core.Games.Commands
         public BuildDevelopmentRoadCommand NewBuildDevelopmentRoad(IPlayer player, int x, int y, EdgeSide side)
         {
             var board = scope.Resolve<IBoard>();
-            var edge = board.Edges.FirstOrDefault(e => e.X == x && e.Y == y && e.Side == side);
+            var edge = board.FindEdge(x, y, side);
             if (edge == null)
-                throw new ArgumentException($"Not edge found for given coordinates (x: {x}, y: {y}, side: {side})");
+                throw new ArgumentException($"No edge found for given coordinates (x: {x}, y: {y}, side: {side})");
             return new BuildDevelopmentRoadCommand(player, board, edge);
+        }
+
+        public BuildEstablishmentCommand NewBuildEstablishment(IPlayer player, int x, int y, VertexTileSide side)
+        {
+            var board = scope.Resolve<IBoard>();
+            var vertex = board.FindVertex(x, y, side);
+            if (vertex == null)
+                throw new ArgumentException($"No vertex found for given coordinates (x: {x}, y: {y}, side: {side}");
+            return new BuildEstablishmentCommand(player, board, vertex);
+        }
+
+        public BuildRoadCommand NewBuildRoad(IPlayer player, int x, int y, EdgeSide side)
+        {
+            var board = scope.Resolve<IBoard>();
+            var edge = board.FindEdge(x, y, side);
+            if (edge == null)
+                throw new ArgumentException($"No edge found for given coordinates (x: {x}, y: {y}, side: {side})");
+            return new BuildRoadCommand(player, board, edge);
+        }
+
+        public CancelTradeCommand NewCancelTrade(IPlayer player, Guid id)
+        {
+            var market = scope.Resolve<IMarket>();
+            var trade = market.Find(id);
+            if (trade == null)
+                throw new ArgumentException("No trade found for given id");
+            return new CancelTradeCommand(player, trade);
         }
     }
 }
