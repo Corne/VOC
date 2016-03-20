@@ -93,5 +93,19 @@ namespace VOC.Core.Games.Commands
                 throw new ArgumentException($"No tile found with coordinates (x {x}, y {y})");
             return new MoveRobberCommand(player, robber, tile);
         }
+
+        public NextStateCommand NewNextState(IPlayer player)
+        {
+            return new NextStateCommand(player);
+        }
+
+        public OpenTradeCommand NewOpenTrade(IPlayer player, MaterialType[] offer, MaterialType[] request)
+        {
+            var trade = new Trade(offer, request, player);
+            var market = scope.Resolve<IMarket>();
+            return new OpenTradeCommand(player, market, trade);
+        }
+
+        //public PlayDevelopmentCardCommand NewPlayDevelopmentCard(IPlayer player, )
     }
 }
