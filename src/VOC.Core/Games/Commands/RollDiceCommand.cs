@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VOC.Core.Games.Turns;
 using VOC.Core.Items;
 using VOC.Core.Items.RawMaterials;

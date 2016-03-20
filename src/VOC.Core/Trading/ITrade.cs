@@ -6,6 +6,7 @@ namespace VOC.Core.Trading
 {
     public interface ITrade
     {
+        Guid Id { get; }
         /// <summary>
         /// Materials that are requested
         /// </summary>

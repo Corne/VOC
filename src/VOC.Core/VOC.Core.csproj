@@ -72,6 +72,7 @@
     <Compile Include="Games\Commands\BuildEstablishmentCommand.cs" />
     <Compile Include="Games\Commands\BuildRoadCommand.cs" />
     <Compile Include="Games\Commands\CancelTradeCommand.cs" />
+    <Compile Include="Games\Commands\CommandFactory.cs" />
     <Compile Include="Games\Commands\DiscardResourcesCommand.cs" />
     <Compile Include="Games\Commands\HighRollCommand.cs" />
     <Compile Include="Games\Commands\IPlayerCommand.cs" />

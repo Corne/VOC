@@ -32,12 +32,14 @@ namespace VOC.Core.Trading
             if (!owner.HasResources(offer))
                 throw new InvalidOperationException("Can't offer materials if you don't have them");
 
+            Id = Guid.NewGuid();
             Offer = offer;
             Request = request;
             Owner = owner;
             State = TradeState.Open;
         }
 
+        public Guid Id { get; }
         public IPlayer Owner { get; }
         public MaterialType[] Offer { get; }
         public MaterialType[] Request { get; }
