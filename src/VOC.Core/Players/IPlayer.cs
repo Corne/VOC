@@ -27,5 +27,6 @@ namespace VOC.Core.Players
         /// <returns>an array of the same size as resources.length, with materials with all the resource types</returns>
         IRawMaterial[] TakeResources(params MaterialType[] resources);
         void AddCard(IDevelopmentCard developmentCard);
+        IDevelopmentCard FindCard(Guid id);
     }
 }

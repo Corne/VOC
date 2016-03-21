@@ -106,6 +106,13 @@ namespace VOC.Core.Games.Commands
             return new OpenTradeCommand(player, market, trade);
         }
 
-        //public PlayDevelopmentCardCommand NewPlayDevelopmentCard(IPlayer player, )
+        public PlayDevelopmentCardCommand NewPlayDevelopmentCard(IPlayer player, Guid id)
+        {
+            var game = scope.Resolve<IGame>();
+            var card = player.Cards.FirstOrDefault(c => c.Id == id);
+            if (card == null)
+                throw new ArgumentNullException("No card found with given id");
+            return new PlayDevelopmentCardCommand(player, game, card);
+        }
     }
 }

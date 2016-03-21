@@ -18,6 +18,7 @@ namespace VOC.Core.Items.Cards
             if (boughtTurn == null)
                 throw new ArgumentNullException(nameof(boughtTurn));
 
+            Id = Guid.NewGuid();
             Type = type;
 
             if (type == DevelopmentCardType.VictoryPoint)
@@ -38,6 +39,7 @@ namespace VOC.Core.Items.Cards
             _playable = true;
         }
 
+        public Guid Id { get; }
         public bool Playable { get { return _playable && !Played; } }
         public DevelopmentCardType Type { get; }
         public bool Played { get; set; }

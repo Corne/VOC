@@ -87,5 +87,10 @@ namespace VOC.Core.Players
                 throw new ArgumentNullException(nameof(developmentCard));
             cards.Add(developmentCard);
         }
+
+        public IDevelopmentCard FindCard(Guid id)
+        {
+            return Cards.FirstOrDefault(c => c.Id == id);
+        }
     }
 }

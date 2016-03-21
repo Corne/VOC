@@ -8,6 +8,7 @@ namespace VOC.Core.Items.Cards
 {
     public interface IDevelopmentCard
     {
+        Guid Id { get; }
         DevelopmentCardType Type { get; }
         bool Playable { get; }
         bool Played { get; set; }
