@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
+using VOC.Core.Items.Cards;
 using VOC.Core.Players;
 
 namespace VOC.Core.Games
@@ -72,6 +73,13 @@ namespace VOC.Core.Games
             //CvB TODO: longest road, biggest army
         }
 
-        //todo get victory points
+        public void PlayDevelopmentCard(IDevelopmentCard card)
+        {
+            var gameturn = currentTurn as IGameTurn;
+            if (gameturn == null)
+                throw new InvalidOperationException("Can't play a development card in current turn");
+            gameturn.PlayDevelopmentCard(card);
+        }
+
     }
 }

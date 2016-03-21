@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
+using VOC.Core.Games;
 using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Items.Cards;
@@ -17,13 +18,13 @@ namespace VOC.Core.Test.Games.Commands
         [Fact]
         public void CommandCantBeCreatedWithoutPlayer()
         {
-            var turn = new Mock<IGameTurn>();
+            var game = new Mock<IGame>();
             var card = new Mock<IDevelopmentCard>();
-            Assert.Throws<ArgumentNullException>(() => new PlayDevelopmentCardCommand(null, turn.Object, card.Object));
+            Assert.Throws<ArgumentNullException>(() => new PlayDevelopmentCardCommand(null, game.Object, card.Object));
         }
 
         [Fact]
-        public void CommandCantBeCreatedWithoutTurn()
+        public void CommandCantBeCreatedWithoutGame()
         {
             var player = new Mock<IPlayer>();
             var card = new Mock<IDevelopmentCard>();
@@ -34,19 +35,19 @@ namespace VOC.Core.Test.Games.Commands
         public void CommandCantBeCreatedWithoutCard()
         {
             var player = new Mock<IPlayer>();
-            var turn = new Mock<IGameTurn>();
-            Assert.Throws<ArgumentNullException>(() => new PlayDevelopmentCardCommand(player.Object, turn.Object, null));
+            var game = new Mock<IGame>();
+            Assert.Throws<ArgumentNullException>(() => new PlayDevelopmentCardCommand(player.Object, game.Object, null));
         }
 
         [Fact]
         public void ExecuteFailsIfCardNotPlayable()
         {
             var player = new Mock<IPlayer>();
-            var turn = new Mock<IGameTurn>();
+            var game = new Mock<IGame>();
             var card = new Mock<IDevelopmentCard>();
             card.Setup(c => c.Playable).Returns(false);
 
-            var command = new PlayDevelopmentCardCommand(player.Object, turn.Object, card.Object);
+            var command = new PlayDevelopmentCardCommand(player.Object, game.Object, card.Object);
             Assert.Throws<InvalidOperationException>(() => command.Execute());
         }
 
@@ -54,15 +55,15 @@ namespace VOC.Core.Test.Games.Commands
         public void ExecuteTest()
         {
             var player = new Mock<IPlayer>();
-            var turn = new Mock<IGameTurn>();
+            var game = new Mock<IGame>();
             var card = new Mock<IDevelopmentCard>();
             card.SetupAllProperties();
             card.Setup(c => c.Playable).Returns(true);
 
-            var command = new PlayDevelopmentCardCommand(player.Object, turn.Object, card.Object);
+            var command = new PlayDevelopmentCardCommand(player.Object, game.Object, card.Object);
             command.Execute();
 
-            turn.Verify(t => t.PlayDevelopmentCard(card.Object));
+            game.Verify(t => t.PlayDevelopmentCard(card.Object));
             Assert.True(card.Object.Played);
         }
     }

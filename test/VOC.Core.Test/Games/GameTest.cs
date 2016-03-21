@@ -8,6 +8,7 @@ using Moq;
 using VOC.Core.Games;
 using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
+using VOC.Core.Items.Cards;
 using VOC.Core.Players;
 using Xunit;
 
@@ -129,7 +130,7 @@ namespace VOC.Core.Test.Games
 
             Assert.Throws<ArgumentNullException>(() => game.Execute(null));
         }
-        
+
         [Fact]
         public void ExecuteFailsIfPlayerNotEqualsCurrentTurnPlayer()
         {
@@ -236,6 +237,39 @@ namespace VOC.Core.Test.Games
             turn.Verify(t => t.AfterExecute(It.IsAny<GameCommand>()));
         }
 
+        [Fact]
+        public void CantPlayDevelopmentCardIfCurrentTurnIsNotGameTurn()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var card = new Mock<IDevelopmentCard>();
+
+            var game = new Game(players, provider.Object);
+            game.Start();
+
+            Assert.Throws<InvalidOperationException>((() => game.PlayDevelopmentCard(card.Object)));
+        }
+
+        [Fact]
+        public void PlayDevelopmentCardCallsCurrentTurn()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<IGameTurn>();
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var card = new Mock<IDevelopmentCard>();
+
+            var game = new Game(players, provider.Object);
+            game.Start();
+
+            game.PlayDevelopmentCard(card.Object);
+
+            turn.Verify(t => t.PlayDevelopmentCard(card.Object));
+        }
 
     }
 }

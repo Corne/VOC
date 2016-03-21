@@ -11,19 +11,19 @@ namespace VOC.Core.Games.Commands
 {
     public class PlayDevelopmentCardCommand : IPlayerCommand
     {
-        private readonly IGameTurn turn;
+        private readonly IGame game;
         private readonly IDevelopmentCard card;
-        public PlayDevelopmentCardCommand(IPlayer player, IGameTurn turn, IDevelopmentCard card)
+        public PlayDevelopmentCardCommand(IPlayer player, IGame game, IDevelopmentCard card)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
-            if (turn == null)
-                throw new ArgumentNullException(nameof(turn));
+            if (game == null)
+                throw new ArgumentNullException(nameof(game));
             if (card == null)
                 throw new ArgumentNullException(nameof(card));
 
             Player = player;
-            this.turn = turn;
+            this.game = game;
             this.card = card;
         }
 
@@ -36,7 +36,7 @@ namespace VOC.Core.Games.Commands
             if (!card.Playable)
                 throw new InvalidOperationException("Card is not playable");
 
-            turn.PlayDevelopmentCard(card);
+            game.PlayDevelopmentCard(card);
             card.Played = true;
         }
     }
