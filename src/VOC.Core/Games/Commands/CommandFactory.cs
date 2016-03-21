@@ -114,5 +114,12 @@ namespace VOC.Core.Games.Commands
                 throw new ArgumentNullException("No card found with given id");
             return new PlayDevelopmentCardCommand(player, game, card);
         }
+
+        public RollDiceCommand NewRollDice(IPlayer player)
+        {
+            var dice = scope.Resolve<IDice>();
+            var provider = scope.Resolve<IRawmaterialProvider>();
+            return new RollDiceCommand(player, dice, provider);
+        }
     }
 }
