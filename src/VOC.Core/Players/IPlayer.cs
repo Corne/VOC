@@ -13,6 +13,7 @@ namespace VOC.Core.Players
     /// </summary>
     public interface IPlayer
     {
+        Guid Id { get; }
         string Name { get; }
 
         IEnumerable<IRawMaterial> Inventory { get; }

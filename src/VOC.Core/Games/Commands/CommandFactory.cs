@@ -121,5 +121,12 @@ namespace VOC.Core.Games.Commands
             var provider = scope.Resolve<IRawmaterialProvider>();
             return new RollDiceCommand(player, dice, provider);
         }
+
+        public StealResourceCommand NewStealResource(IPlayer player, Guid victimId)
+        {
+            var game = scope.Resolve<IGame>();
+            var victim = game.FindPlayer(victimId);
+            return new StealResourceCommand(player, victim);
+        }
     }
 }

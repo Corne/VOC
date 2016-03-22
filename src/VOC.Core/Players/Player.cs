@@ -20,11 +20,13 @@ namespace VOC.Core.Players
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Player should have a name");
 
+            Id = Guid.NewGuid();
             Name = name;
             materials = new HashSet<IRawMaterial>();
             cards = new HashSet<IDevelopmentCard>();
         }
 
+        public Guid Id { get; }
         public string Name { get; }
         public IEnumerable<IRawMaterial> Inventory { get { return materials.ToList().AsReadOnly(); } }
         public IEnumerable<IDevelopmentCard> Cards { get { return cards.ToList().AsReadOnly(); } }

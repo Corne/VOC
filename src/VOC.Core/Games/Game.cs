@@ -81,5 +81,9 @@ namespace VOC.Core.Games
             gameturn.PlayDevelopmentCard(card);
         }
 
+        public IPlayer FindPlayer(Guid id)
+        {
+            return Players.FirstOrDefault(p => p.Id == id);
+        }
     }
 }
