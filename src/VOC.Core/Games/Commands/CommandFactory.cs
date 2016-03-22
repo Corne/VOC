@@ -141,5 +141,10 @@ namespace VOC.Core.Games.Commands
                 throw new ArgumentException("Establishment that was found on vertex is not from the executing player");
             return new UpgradeEstablishmentCommand(player, establishment);
         }
+
+        public YearOfPlentyCommand NewYearOfPlenty(IPlayer player, MaterialType material1, MaterialType material2)
+        {
+            return new YearOfPlentyCommand(player, material1, material2);
+        }
     }
 }
