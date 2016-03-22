@@ -111,7 +111,7 @@ namespace VOC.Core.Games.Commands
             var game = scope.Resolve<IGame>();
             var card = player.Cards.FirstOrDefault(c => c.Id == id);
             if (card == null)
-                throw new ArgumentNullException("No card found with given id");
+                throw new ArgumentException("No card found with given id");
             return new PlayDevelopmentCardCommand(player, game, card);
         }
 
@@ -126,7 +126,20 @@ namespace VOC.Core.Games.Commands
         {
             var game = scope.Resolve<IGame>();
             var victim = game.FindPlayer(victimId);
+            if (victim == null)
+                throw new ArgumentException("No plaer found with given victim id");
             return new StealResourceCommand(player, victim);
+        }
+
+        public UpgradeEstablishmentCommand NewUpgradeEstablishment(IPlayer player, IVertex vertex)
+        {
+            var board = scope.Resolve<IBoard>();
+            var establishment = board.Establishments.FirstOrDefault(e => e.Vertex == vertex);
+            if (establishment == null)
+                throw new ArgumentException("No establisment found on given vertex");
+            if (establishment.Owner != player)
+                throw new ArgumentException("Establishment that was found on vertex is not from the executing player");
+            return new UpgradeEstablishmentCommand(player, establishment);
         }
     }
 }
