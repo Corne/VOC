@@ -25,6 +25,8 @@ namespace VOC.Core.Intergration.GameFlow
             using (var factory = new GameContainer())
             {
                 var game = factory.Create(players);
+                var commandFactory = factory.GetCommandFactory(game);
+
                 Assert.Equal(players, game.Players);
 
                 int turnstartCount = 0;
@@ -33,7 +35,10 @@ namespace VOC.Core.Intergration.GameFlow
                 game.Start();
                 Assert.Equal(1, turnstartCount);
 
-                //var command = new RollDiceCommand(player1, )
+                var rolldice = commandFactory.NewHighRollCommand(player1);
+                game.Execute(rolldice);
+
+                Assert.Equal(2, turnstartCount);
             }
         }
     }

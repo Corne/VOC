@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Items;
 using VOC.Core.Players;
@@ -29,6 +30,7 @@ namespace VOC.Core.Games
             }).As<IGame>();
             builder.RegisterType<TurnProvider>().As<ITurnProvider>();
             builder.RegisterType<TurnFactory>().As<ITurnFactory>();
+            builder.RegisterType<CommandFactory>();
 
             var assembly = Assembly.GetExecutingAssembly();
             builder.RegisterAssemblyTypes(assembly)
@@ -50,9 +52,16 @@ namespace VOC.Core.Games
             return game;
         }
 
+        public CommandFactory GetCommandFactory(IGame game)
+        {
+            if (!childscopes.ContainsKey(game))
+                throw new ArgumentException("Game not found");
+            return childscopes[game].Resolve<CommandFactory>();
+        }
+
         public void Cleanup(IGame game)
         {
-            if(childscopes.ContainsKey(game))
+            if (childscopes.ContainsKey(game))
             {
                 var scope = childscopes[game];
                 childscopes.Remove(game);
@@ -62,7 +71,7 @@ namespace VOC.Core.Games
 
         public void Dispose()
         {
-            while(childscopes.Any())
+            while (childscopes.Any())
             {
                 Cleanup(childscopes.First().Key);
             }
