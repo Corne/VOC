@@ -39,6 +39,8 @@ namespace VOC.Core.Intergration.GameFlow
                 game.Execute(rolldice);
 
                 Assert.Equal(2, turnstartCount);
+
+                //todo should think out and implement some flow through the game
             }
         }
     }

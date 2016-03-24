@@ -5,10 +5,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using VOC.Core.Boards;
 using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Items;
 using VOC.Core.Players;
+using VOC.Core.Trading;
 
 namespace VOC.Core.Games
 {
@@ -26,8 +28,9 @@ namespace VOC.Core.Games
             builder.Register((c, p) =>
             {
                 var players = p.TypedAs<ISet<IPlayer>>();
-                return new Game(players, c.Resolve<ITurnProvider>(p));
+                return new Game(players, c.Resolve<ITurnProvider>(p), c.Resolve<IBank>());
             }).As<IGame>();
+
             builder.RegisterType<TurnProvider>().As<ITurnProvider>();
             builder.RegisterType<TurnFactory>().As<ITurnFactory>();
             builder.RegisterType<CommandFactory>();
@@ -37,8 +40,17 @@ namespace VOC.Core.Games
                 .Where(t => t.Name.EndsWith("Turn"))/*t.IsSubclassOf(typeof(ITurn))*/
                 .AsSelf().AsImplementedInterfaces();
 
+            builder.RegisterType<Board>()
+                .As<IBoard>().InstancePerLifetimeScope();
+
+            builder.RegisterType<DefaultBoardBuilder>().As<IBoardBuilder>();
+
             builder.RegisterType<Dice>().UsingConstructor()
                 .As<IDice>().InstancePerLifetimeScope();
+
+            builder.RegisterType<Bank>()
+                .As<IBank>().InstancePerLifetimeScope();
+
 
             container = builder.Build();
         }

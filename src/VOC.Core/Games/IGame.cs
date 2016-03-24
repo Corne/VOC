@@ -29,7 +29,8 @@ namespace VOC.Core.Games
 
         void Execute(IPlayerCommand command);
 
-        void PlayDevelopmentCard(IDevelopmentCard card);
         IPlayer FindPlayer(Guid id);
+        void PlayDevelopmentCard(IDevelopmentCard card);
+        void BuyDevelopmentCard(IPlayer player);
     }
 }

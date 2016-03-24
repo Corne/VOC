@@ -10,6 +10,7 @@ using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Items.Cards;
 using VOC.Core.Players;
+using VOC.Core.Trading;
 using Xunit;
 
 namespace VOC.Core.Test.Games
@@ -20,7 +21,8 @@ namespace VOC.Core.Test.Games
         public void GameCantBeCreatedWithoutPlayers()
         {
             var provider = new Mock<ITurnProvider>();
-            Assert.Throws<ArgumentNullException>(() => new Game(null, provider.Object));
+            var bank = new Mock<IBank>();
+            Assert.Throws<ArgumentNullException>(() => new Game(null, provider.Object, bank.Object));
         }
 
         private ISet<IPlayer> CreateFakePlayers(int count)
@@ -33,7 +35,17 @@ namespace VOC.Core.Test.Games
         public void GameCantBeCreatedWithoutTurnProvider()
         {
             var players = CreateFakePlayers(2);
-            Assert.Throws<ArgumentNullException>(() => new Game(players, null));
+            var bank = new Mock<IBank>();
+
+            Assert.Throws<ArgumentNullException>(() => new Game(players, null, bank.Object));
+        }
+
+        [Fact]
+        public void GameCantBeCreatedWithoutBank()
+        {
+            var players = CreateFakePlayers(2);
+            var provider = new Mock<ITurnProvider>();
+            Assert.Throws<ArgumentNullException>(() => new Game(players, provider.Object, null));
         }
 
         [Theory]
@@ -43,7 +55,9 @@ namespace VOC.Core.Test.Games
         {
             var players = CreateFakePlayers(playerCount);
             var provider = new Mock<ITurnProvider>();
-            Assert.Throws<ArgumentException>(() => new Game(players, provider.Object));
+            var bank = new Mock<IBank>();
+
+            Assert.Throws<ArgumentException>(() => new Game(players, provider.Object, bank.Object));
         }
 
         [Theory]
@@ -54,7 +68,9 @@ namespace VOC.Core.Test.Games
         {
             var players = CreateFakePlayers(playerCount);
             var provider = new Mock<ITurnProvider>();
-            var game = new Game(players, provider.Object);
+            var bank = new Mock<IBank>();
+
+            var game = new Game(players, provider.Object, bank.Object);
 
             Assert.Equal(players, game.Players);
         }
@@ -66,7 +82,9 @@ namespace VOC.Core.Test.Games
             var provider = new Mock<ITurnProvider>();
             provider.Setup(p => p.GetNext()).Returns(new Mock<ITurn>().Object);
 
-            var game = new Game(players, provider.Object);
+            var bank = new Mock<IBank>();
+
+            var game = new Game(players, provider.Object, bank.Object);
 
             int turnSwitches = 0;
             game.TurnStarted += (sender, args) => { turnSwitches++; };
@@ -83,8 +101,9 @@ namespace VOC.Core.Test.Games
             var players = CreateFakePlayers(3);
             var provider = new Mock<ITurnProvider>();
             provider.Setup(p => p.GetNext()).Returns(new Mock<ITurn>().Object);
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object);
 
             int turnSwitches = 0;
             game.TurnStarted += (sender, args) => { turnSwitches++; };
@@ -103,8 +122,9 @@ namespace VOC.Core.Test.Games
             var provider = new Mock<ITurnProvider>();
             var turn = new Mock<ITurn>();
             provider.Setup(p => p.GetNext()).Returns(turn.Object);
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object);
 
             int turnSwitches = 0;
             game.TurnStarted += (sender, args) => { turnSwitches++; };
@@ -124,8 +144,9 @@ namespace VOC.Core.Test.Games
             var provider = new Mock<ITurnProvider>();
             var turn = new Mock<ITurn>();
             provider.Setup(p => p.GetNext()).Returns(turn.Object);
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object);
             game.Start();
 
             Assert.Throws<ArgumentNullException>(() => game.Execute(null));
@@ -144,8 +165,9 @@ namespace VOC.Core.Test.Games
 
             var command = new Mock<IPlayerCommand>();
             command.Setup(c => c.Player).Returns(players.Skip(1).First());
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object);
             game.Start();
 
             Assert.Throws<InvalidOperationException>(() => game.Execute(command.Object));
@@ -165,8 +187,9 @@ namespace VOC.Core.Test.Games
             var command = new Mock<IPlayerCommand>();
             command.Setup(c => c.Player).Returns(players.Skip(1).First());
             command.Setup(c => c.Type).Returns(GameCommand.Trade);
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object);
             game.Start();
             game.Execute(command.Object);
 
@@ -188,8 +211,9 @@ namespace VOC.Core.Test.Games
 
             var command = new Mock<IPlayerCommand>();
             command.Setup(c => c.Player).Returns(player);
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object);
             game.Start();
 
             Assert.Throws<ArgumentException>(() => game.Execute(command.Object));
@@ -208,8 +232,9 @@ namespace VOC.Core.Test.Games
 
             var command = new Mock<IPlayerCommand>();
             command.Setup(c => c.Player).Returns(players.First());
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object); ;
 
             Assert.Throws<InvalidOperationException>(() => game.Execute(command.Object));
         }
@@ -227,8 +252,9 @@ namespace VOC.Core.Test.Games
 
             var command = new Mock<IPlayerCommand>();
             command.Setup(c => c.Player).Returns(players.First());
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object);
             game.Start();
 
             game.Execute(command.Object);
@@ -246,8 +272,9 @@ namespace VOC.Core.Test.Games
             provider.Setup(p => p.GetNext()).Returns(turn.Object);
 
             var card = new Mock<IDevelopmentCard>();
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object);
             game.Start();
 
             Assert.Throws<InvalidOperationException>((() => game.PlayDevelopmentCard(card.Object)));
@@ -262,8 +289,9 @@ namespace VOC.Core.Test.Games
             provider.Setup(p => p.GetNext()).Returns(turn.Object);
 
             var card = new Mock<IDevelopmentCard>();
+            var bank = new Mock<IBank>();
 
-            var game = new Game(players, provider.Object);
+            var game = new Game(players, provider.Object, bank.Object);
             game.Start();
 
             game.PlayDevelopmentCard(card.Object);
@@ -271,5 +299,82 @@ namespace VOC.Core.Test.Games
             turn.Verify(t => t.PlayDevelopmentCard(card.Object));
         }
 
+        [Fact]
+        public void BuyDevelopmentCardFailsIfPlayerNull()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<IGameTurn>();
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var card = new Mock<IDevelopmentCard>();
+            var bank = new Mock<IBank>();
+
+            var game = new Game(players, provider.Object, bank.Object);
+            game.Start();
+
+            Assert.Throws<ArgumentNullException>(() => game.BuyDevelopmentCard(null));
+        }
+
+        [Fact]
+        public void BuyDevelomentCardFailsIfCurrentTurnNOGameTurn()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var card = new Mock<IDevelopmentCard>();
+            var bank = new Mock<IBank>();
+
+            var game = new Game(players, provider.Object, bank.Object);
+            game.Start();
+
+            var player = new Mock<IPlayer>();
+
+            Assert.Throws<InvalidOperationException>(() => game.BuyDevelopmentCard(player.Object));
+        }
+
+        [Fact]
+        public void BuyDevelopmentCardFailsIfPlayerNotCurrentTurnPlayer()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<IGameTurn>();
+            var player = new Mock<IPlayer>();
+
+            turn.Setup(t => t.Player).Returns(new Mock<IPlayer>().Object);
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var card = new Mock<IDevelopmentCard>();
+            var bank = new Mock<IBank>();
+
+            var game = new Game(players, provider.Object, bank.Object);
+            game.Start();
+
+            Assert.Throws<InvalidOperationException>(() => game.BuyDevelopmentCard(player.Object));
+        }
+
+        [Fact]
+        public void BuyDevelopmentCardTest()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<IGameTurn>();
+            var player = new Mock<IPlayer>();
+
+            turn.Setup(t => t.Player).Returns(player.Object);
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var card = new Mock<IDevelopmentCard>();
+            var bank = new Mock<IBank>();
+
+            var game = new Game(players, provider.Object, bank.Object);
+            game.Start();
+
+            game.BuyDevelopmentCard(player.Object);
+
+            bank.Verify(b => b.BuyDevelopmentCard(player.Object, turn.Object));
+        }
     }
 }

@@ -7,6 +7,7 @@ using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Items.Cards;
 using VOC.Core.Players;
+using VOC.Core.Trading;
 
 namespace VOC.Core.Games
 {
@@ -15,19 +16,23 @@ namespace VOC.Core.Games
     {
         private readonly ISet<IPlayer> players;
         private readonly ITurnProvider provider;
+        private readonly IBank bank;
         private ITurn currentTurn;
 
-        public Game(ISet<IPlayer> players, ITurnProvider provider)
+        public Game(ISet<IPlayer> players, ITurnProvider provider, IBank bank)
         {
             if (players == null)
                 throw new ArgumentNullException(nameof(players));
             if (provider == null)
                 throw new ArgumentNullException(nameof(provider));
+            if (bank == null)
+                throw new ArgumentNullException(nameof(bank));
             if (players.Count < 2 || players.Count > 4)
                 throw new ArgumentException("Number of players should be between 2 and 4");
 
             this.players = players;
             this.provider = provider;
+            this.bank = bank;
         }
 
         public IEnumerable<IPlayer> Players { get { return players.ToList().AsReadOnly(); } }
@@ -59,7 +64,7 @@ namespace VOC.Core.Games
             if (currentTurn == null)
                 throw new InvalidOperationException("Game not started");
 
-            if (command.Player != currentTurn.Player && command.Type != GameCommand.Trade) 
+            if (command.Player != currentTurn.Player && command.Type != GameCommand.Trade)
                 throw new InvalidOperationException("This player can't execute a command at the moment");
             if (!currentTurn.CanExecute(command.Type))
                 throw new ArgumentException("Can't execute this command in current state");
@@ -84,6 +89,20 @@ namespace VOC.Core.Games
         public IPlayer FindPlayer(Guid id)
         {
             return Players.FirstOrDefault(p => p.Id == id);
+        }
+
+        public void BuyDevelopmentCard(IPlayer player)
+        {
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+            //Cvb Todo: not sure if this check is correct, maybe should check on turn.canexecute???
+            var gameturn = currentTurn as IGameTurn;
+            if (gameturn == null)
+                throw new InvalidOperationException("Game is not in a state to buy developmentcards");
+            if (player != currentTurn.Player)
+                throw new InvalidOperationException("Only player who has his turn can buy cards");
+
+            bank.BuyDevelopmentCard(player, currentTurn);
         }
     }
 }
