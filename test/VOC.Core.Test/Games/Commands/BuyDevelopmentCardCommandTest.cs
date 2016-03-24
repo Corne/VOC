@@ -12,7 +12,7 @@ using Xunit;
 
 namespace VOC.Core.Test.Games.Commands
 {
-    public class BuyDevelopmentCardTest
+    public class BuyDevelopmentCardCommandTest
     {
         public static IEnumerable<object> NullConstruction
         {
@@ -25,7 +25,7 @@ namespace VOC.Core.Test.Games.Commands
         [Theory, MemberData(nameof(NullConstruction))]
         public void CantConstructWithNullParameter(IPlayer player, IGame game)
         {
-            Assert.Throws<ArgumentNullException>(() => new BuyDevelopmentCard(player, game));
+            Assert.Throws<ArgumentNullException>(() => new BuyDevelopmentCardCommand(player, game));
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace VOC.Core.Test.Games.Commands
         {
             var game = new Mock<IGame>();
             var player = new Mock<IPlayer>();
-            var command = new BuyDevelopmentCard(player.Object, game.Object);
+            var command = new BuyDevelopmentCardCommand(player.Object, game.Object);
             command.Execute();
 
             game.Verify(g => g.BuyDevelopmentCard(player.Object));

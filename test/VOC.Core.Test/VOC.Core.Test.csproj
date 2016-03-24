@@ -81,7 +81,7 @@
     <Compile Include="Games\Commands\BuildDevelopmentRoadCommandTest.cs" />
     <Compile Include="Games\Commands\BuildEstablishmentCommandTest.cs" />
     <Compile Include="Games\Commands\BuildRoadCommandTest.cs" />
-    <Compile Include="Games\Commands\BuyDevelopmentCardTest.cs" />
+    <Compile Include="Games\Commands\BuyDevelopmentCardCommandTest.cs" />
     <Compile Include="Games\Commands\CancelTradeCommandTest.cs" />
     <Compile Include="Games\Commands\DiscardResourcesCommandTest.cs" />
     <Compile Include="Games\Commands\HighRollCommandTest.cs" />
