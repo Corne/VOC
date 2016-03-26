@@ -63,6 +63,12 @@ namespace VOC.Core.Games.Commands
             return new BuyDevelopmentCardCommand(player, game);
         }
 
+        public BuyResourceCommand NewBuyResource(IPlayer player, MaterialType buy, MaterialType offer)
+        {
+            var bank = scope.Resolve<IBank>();
+            return new BuyResourceCommand(player, bank, buy, offer);
+        }
+
         public CancelTradeCommand NewCancelTrade(IPlayer player, Guid id)
         {
             var market = scope.Resolve<IMarket>();
