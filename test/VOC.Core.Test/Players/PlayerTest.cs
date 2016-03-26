@@ -224,6 +224,52 @@ namespace VOC.Core.Test.Players
 
             Assert.Contains(card.Object, player.Cards);
         }
+
+        public static IDevelopmentCard CreateCard(DevelopmentCardType type, bool played)
+        {
+            var mock = new Mock<IDevelopmentCard>();
+            mock.Setup(m => m.Type).Returns(type);
+            mock.Setup(m => m.Played).Returns(played);
+            return mock.Object;
+        }
+
+        public static IEnumerable<object> ArmySizeTestCases
+        {
+            get
+            {
+                yield return new object[] { new IDevelopmentCard[0], 0 };
+                yield return new object[] { new[] { CreateCard(DevelopmentCardType.Knight, false) }, 0 };
+                yield return new object[] { new[] { CreateCard(DevelopmentCardType.Knight, true) }, 1 };
+                yield return new object[] { new[] { CreateCard(DevelopmentCardType.Monopoly, true) }, 0 };
+                yield return new object[] { new[] {
+                    CreateCard(DevelopmentCardType.Knight, true),
+                    CreateCard(DevelopmentCardType.Knight, false),
+                    CreateCard(DevelopmentCardType.Knight, true)
+                }, 2 };
+                yield return new object[] { new[] {
+                    CreateCard(DevelopmentCardType.Monopoly, true),
+                    CreateCard(DevelopmentCardType.Knight, true),
+                    CreateCard(DevelopmentCardType.Knight, true),
+                    CreateCard(DevelopmentCardType.RoadBuilding, false),
+                    CreateCard(DevelopmentCardType.VictoryPoint, true),
+                    CreateCard(DevelopmentCardType.YearOfPlenty, true),
+                    CreateCard(DevelopmentCardType.Knight, false),
+                    CreateCard(DevelopmentCardType.Knight, true),
+                }, 3 };
+
+            }
+        }
+
+        [Theory, MemberData(nameof(ArmySizeTestCases))]
+        public void ArmySizeEqualsAllPlayedRobberCards(IEnumerable<IDevelopmentCard> cards, int expectedArmySize)
+        {
+            var player = new Player("Bob");
+            foreach (var card in cards)
+                player.AddCard(card);
+
+            int result = player.ArmySize;
+            Assert.Equal(expectedArmySize, result);
+        }
     }
 
 

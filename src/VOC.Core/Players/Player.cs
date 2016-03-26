@@ -31,6 +31,8 @@ namespace VOC.Core.Players
         public IEnumerable<IRawMaterial> Inventory { get { return materials.ToList().AsReadOnly(); } }
         public IEnumerable<IDevelopmentCard> Cards { get { return cards.ToList().AsReadOnly(); } }
 
+        public int ArmySize { get { return Cards.Where(c => c.Played && c.Type == DevelopmentCardType.Knight).Count(); } }
+
         public void AddResources(params IRawMaterial[] rawMaterials)
         {
             if (rawMaterials == null)

@@ -18,6 +18,7 @@ namespace VOC.Core.Players
 
         IEnumerable<IRawMaterial> Inventory { get; }
         IEnumerable<IDevelopmentCard> Cards { get; }
+        int ArmySize { get; }
 
         void AddResources(params IRawMaterial[] rawMaterials);
         bool HasResources(params MaterialType[] rawmaterials);
@@ -29,5 +30,6 @@ namespace VOC.Core.Players
         IRawMaterial[] TakeResources(params MaterialType[] resources);
         void AddCard(IDevelopmentCard developmentCard);
         IDevelopmentCard FindCard(Guid id);
+
     }
 }
