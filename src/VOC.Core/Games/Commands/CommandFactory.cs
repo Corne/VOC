@@ -57,6 +57,11 @@ namespace VOC.Core.Games.Commands
             return new BuildRoadCommand(player, board, edge);
         }
 
+        public BuyDevelopmentCardCommand NewBuyDevelopmentCard(IPlayer player)
+        {
+            return new BuyDevelopmentCardCommand(player, scope.Resolve<IGame>());
+        }
+
         public CancelTradeCommand NewCancelTrade(IPlayer player, Guid id)
         {
             var market = scope.Resolve<IMarket>();

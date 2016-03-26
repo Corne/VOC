@@ -25,7 +25,7 @@ namespace VOC.Core.Games.Commands
 
         public IPlayer Player { get; }
 
-        public GameCommand Type { get { return GameCommand.BuyDevelopmentCard; } }
+        public GameCommand Type { get { return GameCommand.Trade; } }
 
         public void Execute()
         {
