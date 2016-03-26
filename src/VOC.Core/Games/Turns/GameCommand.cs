@@ -24,5 +24,6 @@ namespace VOC.Core.Games.Turns
         StealResource,
         Monopoly,
         YearOfPlenty,
+        BuyDevelopmentCard,
     }
 }

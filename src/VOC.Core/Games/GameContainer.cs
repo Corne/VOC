@@ -29,7 +29,7 @@ namespace VOC.Core.Games
             {
                 var players = p.TypedAs<ISet<IPlayer>>();
                 return new Game(players, c.Resolve<ITurnProvider>(p), c.Resolve<IBank>());
-            }).As<IGame>().InstancePerLifetimeScope();
+            }).As<IGame>();
 
             builder.RegisterType<TurnProvider>().As<ITurnProvider>();
             builder.RegisterType<TurnFactory>().As<ITurnFactory>();
