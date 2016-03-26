@@ -14,7 +14,7 @@ namespace VOC.Core.Boards
     public class Board : IBoard
     {
         private static ILog logger = LogManager.GetLogger(nameof(Board));
-        
+
         private readonly List<IEstablishment> establishments = new List<IEstablishment>();
         private readonly List<IRoad> roads = new List<IRoad>();
 
@@ -57,6 +57,9 @@ namespace VOC.Core.Boards
             if (tiles.All(t => t.Rawmaterial == MaterialType.Sea))
                 throw new ArgumentException("Can't place an establishment on sea!");
 
+            if (establishments.Count(e => e.Owner == owner) >= 2 && 
+                roads.Where(r => r.Owner == owner).All(r => !r.Edge.IsAdjacentTo(vertex)))
+                    throw new InvalidOperationException("Each player can only build 2 houses without adjacent roads!");
 
             var establishment = new Establishment(owner, vertex);
             establishments.Add(establishment);
@@ -136,6 +139,11 @@ namespace VOC.Core.Boards
         public IEdge FindEdge(int x, int y, EdgeSide side)
         {
             return Edges.SingleOrDefault(e => e.X == x && e.Y == y && e.Side == side);
+        }
+
+        public IEnumerable<IRoad> GetLongestRoad(IPlayer player)
+        {
+            return new IRoad[0];
         }
     }
 }

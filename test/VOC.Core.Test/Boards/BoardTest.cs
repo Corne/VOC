@@ -107,7 +107,6 @@ namespace VOC.Core.Test.Boards
             player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
 
             var vertex = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
-
             var result = board.BuildEstablishment(vertex, player.Object);
             Assert.Contains(result, board.Establishments);
             Assert.Equal(player.Object, result.Owner);
@@ -165,6 +164,22 @@ namespace VOC.Core.Test.Boards
 
             Assert.Throws<ArgumentException>(() => board.BuildEstablishment(seaVertex, player.Object));
         }
+
+        [Fact]
+        public void CanOnlyBuild2EstablishmentsWithoutAdjacentRoad()
+        {
+            var board = new Board(builder);
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
+            var vertex1 = builder.Vertices.First(t => t.X == 1 && t.Y == 1);
+            var vertex2 = builder.Vertices.First(t => t.X == -2 && t.Y == 1);
+            var vertex3 = builder.Vertices.First(t => t.X == 3 && t.Y == -1);
+            board.BuildEstablishment(vertex1, player.Object);
+            board.BuildEstablishment(vertex2, player.Object);
+            Assert.Throws<InvalidOperationException>(() => board.BuildEstablishment(vertex3, player.Object));
+        }
+
 
         [Fact]
         public void BuildRoadNullEdgeException()
@@ -421,16 +436,16 @@ namespace VOC.Core.Test.Boards
         public void ExpectAllHarborsToReturnIfAdjacent()
         {
             var board = new Board(builder);
-            var player = new Mock<IPlayer>();
-            player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            var result = new List<IHarbor>();
 
             foreach(var harbor in board.Harbors)
             {
+                var player = new Mock<IPlayer>();
+                player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
                 IVertex vertex = board.Vertices.First(v => v.IsAdjacentTo(harbor.Edge));
                 board.BuildEstablishment(vertex, player.Object);
+                result.AddRange(board.GetHarbors(player.Object));
             }
-
-            IEnumerable<IHarbor> result = board.GetHarbors(player.Object);
 
             Assert.Equal(board.Harbors, result);
         }
@@ -479,6 +494,16 @@ namespace VOC.Core.Test.Boards
             var players = board.GetPlayers(tile);
 
             Assert.Equal(new[] { player1.Object }, players);
+        }
+
+
+        public void GetLongestRoadTest()
+        {
+            var board = new Board(builder);
+            var player1 = new Mock<IPlayer>();
+            player1.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+
+
         }
     }
 }
