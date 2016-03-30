@@ -11,5 +11,7 @@ namespace VOC.Core.Boards
     {
         IEdge Edge { get; }
         IPlayer Owner { get; }
+
+        bool IsAdjacentTo(IRoad road);
     }
 }

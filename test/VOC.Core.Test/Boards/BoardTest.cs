@@ -414,7 +414,7 @@ namespace VOC.Core.Test.Boards
 
             Assert.Equal(new IHarbor[] { harbor }, result);
         }
-        
+
         [Fact]
         public void ExpectNoResultIfEstablismentIsFromDifferentPlayer()
         {
@@ -438,7 +438,7 @@ namespace VOC.Core.Test.Boards
             var board = new Board(builder);
             var result = new List<IHarbor>();
 
-            foreach(var harbor in board.Harbors)
+            foreach (var harbor in board.Harbors)
             {
                 var player = new Mock<IPlayer>();
                 player.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
@@ -496,14 +496,84 @@ namespace VOC.Core.Test.Boards
             Assert.Equal(new[] { player1.Object }, players);
         }
 
+        [Fact]
+        public void LongestRoadFailsIfPlayerNull()
+        {
+            var board = new Board(builder);
+            Assert.Throws<ArgumentNullException>(() => board.GetLongestRoad(null));
+        }
 
-        public void GetLongestRoadTest()
+        public class EdgeCoordinate
+        {
+            public EdgeCoordinate(int x, int y, EdgeSide side)
+            {
+                X = x;
+                Y = y;
+                Side = side;
+            }
+
+            public int X { get; }
+            public int Y { get; }
+            public EdgeSide Side { get; }
+        }
+
+        public static IEnumerable<object> LongestRoadCases
+        {
+            get
+            {
+                yield return new object[] { new EdgeCoordinate[0], 0 };
+                yield return new object[] { new[] { new EdgeCoordinate(0, 0, EdgeSide.West) }, 1 };
+                yield return new object[] { new[] {
+                    new EdgeCoordinate(0, 0, EdgeSide.West),
+                    new EdgeCoordinate(-1, 0, EdgeSide.North),
+                }, 2 };
+                yield return new object[] { new[] {
+                    new EdgeCoordinate(0, 0, EdgeSide.West),
+                    new EdgeCoordinate(-1, 0, EdgeSide.North),
+                    new EdgeCoordinate(1, 0, EdgeSide.East), //this road should not be counted, because it's not connected
+                }, 2 };
+                yield return new object[] { new[] {
+                    new EdgeCoordinate(1, 0, EdgeSide.East), //this road should not be counted, because it's not connected
+                    new EdgeCoordinate(0, 0, EdgeSide.West),
+                    new EdgeCoordinate(-1, 0, EdgeSide.North),
+                }, 2 };
+                yield return new object[] { new[] {
+                    new EdgeCoordinate(0, 0, EdgeSide.West),
+                    new EdgeCoordinate(-1, 0, EdgeSide.North),
+                    new EdgeCoordinate(1, 0, EdgeSide.East), //this road should not be counted, because it's not connected
+                    new EdgeCoordinate(-1, 0, EdgeSide.West),
+                    new EdgeCoordinate(-2, 0, EdgeSide.East),
+                }, 4 };
+                yield return new object[] { new[] {
+                    //1 of those 3 should not be counted because of branches
+                    new EdgeCoordinate(0, 0, EdgeSide.West),
+                    new EdgeCoordinate(-1, 0, EdgeSide.North),
+                    new EdgeCoordinate(-1, 0, EdgeSide.East),
+                }, 2 };
+            }
+        }
+
+
+        [Theory, MemberData(nameof(LongestRoadCases))]
+        public void GetLongestRoadTest(IEnumerable<EdgeCoordinate> coordinates, int expectedResult)
         {
             var board = new Board(builder);
             var player1 = new Mock<IPlayer>();
             player1.Setup(p => p.HasResources(Establishment.BUILD_RESOURCES)).Returns(true);
+            //Carefull with setup, all roads should be connected to those 2 establishments
+            var vertex1 = builder.Vertices.First(t => t.X == 0 && t.Y == 0 && t.Side == VertexTileSide.Left);
+            var vertex2 = builder.Vertices.First(t => t.X == 2 && t.Y == 0 && t.Side == VertexTileSide.Left);
+            board.BuildEstablishment(vertex1, player1.Object);
+            board.BuildEstablishment(vertex2, player1.Object);
 
+            foreach (var coordinate in coordinates)
+            {
+                var edge = board.FindEdge(coordinate.X, coordinate.Y, coordinate.Side);
+                board.BuildRoad(edge, player1.Object);
+            }
 
+            var result = board.GetLongestRoad(player1.Object);
+            Assert.Equal(expectedResult, result.Count());
         }
     }
 }

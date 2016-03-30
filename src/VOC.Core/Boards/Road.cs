@@ -27,5 +27,10 @@ namespace VOC.Core.Boards
             Edge = edge;
             Owner = owner;
         }
+
+        public bool IsAdjacentTo(IRoad road)
+        {
+            return Edge.IsAdjacentTo(road.Edge);
+        }
     }
 }

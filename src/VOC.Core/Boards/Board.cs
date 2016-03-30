@@ -57,9 +57,9 @@ namespace VOC.Core.Boards
             if (tiles.All(t => t.Rawmaterial == MaterialType.Sea))
                 throw new ArgumentException("Can't place an establishment on sea!");
 
-            if (establishments.Count(e => e.Owner == owner) >= 2 && 
+            if (establishments.Count(e => e.Owner == owner) >= 2 &&
                 roads.Where(r => r.Owner == owner).All(r => !r.Edge.IsAdjacentTo(vertex)))
-                    throw new InvalidOperationException("Each player can only build 2 houses without adjacent roads!");
+                throw new InvalidOperationException("Each player can only build 2 houses without adjacent roads!");
 
             var establishment = new Establishment(owner, vertex);
             establishments.Add(establishment);
@@ -141,9 +141,74 @@ namespace VOC.Core.Boards
             return Edges.SingleOrDefault(e => e.X == x && e.Y == y && e.Side == side);
         }
 
+        //CvB Todo: Really bad performance wise atm....
+
         public IEnumerable<IRoad> GetLongestRoad(IPlayer player)
         {
-            return new IRoad[0];
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+
+            var playerroads = roads.Where(r => r.Owner == player);
+            if (!playerroads.Any())
+                return new IRoad[0];
+            return GetLongestRoad(playerroads);
+
+            //var result = new HashSet<IRoad>();
+            //foreach (var item in playerroads)
+            //{
+            //    var temp = new HashSet<IRoad>();
+            //    temp.Add(item);
+
+            //    bool changes = true;
+            //    while (changes)
+            //    {
+            //        changes = false;
+            //        var adjacent = playerroads.Where(r1 => temp.Any(r2 => r2.IsAdjacentTo(r1)));
+            //        foreach (var road in adjacent)
+            //        {
+            //            int oldCount = temp.Count;
+            //            temp.Add(road);
+            //            changes |= temp.Count != oldCount;
+            //        }
+            //    }
+
+            //    if (temp.Count > result.Count)
+            //        result = temp;
+            //}
+
+            //return result;
         }
+
+        private IEnumerable<IRoad> GetLongestRoad( IEnumerable<IRoad> roads)
+        {
+            IEnumerable<IRoad> result = new HashSet<IRoad>();
+            foreach (var road in roads)
+            {
+                var temp = GetLongestRoad(road, roads.Except(new IRoad[] { road }));
+                if (temp.Count() > result.Count())
+                    result = temp;
+            }
+            return result;
+        }
+
+        private IEnumerable<IRoad> GetLongestRoad(IRoad current, IEnumerable<IRoad> roads)
+        {
+            var result = new HashSet<IRoad>();
+            result.Add(current);
+
+            var adjacentRoads = roads.Where(r => r.IsAdjacentTo(current));
+
+            foreach (var adjacent in adjacentRoads)
+            {
+                var temp = new List<IRoad>(new IRoad[] { current });
+                temp.AddRange(GetLongestRoad(adjacent, roads.Except(adjacentRoads.Union(temp))));
+
+                if (temp.Count > result.Count)
+                    result = new HashSet<IRoad>(temp);
+            }
+
+            return result;
+        }
+
     }
 }
