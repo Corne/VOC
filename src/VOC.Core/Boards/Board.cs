@@ -141,7 +141,6 @@ namespace VOC.Core.Boards
             return Edges.SingleOrDefault(e => e.X == x && e.Y == y && e.Side == side);
         }
 
-        //CvB Todo: Really bad performance wise atm....
 
         public IEnumerable<IRoad> GetLongestRoad(IPlayer player)
         {
@@ -152,33 +151,9 @@ namespace VOC.Core.Boards
             if (!playerroads.Any())
                 return new IRoad[0];
             return GetLongestRoad(playerroads);
-
-            //var result = new HashSet<IRoad>();
-            //foreach (var item in playerroads)
-            //{
-            //    var temp = new HashSet<IRoad>();
-            //    temp.Add(item);
-
-            //    bool changes = true;
-            //    while (changes)
-            //    {
-            //        changes = false;
-            //        var adjacent = playerroads.Where(r1 => temp.Any(r2 => r2.IsAdjacentTo(r1)));
-            //        foreach (var road in adjacent)
-            //        {
-            //            int oldCount = temp.Count;
-            //            temp.Add(road);
-            //            changes |= temp.Count != oldCount;
-            //        }
-            //    }
-
-            //    if (temp.Count > result.Count)
-            //        result = temp;
-            //}
-
-            //return result;
         }
 
+        //CvB Todo: Really bad performance wise atm...., but doesnt matter that much atm because not that many possiblities
         private IEnumerable<IRoad> GetLongestRoad( IEnumerable<IRoad> roads)
         {
             IEnumerable<IRoad> result = new HashSet<IRoad>();
