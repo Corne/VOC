@@ -550,6 +550,16 @@ namespace VOC.Core.Test.Boards
                     new EdgeCoordinate(-1, 0, EdgeSide.North),
                     new EdgeCoordinate(-1, 0, EdgeSide.East),
                 }, 2 };
+                yield return new object[] { new[] {
+                    new EdgeCoordinate(0, 0, EdgeSide.West),
+                    new EdgeCoordinate(-1, 0, EdgeSide.North),
+                    new EdgeCoordinate(-1, 0, EdgeSide.East),
+                    new EdgeCoordinate(0, -1, EdgeSide.West),
+                    new EdgeCoordinate(-2, 1, EdgeSide.East),
+                    new EdgeCoordinate(-1, -1, EdgeSide.East),
+                    new EdgeCoordinate(0, 0, EdgeSide.North),
+                    new EdgeCoordinate(0, -2, EdgeSide.North),
+                }, 6 };
             }
         }
 
