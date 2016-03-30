@@ -159,14 +159,14 @@ namespace VOC.Core.Boards
             IEnumerable<IRoad> result = new HashSet<IRoad>();
             foreach (var road in roads)
             {
-                var temp = GetLongestRoad(road, roads.Except(new IRoad[] { road }));
+                var temp = GetLongestBranch(road, roads.Except(new IRoad[] { road }));
                 if (temp.Count() > result.Count())
                     result = temp;
             }
             return result;
         }
 
-        private IEnumerable<IRoad> GetLongestRoad(IRoad current, IEnumerable<IRoad> roads)
+        private IEnumerable<IRoad> GetLongestBranch(IRoad current, IEnumerable<IRoad> roads)
         {
             var result = new HashSet<IRoad>();
             result.Add(current);
@@ -176,7 +176,7 @@ namespace VOC.Core.Boards
             foreach (var adjacent in adjacentRoads)
             {
                 var temp = new List<IRoad>(new IRoad[] { current });
-                temp.AddRange(GetLongestRoad(adjacent, roads.Except(adjacentRoads.Union(temp))));
+                temp.AddRange(GetLongestBranch(adjacent, roads.Except(adjacentRoads.Union(temp))));
 
                 if (temp.Count > result.Count)
                     result = new HashSet<IRoad>(temp);
