@@ -107,6 +107,9 @@
     <Compile Include="Games\Turns\States\YearOfPlentyState.cs" />
     <Compile Include="Games\Turns\TurnFactory.cs" />
     <Compile Include="Games\Turns\TurnProvider.cs" />
+    <Compile Include="Items\Achievements\BiggestArmy.cs" />
+    <Compile Include="Items\Achievements\IAchievement.cs" />
+    <Compile Include="Items\Achievements\LongestRoad.cs" />
     <Compile Include="Items\Cards\DevelopmentCard.cs" />
     <Compile Include="Items\Cards\DevelopmentCardDeck.cs" />
     <Compile Include="Items\Cards\DevelopmentCardType.cs" />

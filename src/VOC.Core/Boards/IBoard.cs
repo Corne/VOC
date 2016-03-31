@@ -68,5 +68,12 @@ namespace VOC.Core.Boards
         /// <param name="player"></param>
         /// <returns></returns>
         IEnumerable<IHarbor> GetHarbors(IPlayer player);
+
+        /// <summary>
+        /// Get the longest road for a given player
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        IEnumerable<IRoad> GetLongestRoad(IPlayer player);
     }
 }
