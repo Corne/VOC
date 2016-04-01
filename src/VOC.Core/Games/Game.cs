@@ -52,6 +52,7 @@ namespace VOC.Core.Games
         private void CurrentTurn_Ended(object sender, EventArgs e)
         {
             currentTurn.Ended -= CurrentTurn_Ended;
+            bank.UpdateAchievements(currentTurn.Player);
             currentTurn = provider.GetNext();
             currentTurn.Ended += CurrentTurn_Ended;
             TurnStarted?.Invoke(this, currentTurn);
@@ -73,10 +74,6 @@ namespace VOC.Core.Games
             currentTurn.AfterExecute(command.Type);
         }
 
-        private void UpdateAchievements()
-        {
-            //CvB TODO: longest road, biggest army
-        }
 
         public void PlayDevelopmentCard(IDevelopmentCard card)
         {

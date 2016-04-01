@@ -154,6 +154,7 @@ namespace VOC.Core.Boards
         }
 
         //CvB Todo: Really bad performance wise atm...., but doesnt matter that much atm because not that many possiblities
+        //Could use vertices to improve this
         private IEnumerable<IRoad> GetLongestRoad(IEnumerable<IRoad> roads)
         {
             IEnumerable<IRoad> result = new HashSet<IRoad>();

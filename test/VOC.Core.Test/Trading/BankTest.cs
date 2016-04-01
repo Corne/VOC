@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Moq;
 using VOC.Core.Boards;
 using VOC.Core.Games.Turns;
+using VOC.Core.Items.Achievements;
 using VOC.Core.Items.Cards;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
@@ -16,27 +17,28 @@ namespace VOC.Core.Test.Trading
 {
     public class BankTest
     {
-        [Fact]
-        public void CantBeConstructedWithoutABoard()
+        public static IEnumerable<object> NullConstruction
         {
-            Assert.Throws<ArgumentNullException>(() => new Bank(null));
+            get
+            {
+                yield return new object[] { null, new IAchievement[0] };
+                yield return new object[] { new Mock<IBoard>().Object, null };
+            }
         }
 
-        [Fact]
-        public void BankConstructionTest()
+        [Theory, MemberData(nameof(NullConstruction))]
+        public void CantBeConstructedWithoutABoard(IBoard board, IEnumerable<IAchievement> achievements)
         {
-            var board = new Mock<IBoard>();
-            var bank = new Bank(board.Object);
-
-            //kinda useless, but nothing to test at the moment...
-            Assert.NotNull(bank);
+            Assert.Throws<ArgumentNullException>(() => new Bank(board, achievements));
         }
+
 
         [Fact]
         public void CantBuyFromBankWithoutPlayer()
         {
             var board = new Mock<IBoard>();
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
 
             Assert.Throws<ArgumentNullException>(() => bank.BuyResource(MaterialType.Brick, MaterialType.Grain, null));
         }
@@ -47,7 +49,8 @@ namespace VOC.Core.Test.Trading
             var board = new Mock<IBoard>();
             var player = new Mock<IPlayer>();
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
             Assert.Throws<ArgumentException>(() => bank.BuyResource(MaterialType.Grain, MaterialType.Grain, player.Object));
         }
 
@@ -60,7 +63,8 @@ namespace VOC.Core.Test.Trading
             var board = new Mock<IBoard>();
             var player = new Mock<IPlayer>();
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
             Assert.Throws<ArgumentException>(() => bank.BuyResource(material, MaterialType.Grain, player.Object));
         }
 
@@ -73,7 +77,8 @@ namespace VOC.Core.Test.Trading
             var board = new Mock<IBoard>();
             var player = new Mock<IPlayer>();
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
             Assert.Throws<ArgumentException>(() => bank.BuyResource(MaterialType.Grain, material, player.Object));
         }
 
@@ -86,7 +91,8 @@ namespace VOC.Core.Test.Trading
             var player = new Mock<IPlayer>();
             player.Setup(p => p.HasResources(It.IsAny<MaterialType[]>())).Returns(false);
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
             Assert.Throws<InvalidOperationException>(() => bank.BuyResource(MaterialType.Grain, MaterialType.Lumber, player.Object));
         }
 
@@ -100,7 +106,8 @@ namespace VOC.Core.Test.Trading
             var offer = new MaterialType[] { MaterialType.Lumber, MaterialType.Lumber, MaterialType.Lumber, MaterialType.Lumber };
             player.Setup(p => p.HasResources(offer)).Returns(true);
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
             bank.BuyResource(MaterialType.Grain, MaterialType.Lumber, player.Object);
 
             player.Verify(p => p.TakeResources(offer), Times.Once);
@@ -119,7 +126,8 @@ namespace VOC.Core.Test.Trading
             var offer = new MaterialType[] { MaterialType.Brick, MaterialType.Brick, MaterialType.Brick };
             player.Setup(p => p.HasResources(offer)).Returns(true);
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
             bank.BuyResource(MaterialType.Wool, MaterialType.Brick, player.Object);
 
             player.Verify(p => p.TakeResources(offer), Times.Once);
@@ -138,7 +146,8 @@ namespace VOC.Core.Test.Trading
             var offer = new MaterialType[] { MaterialType.Wool, MaterialType.Wool };
             player.Setup(p => p.HasResources(offer)).Returns(true);
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
             bank.BuyResource(MaterialType.Ore, MaterialType.Wool, player.Object);
 
             player.Verify(p => p.TakeResources(offer), Times.Once);
@@ -157,7 +166,8 @@ namespace VOC.Core.Test.Trading
             var offer = new MaterialType[] { MaterialType.Wool, MaterialType.Wool, MaterialType.Wool, MaterialType.Wool };
             player.Setup(p => p.HasResources(offer)).Returns(true);
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
             bank.BuyResource(MaterialType.Ore, MaterialType.Wool, player.Object);
 
             player.Verify(p => p.TakeResources(offer), Times.Once);
@@ -178,7 +188,8 @@ namespace VOC.Core.Test.Trading
             var offer = new MaterialType[] { MaterialType.Wool, MaterialType.Wool };
             player.Setup(p => p.HasResources(offer)).Returns(true);
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
             bank.BuyResource(MaterialType.Ore, MaterialType.Wool, player.Object);
 
             player.Verify(p => p.TakeResources(offer), Times.Once);
@@ -189,7 +200,8 @@ namespace VOC.Core.Test.Trading
         public void GetInvestmentCostNeedsPlayer()
         {
             var board = new Mock<IBoard>();
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
 
             Assert.Throws<ArgumentNullException>(() => bank.GetInvestmentCost(MaterialType.Grain, null));
         }
@@ -202,7 +214,8 @@ namespace VOC.Core.Test.Trading
         {
             var board = new Mock<IBoard>();
             var player = new Mock<IPlayer>();
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
 
             Assert.Throws<ArgumentException>(() => bank.GetInvestmentCost(material, player.Object));
         }
@@ -212,7 +225,8 @@ namespace VOC.Core.Test.Trading
         {
             var board = new Mock<IBoard>();
             var player = new Mock<IPlayer>();
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
 
             MaterialType[] result = bank.GetInvestmentCost(MaterialType.Grain, player.Object);
             MaterialType[] expected = { MaterialType.Grain, MaterialType.Grain, MaterialType.Grain, MaterialType.Grain };
@@ -224,11 +238,13 @@ namespace VOC.Core.Test.Trading
         {
             var board = new Mock<IBoard>();
             var player = new Mock<IPlayer>();
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+
+            var bank = new Bank(board.Object, achievements);
             var harbor = new Mock<IHarbor>();
             harbor.Setup(h => h.Discount).Returns(MaterialType.Unsourced);
             board.Setup(b => b.GetHarbors(player.Object)).Returns(new IHarbor[] { harbor.Object });
-            
+
             MaterialType[] result = bank.GetInvestmentCost(MaterialType.Grain, player.Object);
             MaterialType[] expected = { MaterialType.Grain, MaterialType.Grain, MaterialType.Grain };
             Assert.Equal(expected, result);
@@ -239,13 +255,15 @@ namespace VOC.Core.Test.Trading
         {
             var board = new Mock<IBoard>();
             var player = new Mock<IPlayer>();
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+
+            var bank = new Bank(board.Object, achievements);
             var harbor = new Mock<IHarbor>();
             harbor.Setup(h => h.Discount).Returns(MaterialType.Grain);
             board.Setup(b => b.GetHarbors(player.Object)).Returns(new IHarbor[] { harbor.Object });
 
             MaterialType[] result = bank.GetInvestmentCost(MaterialType.Grain, player.Object);
-            MaterialType[] expected = { MaterialType.Grain, MaterialType.Grain};
+            MaterialType[] expected = { MaterialType.Grain, MaterialType.Grain };
             Assert.Equal(expected, result);
         }
 
@@ -254,7 +272,8 @@ namespace VOC.Core.Test.Trading
         {
             var board = new Mock<IBoard>();
             var player = new Mock<IPlayer>();
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
 
             var unsourcedHarbor = new Mock<IHarbor>();
             unsourcedHarbor.Setup(h => h.Discount).Returns(MaterialType.Unsourced);
@@ -272,7 +291,9 @@ namespace VOC.Core.Test.Trading
         {
             var board = new Mock<IBoard>();
             var player = new Mock<IPlayer>();
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+
+            var bank = new Bank(board.Object, achievements);
             var harbor = new Mock<IHarbor>();
             harbor.Setup(h => h.Discount).Returns(MaterialType.Wool);
             board.Setup(b => b.GetHarbors(player.Object)).Returns(new IHarbor[] { harbor.Object });
@@ -296,7 +317,8 @@ namespace VOC.Core.Test.Trading
         public void BuyDevelopmentCantBeCalledWithoutPlayer(IPlayer player, ITurn turn)
         {
             var board = new Mock<IBoard>();
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
 
             Assert.Throws<ArgumentNullException>(() => bank.BuyDevelopmentCard(player, turn));
         }
@@ -309,7 +331,8 @@ namespace VOC.Core.Test.Trading
             var turn = new Mock<ITurn>();
             player.Setup(p => p.HasResources(Bank.DEVELOPMENTCARD_COST)).Returns(false);
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
 
             Assert.Throws<InvalidOperationException>(() => bank.BuyDevelopmentCard(player.Object, turn.Object));
         }
@@ -323,7 +346,8 @@ namespace VOC.Core.Test.Trading
 
             player.Setup(p => p.HasResources(Bank.DEVELOPMENTCARD_COST)).Returns(true);
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
 
             bank.BuyDevelopmentCard(player.Object, turn.Object);
 
@@ -340,13 +364,40 @@ namespace VOC.Core.Test.Trading
 
             player.Setup(p => p.HasResources(Bank.DEVELOPMENTCARD_COST)).Returns(true);
 
-            var bank = new Bank(board.Object);
+            var achievements = new IAchievement[0];
+            var bank = new Bank(board.Object, achievements);
 
-            for (int i=0; i<25; i++)
+            for (int i = 0; i < 25; i++)
             {
                 bank.BuyDevelopmentCard(player.Object, turn.Object);
             }
             Assert.Throws<InvalidOperationException>(() => bank.BuyDevelopmentCard(player.Object, turn.Object));
+        }
+
+        [Fact]
+        public void UpdateAchievementsFailsIfPlayerNull()
+        {
+            var board = new Mock<IBoard>();
+            var mocks = new[] { new Mock<IAchievement>(), new Mock<IAchievement>(), new Mock<IAchievement>() };
+            var achievements = mocks.Select(m => m.Object).ToList();
+            var bank = new Bank(board.Object, achievements);
+
+            Assert.Throws<ArgumentNullException>(() => bank.UpdateAchievements(null));
+        }
+
+        [Fact]
+        public void UpdateAchievementUpdatesAllAchievements()
+        {
+            var board = new Mock<IBoard>();
+            var mocks = new [] { new Mock<IAchievement>(), new Mock<IAchievement>(), new Mock<IAchievement>() };
+            var achievements = mocks.Select(m => m.Object).ToList();
+            var bank = new Bank(board.Object, achievements);
+
+            var player = new Mock<IPlayer>();
+            bank.UpdateAchievements(player.Object);
+
+            foreach (var mock in mocks)
+                mock.Verify(m => m.Update(player.Object));
         }
     }
 }

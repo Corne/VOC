@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VOC.Core.Games.Turns;
+using VOC.Core.Items.Achievements;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 
@@ -11,6 +12,11 @@ namespace VOC.Core.Trading
 {
     public interface IBank
     {
+        /// <summary>
+        /// All achievements that are currently active
+        /// </summary>
+        IEnumerable<IAchievement> ActiveAchievements { get; }
+
         /// <summary>
         /// Buy resources from the bank
         /// You can buy 1 resource a time, and the bank will check how much resource the player will need to pay based on docks
@@ -30,5 +36,7 @@ namespace VOC.Core.Trading
         MaterialType[] GetInvestmentCost(MaterialType offer, IPlayer player);
 
         void BuyDevelopmentCard(IPlayer player, ITurn turn);
+
+        void UpdateAchievements(IPlayer player);
     }
 }

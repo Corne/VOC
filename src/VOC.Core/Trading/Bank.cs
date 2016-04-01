@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using log4net;
 using VOC.Core.Boards;
 using VOC.Core.Games.Turns;
+using VOC.Core.Items.Achievements;
 using VOC.Core.Items.Cards;
 using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
@@ -22,13 +23,23 @@ namespace VOC.Core.Trading
                 .ToArray();
 
         private readonly IBoard board;
+        private readonly IEnumerable<IAchievement> achievements;
         private readonly DevelopmentCardDeck deck = new DevelopmentCardDeck();
 
-        public Bank(IBoard board)
+
+        public IEnumerable<IAchievement> ActiveAchievements
+        {
+            get { return achievements.Where(p => p.Owner != null); }
+        }
+
+        public Bank(IBoard board, IEnumerable<IAchievement> achievements)
         {
             if (board == null)
-                throw new ArgumentNullException("Board can't be null");
+                throw new ArgumentNullException(nameof(board));
+            if (achievements == null)
+                throw new ArgumentNullException(nameof(achievements));
             this.board = board;
+            this.achievements = achievements;
         }
 
         public void BuyResource(MaterialType request, MaterialType offer, IPlayer player)
@@ -79,5 +90,13 @@ namespace VOC.Core.Trading
             player.AddCard(new DevelopmentCard(deck.Pop(), turn));
         }
 
+        public void UpdateAchievements(IPlayer player)
+        {
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+
+            foreach (var achievement in achievements)
+                achievement.Update(player);
+        }
     }
 }
