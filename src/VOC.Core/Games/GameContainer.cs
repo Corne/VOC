@@ -9,6 +9,7 @@ using VOC.Core.Boards;
 using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Items;
+using VOC.Core.Items.Achievements;
 using VOC.Core.Players;
 using VOC.Core.Trading;
 
@@ -43,7 +44,8 @@ namespace VOC.Core.Games
             builder.RegisterType<Board>()
                 .As<IBoard>().InstancePerLifetimeScope();
 
-            builder.RegisterType<DefaultBoardBuilder>().As<IBoardBuilder>();
+            builder.RegisterType<DefaultBoardBuilder>()
+                .As<IBoardBuilder>();
 
             builder.RegisterType<Dice>().UsingConstructor()
                 .As<IDice>().InstancePerLifetimeScope();
@@ -51,6 +53,10 @@ namespace VOC.Core.Games
             builder.RegisterType<Bank>()
                 .As<IBank>().InstancePerLifetimeScope();
 
+            builder.RegisterType<BiggestArmy>()
+                .As<IAchievement>().InstancePerLifetimeScope();
+            builder.RegisterType<LongestRoad>()
+                .As<IAchievement>().InstancePerLifetimeScope();
 
             container = builder.Build();
         }
