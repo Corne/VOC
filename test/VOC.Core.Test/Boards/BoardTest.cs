@@ -325,7 +325,7 @@ namespace VOC.Core.Test.Boards
         public void GetEstablismentNullExcpetion()
         {
             var board = new Board(builder);
-            Assert.Throws<ArgumentNullException>(() => board.GetEstablishments(null));
+            Assert.Throws<ArgumentNullException>(() => board.GetEstablishments((ITile)null));
         }
 
         [Fact]

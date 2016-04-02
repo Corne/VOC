@@ -18,7 +18,14 @@ namespace VOC.Core.Establishments
         /// Vertex the establisment is placed on
         /// </summary>
         IVertex Vertex { get; }
-
+        /// <summary>
+        /// Level of the Establishment
+        /// </summary>
+        EstablishmentLevel Level { get; }
+        /// <summary>
+        /// Returns the Number of victory points the establishment is currently worth
+        /// </summary>
+        int VictoryPoints { get; }
         /// <summary>
         /// Harvest an adjacent tile
         /// </summary>

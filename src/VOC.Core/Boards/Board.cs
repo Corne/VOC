@@ -104,7 +104,14 @@ namespace VOC.Core.Boards
             if (tile == null)
                 throw new ArgumentNullException(nameof(tile));
 
-            return Establishments.Where(e => e.Vertex.IsAdjacentTo(tile)).ToList();
+            return establishments.Where(e => e.Vertex.IsAdjacentTo(tile)).ToList();
+        }
+
+        public IEnumerable<IEstablishment> GetEstablishments(IPlayer player)
+        {
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+            return establishments.Where(e => e.Owner == player).ToList();
         }
 
         public IEnumerable<ITile> GetResourceTiles(int number)
@@ -117,7 +124,7 @@ namespace VOC.Core.Boards
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            var playerEstablisments = Establishments.Where(e => e.Owner == player).ToList();
+            var playerEstablisments = establishments.Where(e => e.Owner == player).ToList();
             return Harbors.Where(harbor => playerEstablisments.Any(e => e.Vertex.IsAdjacentTo(harbor.Edge)));
         }
 

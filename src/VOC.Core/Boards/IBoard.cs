@@ -39,6 +39,13 @@ namespace VOC.Core.Boards
         IEnumerable<IEstablishment> GetEstablishments(ITile tile);
 
         /// <summary>
+        /// Get all establisment for a specific player
+        /// </summary>
+        /// <param name="player">player</param>
+        /// <returns>enumberable of estbalisments where player is the owner</returns>
+        IEnumerable<IEstablishment> GetEstablishments(IPlayer player);
+
+        /// <summary>
         /// Returns a set of players that are adjacent to the given tile
         /// </summary>
         /// <param name="tile">tile</param>

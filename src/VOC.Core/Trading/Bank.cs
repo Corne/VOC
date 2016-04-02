@@ -98,5 +98,17 @@ namespace VOC.Core.Trading
             foreach (var achievement in achievements)
                 achievement.Update(player);
         }
+
+        public bool VerifyWinCondition(IPlayer player)
+        {
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+
+            int cards = player.Cards.Where(c => c.Type == DevelopmentCardType.VictoryPoint).Count();
+            int achievementCount = achievements.Where(a => a.Owner == player).Select(a => a.VictoryPoints).Sum();
+            int establishmentCount = board.GetEstablishments(player).Select(e => e.VictoryPoints).Sum();
+
+            return cards + achievementCount + establishmentCount >= 10;
+        }
     }
 }

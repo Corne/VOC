@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using VOC.Core.Boards;
+using VOC.Core.Establishments;
 using VOC.Core.Games.Turns;
 using VOC.Core.Items.Achievements;
 using VOC.Core.Items.Cards;
@@ -389,7 +390,7 @@ namespace VOC.Core.Test.Trading
         public void UpdateAchievementUpdatesAllAchievements()
         {
             var board = new Mock<IBoard>();
-            var mocks = new [] { new Mock<IAchievement>(), new Mock<IAchievement>(), new Mock<IAchievement>() };
+            var mocks = new[] { new Mock<IAchievement>(), new Mock<IAchievement>(), new Mock<IAchievement>() };
             var achievements = mocks.Select(m => m.Object).ToList();
             var bank = new Bank(board.Object, achievements);
 
@@ -398,6 +399,75 @@ namespace VOC.Core.Test.Trading
 
             foreach (var mock in mocks)
                 mock.Verify(m => m.Update(player.Object));
+        }
+
+        [Fact]
+        public void CantVerifyWinConditionOnNullPlayer()
+        {
+            var board = new Mock<IBoard>();
+            var achievements = new IAchievement[0];
+
+            var bank = new Bank(board.Object, achievements);
+            Assert.Throws<ArgumentNullException>(() => bank.VerifyWinCondition(null));
+        }
+
+        private IEnumerable<IDevelopmentCard> CreateVictoryCards(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var mock = new Mock<IDevelopmentCard>();
+                mock.Setup(m => m.Type).Returns(DevelopmentCardType.VictoryPoint);
+                yield return mock.Object;
+            }
+        }
+
+        private IEnumerable<IEstablishment> CreateEstablishments(int count, int value)
+        {
+            for(int i =0; i<count; i++)
+            {
+                var mock = new Mock<IEstablishment>();
+                mock.Setup(m => m.VictoryPoints).Returns(value);
+                yield return mock.Object;
+            }
+        }
+
+        private IAchievement CreateAchievement(IPlayer player)
+        {
+            var achievement = new Mock<IAchievement>();
+            achievement.Setup(l => l.Owner).Returns(player);
+            achievement.Setup(a => a.VictoryPoints).Returns(2);
+            return achievement.Object;
+        }
+
+        //settlement = 1
+        //city = 2
+        //victory point card =1 
+        //longest road = 2
+        //biggest army = 2
+        [Theory]
+        [InlineData(0, 0, 0, false, false, false)]//total 0
+        [InlineData(1, 1, 1, false, false, false)]//total 4
+        [InlineData(10, 0, 0, false, false, true)]//total 10
+        [InlineData(0, 5, 0, false, false, true)]//total 10
+        [InlineData(0, 0, 10, false, false, true)]//total 10
+        [InlineData(3, 1, 2, true, false, false)]//total 9
+        [InlineData(2, 1, 3, true, true, true)]//total 11
+        [InlineData(0, 4, 2, false, true, true)]//total 12
+        public void VerifyWinConditionTest(int settlements, int cities, int victoryCards, bool longestRoad, bool biggestArmy, bool expected)
+        {
+            var player = new Mock<IPlayer>();
+            player.Setup(p => p.Cards).Returns(CreateVictoryCards(victoryCards));
+
+            var board = new Mock<IBoard>();
+            board.Setup(b => b.GetEstablishments(player.Object)).Returns(CreateEstablishments(settlements, 1).Concat(CreateEstablishments(cities, 2)));
+
+            var roadAchievement = CreateAchievement(longestRoad ? player.Object : new Mock<IPlayer>().Object);
+            var armhyAchievement = CreateAchievement(biggestArmy ? player.Object : new Mock<IPlayer>().Object);
+
+            var bank = new Bank(board.Object, new[] { roadAchievement, armhyAchievement });
+
+            bool result = bank.VerifyWinCondition(player.Object);
+            Assert.Equal(expected, result);
         }
     }
 }

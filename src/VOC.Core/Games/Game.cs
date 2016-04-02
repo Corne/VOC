@@ -52,7 +52,6 @@ namespace VOC.Core.Games
         private void CurrentTurn_Ended(object sender, EventArgs e)
         {
             currentTurn.Ended -= CurrentTurn_Ended;
-            bank.UpdateAchievements(currentTurn.Player);
             currentTurn = provider.GetNext();
             currentTurn.Ended += CurrentTurn_Ended;
             TurnStarted?.Invoke(this, currentTurn);
@@ -71,9 +70,14 @@ namespace VOC.Core.Games
                 throw new ArgumentException("Can't execute this command in current state");
 
             command.Execute();
+            bank.UpdateAchievements(currentTurn.Player);
             currentTurn.AfterExecute(command.Type);
         }
 
+        private void CheckWinCondition(IPlayer player)
+        {
+            //var points = 
+        }
 
         public void PlayDevelopmentCard(IDevelopmentCard card)
         {

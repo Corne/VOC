@@ -33,6 +33,8 @@ namespace VOC.Core.Establishments
         public IVertex Vertex { get; }
         public EstablishmentLevel Level { get; private set; }
 
+        public int VictoryPoints { get { return (int)Level; } }
+
         public void Harvest(ITile tile)
         {
             if (!Vertex.IsAdjacentTo(tile))

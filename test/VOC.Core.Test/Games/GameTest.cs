@@ -137,26 +137,6 @@ namespace VOC.Core.Test.Games
             Assert.Equal(2, turnSwitches);
         }
 
-        [Fact]
-        public void GameShouldUpdateAchievementsWhenTurnEnds()
-        {
-            var players = CreateFakePlayers(3);
-            var provider = new Mock<ITurnProvider>();
-            var turn = new Mock<ITurn>();
-            provider.Setup(p => p.GetNext()).Returns(turn.Object);
-            var bank = new Mock<IBank>();
-
-            var game = new Game(players, provider.Object, bank.Object);
-
-            int turnSwitches = 0;
-            game.TurnStarted += (sender, args) => { turnSwitches++; };
-
-            game.Start();
-
-            turn.Raise(t => t.Ended += null, EventArgs.Empty);
-
-            bank.Verify(b => b.UpdateAchievements(It.IsAny<IPlayer>()));
-        }
 
         [Fact]
         public void ExecuteFailsIfCommandNull()
@@ -282,6 +262,7 @@ namespace VOC.Core.Test.Games
 
             command.Verify(c => c.Execute());
             turn.Verify(t => t.AfterExecute(It.IsAny<GameCommand>()));
+            bank.Verify(b => b.UpdateAchievements(It.IsAny<IPlayer>()));
         }
 
         [Fact]
