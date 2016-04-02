@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\src\VOC.Core\VOC.Core.csproj">
+    <ProjectReference Include="..\..\src\VOC.Core\VOC.Core.csproj">
       <Project>{cb746d91-1de3-4831-beb7-3f0bb08ef191}</Project>
       <Name>VOC.Core</Name>
     </ProjectReference>

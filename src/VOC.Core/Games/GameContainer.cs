@@ -10,6 +10,7 @@ using VOC.Core.Games.Commands;
 using VOC.Core.Games.Turns;
 using VOC.Core.Items;
 using VOC.Core.Items.Achievements;
+using VOC.Core.Items.RawMaterials;
 using VOC.Core.Players;
 using VOC.Core.Trading;
 
@@ -43,6 +44,9 @@ namespace VOC.Core.Games
 
             builder.RegisterType<Board>()
                 .As<IBoard>().InstancePerLifetimeScope();
+
+            builder.RegisterType<RawMaterialProvider>()
+                .As<IRawmaterialProvider>();
 
             builder.RegisterType<DefaultBoardBuilder>()
                 .As<IBoardBuilder>();
