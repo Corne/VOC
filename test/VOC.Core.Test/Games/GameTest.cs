@@ -261,8 +261,60 @@ namespace VOC.Core.Test.Games
             game.Execute(command.Object);
 
             command.Verify(c => c.Execute());
-            turn.Verify(t => t.AfterExecute(It.IsAny<GameCommand>()));
+            bank.Verify(b => b.VerifyWinCondition(It.IsAny<IPlayer>()));
             bank.Verify(b => b.UpdateAchievements(It.IsAny<IPlayer>()));
+            turn.Verify(t => t.AfterExecute(It.IsAny<GameCommand>()));
+        }
+
+        [Fact]
+        public void ExecuteFinishesGameIfVerifyWinConditionIsTrue()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            turn.Setup(t => t.Player).Returns(players.First());
+            turn.Setup(t => t.CanExecute(It.IsAny<GameCommand>())).Returns(true);
+
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var command = new Mock<IPlayerCommand>();
+            command.Setup(c => c.Player).Returns(players.First());
+            var bank = new Mock<IBank>();
+            bank.Setup(b => b.VerifyWinCondition(It.IsAny<IPlayer>())).Returns(true);
+
+            var game = new Game(players, provider.Object, bank.Object);
+            game.Start();
+
+            bool finished = false;
+            game.Finished += (sender, args) => { finished = true; };
+
+            game.Execute(command.Object);
+
+            Assert.True(finished);
+        }
+
+        [Fact]
+        public void CanNoLongerExecuteWhenGameIsFinished()
+        {
+            var players = CreateFakePlayers(3);
+            var provider = new Mock<ITurnProvider>();
+            var turn = new Mock<ITurn>();
+            turn.Setup(t => t.Player).Returns(players.First());
+            turn.Setup(t => t.CanExecute(It.IsAny<GameCommand>())).Returns(true);
+
+            provider.Setup(p => p.GetNext()).Returns(turn.Object);
+
+            var command = new Mock<IPlayerCommand>();
+            command.Setup(c => c.Player).Returns(players.First());
+            var bank = new Mock<IBank>();
+            bank.Setup(b => b.VerifyWinCondition(It.IsAny<IPlayer>())).Returns(true);
+
+            var game = new Game(players, provider.Object, bank.Object);
+            game.Start();
+
+            game.Execute(command.Object);
+
+            Assert.Throws<InvalidOperationException>(() => game.Execute(command.Object));
         }
 
         [Fact]

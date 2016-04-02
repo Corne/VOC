@@ -38,7 +38,7 @@ namespace VOC.Core.Games
         public IEnumerable<IPlayer> Players { get { return players.ToList().AsReadOnly(); } }
 
         public event EventHandler<ITurn> TurnStarted;
-
+        public event EventHandler<IPlayer> Finished;
 
         public void Start()
         {
@@ -70,13 +70,20 @@ namespace VOC.Core.Games
                 throw new ArgumentException("Can't execute this command in current state");
 
             command.Execute();
+
             bank.UpdateAchievements(currentTurn.Player);
-            currentTurn.AfterExecute(command.Type);
+            if (bank.VerifyWinCondition(currentTurn.Player))
+                SetGameFinished();
+            else
+                currentTurn.AfterExecute(command.Type);
         }
 
-        private void CheckWinCondition(IPlayer player)
+        private void SetGameFinished()
         {
-            //var points = 
+            currentTurn.Ended -= CurrentTurn_Ended;
+            var player = currentTurn.Player;
+            currentTurn = null;
+            Finished?.Invoke(this, player);
         }
 
         public void PlayDevelopmentCard(IDevelopmentCard card)

@@ -38,5 +38,7 @@ namespace VOC.Core.Trading
         void BuyDevelopmentCard(IPlayer player, ITurn turn);
 
         void UpdateAchievements(IPlayer player);
+
+        bool VerifyWinCondition(IPlayer player);
     }
 }
