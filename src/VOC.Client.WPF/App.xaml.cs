@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using VOC.Client.WPF.Main;
 
 namespace VOC.Client.WPF
 {
@@ -13,5 +14,17 @@ namespace VOC.Client.WPF
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            log4net.Config.XmlConfigurator.Configure();
+            base.OnStartup(e);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            var locator = (ViewModelLocator)FindResource("Locator");
+            locator.Dispose();
+            base.OnExit(e);
+        }
     }
 }
