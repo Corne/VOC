@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VOC.Core.DummyClient")]
+[assembly: AssemblyTitle("VOC.Client.WPF.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("VOC.Core.DummyClient")]
+[assembly: AssemblyProduct("VOC.Client.WPF.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("75e18f2c-c950-4a7b-b968-32a7272cb2fe")]
+[assembly: Guid("93c83657-52e3-45ce-a1cc-cc7a78e5c688")]
 
 // Version information for an assembly consists of the following four values:
 //

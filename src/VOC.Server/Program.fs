@@ -16,8 +16,7 @@ type MyHub() =
     member this.Test(message: string) =
         printfn "Test Message: %s" message
 
-type GameHub() =
-    inherit Hub()
+type GameLibrary() =
     let container = new GameContainer()
     let players = new HashSet<IPlayer>()
     do
@@ -26,23 +25,35 @@ type GameHub() =
     let game = container.Create(players)
     do
         game.Start()
+    member this.Commands() =
+        container.GetCommandFactory(game)
+    member this.Get() =
+        game
+
+type GameHub(library :GameLibrary) =
+    inherit Hub()
+    do
+        printf "New GameHub"
 
     member this.RollDice() =
         printfn "Roll Dice"
-        let commandfactory = container.GetCommandFactory(game)
-        let rolldice = commandfactory.NewRollDice(players.First())
+        let commandfactory = library.Commands()
+        let game = library.Get()
+        let rolldice = commandfactory.NewRollDice(game.Players.First())
         game.Execute(rolldice)
         printf "Result %d" rolldice.Dice.Current.Result
 
+type Startup() =
+    member this.Configuration(app :IAppBuilder) =
+        let library = new GameLibrary()
+        GlobalHost.DependencyResolver.Register(typedefof<GameHub>, fun() -> new GameHub(library) :> obj)
+        app.MapSignalR() |> ignore
 
 [<EntryPoint>]
 let main argv = 
-    let start (app: IAppBuilder) =
-        app.MapSignalR() |> ignore
     let host = "http://localhost:8085"
-    use app = WebApp.Start(host, start)
+    use app = WebApp.Start<Startup>(host)
 
     printfn "Server running on %s" host
     Console.ReadLine() |> ignore
     0 // return an integer exit code
-
