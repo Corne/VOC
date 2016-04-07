@@ -2,20 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
+using VOC.Client.WPF.Dashboard;
 using VOC.Client.WPF.Main.Navigation;
 
 namespace VOC.Client.WPF.Main
 {
     public class ApplicationBuilder
     {
-
         private readonly ContainerBuilder builder;
-
-
 
         public ApplicationBuilder()
         {
@@ -36,7 +32,7 @@ namespace VOC.Client.WPF.Main
         private void StartNavigation(IActivatedEventArgs<MainViewModel> args)
         {
             var navigationService = args.Context.Resolve<INavigationService>();
-            //navigationService.Navigate<HomeViewModel>();
+            navigationService.Navigate<DashboardViewModel>();
         }
 
         public IContainer Build()

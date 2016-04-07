@@ -10,6 +10,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dashboard/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <main:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
         </ResourceDictionary>
