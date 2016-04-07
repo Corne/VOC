@@ -143,7 +143,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\VOC.Client.Data\VOC.Client.Data.csproj">
+      <Project>{711a2f5f-e5eb-4848-91dc-ea2d61c55a7e}</Project>
+      <Name>VOC.Client.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
