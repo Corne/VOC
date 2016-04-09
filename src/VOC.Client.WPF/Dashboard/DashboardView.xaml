@@ -5,15 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VOC.Client.WPF.Dashboard"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance local:DashboardViewModel}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0">
-            
+        <Border Grid.Column="0" Padding="10">
+            <ItemsControl ItemsSource="{Binding Games}" />
         </Border>
     </Grid>
 </UserControl>

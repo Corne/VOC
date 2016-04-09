@@ -99,13 +99,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\VOC.Client.Data\VOC.Client.Data.csproj">
-      <Project>{711a2f5f-e5eb-4848-91dc-ea2d61c55a7e}</Project>
-      <Name>VOC.Client.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\VOC.Client.WPF\VOC.Client.WPF.csproj">
       <Project>{5ba623d2-9050-4996-a26a-f4a4941027ef}</Project>
       <Name>VOC.Client.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\VOC.Client\VOC.Client.csproj">
+      <Project>{af6a6cdd-7643-4638-914e-31858ec2dfb9}</Project>
+      <Name>VOC.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

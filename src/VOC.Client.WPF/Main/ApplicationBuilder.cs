@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Core;
+using VOC.Client.Data.Games;
 using VOC.Client.WPF.Dashboard;
 using VOC.Client.WPF.Main.Navigation;
 
@@ -27,6 +28,9 @@ namespace VOC.Client.WPF.Main
             builder.RegisterType<ContentScope>();
 
             builder.RegisterType<MainViewModel>().SingleInstance().OnActivated(StartNavigation);
+
+            //data
+            builder.RegisterType<DummyGameStore>().As<IGameStore>();
         }
 
         private void StartNavigation(IActivatedEventArgs<MainViewModel> args)

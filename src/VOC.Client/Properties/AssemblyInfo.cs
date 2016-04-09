@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VOC.Client.Data")]
+[assembly: AssemblyTitle("VOC.Client")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("VOC.Client.Data")]
+[assembly: AssemblyProduct("VOC.Client")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("711a2f5f-e5eb-4848-91dc-ea2d61c55a7e")]
+[assembly: Guid("af6a6cdd-7643-4638-914e-31858ec2dfb9")]
 
 // Version information for an assembly consists of the following four values:
 //

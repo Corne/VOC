@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="VOC.Client.WPF.Dashboard.GameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VOC.Client.WPF.Dashboard"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance local:GameViewModel}">
+
+    <UserControl.Resources>
+        <Style TargetType="Border">
+            <Setter Property="BorderThickness" Value="1, 0" />
+            <Setter Property="BorderBrush" Value="LightGray" />
+            <Setter Property="Padding" Value="3, 0" />
+        </Style>
+
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0">
+            <TextBlock Text="{Binding Description}" />
+        </Border>
+
+        <Border Grid.Column="1">
+            <TextBlock Text="{Binding Connection}" />
+        </Border>
+    </Grid>
+
+</UserControl>
