@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VOC.Client.Data.Games
+namespace VOC.Client.Dashboard.Configuration
 {
-    public interface IGameStore
+    public interface IMapSelector
     {
-        Task Load();
-
-        IEnumerable<IGame> Games { get; }
+        Task<IEnumerable<IMap>> GetMaps();
     }
 }

@@ -40,13 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Games\DummyGame.cs" />
-    <Compile Include="Data\Games\DummyGameStore.cs" />
-    <Compile Include="Data\Games\ConnectionInfo.cs" />
-    <Compile Include="Data\Games\IGame.cs" />
-    <Compile Include="Data\Games\IGameStore.cs" />
+    <Compile Include="Dashboard\Configuration\DummyMap.cs" />
+    <Compile Include="Dashboard\Configuration\DummyMapSelector.cs" />
+    <Compile Include="Dashboard\Configuration\IMap.cs" />
+    <Compile Include="Dashboard\Configuration\IMapSelector.cs" />
+    <Compile Include="Dashboard\Games\DummyGame.cs" />
+    <Compile Include="Dashboard\Games\DummyGameStore.cs" />
+    <Compile Include="Dashboard\Games\ConnectionInfo.cs" />
+    <Compile Include="Dashboard\Games\IGame.cs" />
+    <Compile Include="Dashboard\Games\IGameStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

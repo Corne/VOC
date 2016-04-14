@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VOC.Client.Data.Games
+namespace VOC.Client.Dashboard.Games
 {
     public class DummyGame : IGame
     {

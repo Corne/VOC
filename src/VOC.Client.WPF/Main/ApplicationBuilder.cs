@@ -4,7 +4,8 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Core;
-using VOC.Client.Data.Games;
+using VOC.Client.Dashboard.Configuration;
+using VOC.Client.Dashboard.Games;
 using VOC.Client.WPF.Dashboard;
 using VOC.Client.WPF.Main.Navigation;
 
@@ -31,6 +32,7 @@ namespace VOC.Client.WPF.Main
 
             //data
             builder.RegisterType<DummyGameStore>().As<IGameStore>();
+            builder.RegisterType<DummyMapSelector>().As<IMapSelector>();
         }
 
         private void StartNavigation(IActivatedEventArgs<MainViewModel> args)

@@ -12,6 +12,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Styles.xaml" />
                 <ResourceDictionary Source="Dashboard/Templates.xaml" />
+                <ResourceDictionary Source="GameConfiguration/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <main:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
         </ResourceDictionary>

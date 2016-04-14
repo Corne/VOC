@@ -14,7 +14,22 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Padding="10">
-            <ItemsControl ItemsSource="{Binding Games}" />
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Games}" />
+            </ScrollViewer>
         </Border>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Padding="10">
+                <Button VerticalAlignment="Center" 
+                        Content="CREATE GAME"
+                        Command="{Binding NavigateToGameConfiguration}" />
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

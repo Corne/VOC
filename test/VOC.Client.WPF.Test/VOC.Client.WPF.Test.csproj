@@ -91,6 +91,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Dashboard\DashboardViewModelTest.cs" />
+    <Compile Include="GameConfiguration\ConfigurationViewModelTest.cs" />
     <Compile Include="Main\MainViewModelTest.cs" />
     <Compile Include="Main\Navigation\NavigationServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

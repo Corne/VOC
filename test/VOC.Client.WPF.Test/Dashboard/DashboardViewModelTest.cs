@@ -4,25 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
-using VOC.Client.Data.Games;
+using VOC.Client.Dashboard.Games;
 using VOC.Client.WPF.Dashboard;
+using VOC.Client.WPF.Main.Navigation;
 using Xunit;
 
 namespace VOC.Client.WPF.Test.Dashboard
 {
     public class DashboardViewModelTest
     {
-        [Fact]
-        public void CantBeConstructedWithNull()
+        public static IEnumerable<object> NullConstruction
         {
-            Assert.Throws<ArgumentNullException>(() => new DashboardViewModel(null));
+            get
+            {
+                yield return new object[] { null, new Mock<INavigationService>().Object };
+                yield return new object[] { new Mock<IGameStore>().Object, null };
+            }
+        }
+
+        [Theory, MemberData(nameof(NullConstruction))]
+        public void CantBeConstructedWithNull(IGameStore store, INavigationService navigation)
+        {
+            Assert.Throws<ArgumentNullException>(() => new DashboardViewModel(store, navigation));
         }
 
         [Fact]
         public async Task GameStoreGetsLoadedOnNavigate()
         {
             var store = new Mock<IGameStore>();
-            var viewmodel = new DashboardViewModel(store.Object);
+            var navigation = new Mock<INavigationService>();
+            var viewmodel = new DashboardViewModel(store.Object, navigation.Object);
 
             await viewmodel.OnNavigate();
 
@@ -33,9 +44,11 @@ namespace VOC.Client.WPF.Test.Dashboard
         public async Task GameStoreCreatesGameVMForeachGameInStore()
         {
             var store = new Mock<IGameStore>();
+            var navigation = new Mock<INavigationService>();
+
             var games = Enumerable.Range(0, 5).Select(i => new Mock<IGame>().Object).ToList();
             store.Setup(s => s.Games).Returns(games);
-            var viewmodel = new DashboardViewModel(store.Object);
+            var viewmodel = new DashboardViewModel(store.Object, navigation.Object);
 
             await viewmodel.OnNavigate();
             Assert.Equal(games.Count, viewmodel.Games.Count);
