@@ -13,6 +13,9 @@ namespace VOC.Client.Dashboard.Configuration
             Name = name;
         }
 
+        public int MaxPlayers { get { return 4; } }
+        public int MinPlayers { get { return 3; } }
+
         public string Name { get; }
     }
 }

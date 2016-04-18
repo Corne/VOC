@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace VOC.Client.Dashboard.Configuration
 {
-    public interface IMap
+    public interface IMapConfigurator
     {
-        string Name { get; }
-
-        int MinPlayers { get; }
-        int MaxPlayers { get; }
+        Task<IEnumerable<IMap>> GetMaps();
     }
 }

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VOC.Client.WPF.GameConfiguration
+namespace VOC.Client.WPF.Configuration
 {
     /// <summary>
     /// Interaction logic for ConfigurationView.xaml

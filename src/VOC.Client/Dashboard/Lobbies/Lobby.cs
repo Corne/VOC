@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VOC.Client.Dashboard.Configuration
+namespace VOC.Client.Dashboard.Lobbies
 {
-    public interface IMapSelector
+    public class Lobby
     {
-        Task<IEnumerable<IMap>> GetMaps();
+
     }
 }

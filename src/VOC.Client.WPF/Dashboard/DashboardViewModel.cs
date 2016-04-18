@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using VOC.Client.Dashboard.Games;
-using VOC.Client.WPF.GameConfiguration;
+using VOC.Client.WPF.Configuration;
 using VOC.Client.WPF.Main;
 using VOC.Client.WPF.Main.Navigation;
 

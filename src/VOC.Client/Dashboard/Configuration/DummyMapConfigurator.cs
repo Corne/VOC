@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VOC.Client.Dashboard.Configuration
 {
-    public class DummyMapSelector : IMapSelector
+    public class DummyMapConfigurator : IMapConfigurator
     {
         public async Task<IEnumerable<IMap>> GetMaps()
         {

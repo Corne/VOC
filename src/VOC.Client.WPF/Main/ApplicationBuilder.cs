@@ -32,7 +32,8 @@ namespace VOC.Client.WPF.Main
 
             //data
             builder.RegisterType<DummyGameStore>().As<IGameStore>();
-            builder.RegisterType<DummyMapSelector>().As<IMapSelector>();
+            builder.RegisterType<DummyMapConfigurator>().As<IMapConfigurator>();
+            builder.RegisterType<DummyGameConfigurator>().As<IGameConfigurator>();
         }
 
         private void StartNavigation(IActivatedEventArgs<MainViewModel> args)

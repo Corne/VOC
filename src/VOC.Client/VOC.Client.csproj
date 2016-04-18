@@ -40,15 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dashboard\Configuration\DummyGameConfigurator.cs" />
     <Compile Include="Dashboard\Configuration\DummyMap.cs" />
-    <Compile Include="Dashboard\Configuration\DummyMapSelector.cs" />
+    <Compile Include="Dashboard\Configuration\DummyMapConfigurator.cs" />
+    <Compile Include="Dashboard\Configuration\GameConfiguration.cs" />
+    <Compile Include="Dashboard\Configuration\IGameConfigurator.cs" />
     <Compile Include="Dashboard\Configuration\IMap.cs" />
-    <Compile Include="Dashboard\Configuration\IMapSelector.cs" />
+    <Compile Include="Dashboard\Configuration\IMapConfigurator.cs" />
     <Compile Include="Dashboard\Games\DummyGame.cs" />
     <Compile Include="Dashboard\Games\DummyGameStore.cs" />
     <Compile Include="Dashboard\Games\ConnectionInfo.cs" />
     <Compile Include="Dashboard\Games\IGame.cs" />
     <Compile Include="Dashboard\Games\IGameStore.cs" />
+    <Compile Include="Dashboard\Lobbies\Lobby.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
