@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
 using Moq;
 using VOC.Client.Dashboard.Configuration;
+using VOC.Client.Dashboard.Lobbies;
 using VOC.Client.WPF.Configuration;
+using VOC.Client.WPF.Lobbies;
+using VOC.Client.WPF.Main.Navigation;
 using Xunit;
 
 namespace VOC.Client.WPF.Test.Configuration
@@ -16,15 +20,16 @@ namespace VOC.Client.WPF.Test.Configuration
         {
             get
             {
-                yield return new object[] { null, new Mock<IMapConfigurator>().Object };
-                yield return new object[] { new Mock<IGameConfigurator>().Object, null };
+                yield return new object[] { null, new Mock<IMapConfigurator>().Object, new Mock<INavigationService>().Object };
+                yield return new object[] { new Mock<IGameConfigurator>().Object, null, new Mock<INavigationService>().Object };
+                yield return new object[] { new Mock<IGameConfigurator>().Object, new Mock<IMapConfigurator>().Object, null };
             }
         }
 
         [Theory, MemberData(nameof(NullConstruction))]
-        public void CantBeConstructedWithNull(IGameConfigurator gameconfig, IMapConfigurator mapconfig)
+        public void CantBeConstructedWithNull(IGameConfigurator gameconfig, IMapConfigurator mapconfig, INavigationService navigation)
         {
-            Assert.Throws<ArgumentNullException>(() => new ConfigurationViewModel(gameconfig, mapconfig));
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationViewModel(gameconfig, mapconfig, navigation));
         }
 
         [Fact]
@@ -32,9 +37,11 @@ namespace VOC.Client.WPF.Test.Configuration
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
+            var navigation = new Mock<INavigationService>();
+
             var map1 = new Mock<IMap>();
             mapConfigurator.Setup(s => s.GetMaps()).Returns(Task.FromResult(new[] { map1.Object,  new Mock<IMap>().Object }.AsEnumerable()));
-            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object);
+            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object, navigation.Object);
 
             await viewmodel.OnNavigate();
 
@@ -49,8 +56,9 @@ namespace VOC.Client.WPF.Test.Configuration
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
+            var navigation = new Mock<INavigationService>();
 
-            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object);
+            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object, navigation.Object);
 
             var map = new Mock<IMap>();
             map.Setup(m => m.MinPlayers).Returns(min);
@@ -67,8 +75,9 @@ namespace VOC.Client.WPF.Test.Configuration
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
+            var navigation = new Mock<INavigationService>();
 
-            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object);
+            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object, navigation.Object);
 
             //first set some intial values
             var map = new Mock<IMap>();
@@ -86,7 +95,9 @@ namespace VOC.Client.WPF.Test.Configuration
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
-            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object);
+            var navigation = new Mock<INavigationService>();
+
+            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object, navigation.Object);
 
             viewmodel.Port = 8008;
             viewmodel.SelectedMap = null;
@@ -101,7 +112,9 @@ namespace VOC.Client.WPF.Test.Configuration
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
-            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object);
+            var navigation = new Mock<INavigationService>();
+
+            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object, navigation.Object);
 
             var map = new Mock<IMap>();
             map.Setup(m => m.MinPlayers).Returns(3);
@@ -121,7 +134,9 @@ namespace VOC.Client.WPF.Test.Configuration
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
-            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object);
+            var navigation = new Mock<INavigationService>();
+
+            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object, navigation.Object);
 
             var map = new Mock<IMap>();
             map.Setup(m => m.MinPlayers).Returns(3);
@@ -140,7 +155,12 @@ namespace VOC.Client.WPF.Test.Configuration
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
-            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object);
+            var navigation = new Mock<INavigationService>();
+
+            var lobby = new Lobby();
+            gameconfig.Setup(g => g.Start(It.IsAny<GameConfiguration>(), It.IsAny<int>())).Returns(Task.FromResult(lobby));
+
+            var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object, navigation.Object);
 
             var map = new Mock<IMap>();
             map.Setup(m => m.MinPlayers).Returns(3);
@@ -153,6 +173,7 @@ namespace VOC.Client.WPF.Test.Configuration
             viewmodel.StartGameCommand.Execute(null);
 
             gameconfig.Verify(g => g.Start(It.Is<GameConfiguration>(c => c.Map == map.Object && c.TotalPlayers == 3), 8008));
+            navigation.Verify(n => n.Navigate<LobbyViewModel>(It.Is<TypedParameter>(p => p.Value == lobby)));
         }
     }
 }

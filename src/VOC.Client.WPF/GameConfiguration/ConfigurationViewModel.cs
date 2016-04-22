@@ -5,10 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Autofac;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using VOC.Client.Dashboard.Configuration;
+using VOC.Client.Dashboard.Lobbies;
+using VOC.Client.WPF.Lobbies;
 using VOC.Client.WPF.Main;
+using VOC.Client.WPF.Main.Navigation;
 
 namespace VOC.Client.WPF.Configuration
 {
@@ -16,16 +20,22 @@ namespace VOC.Client.WPF.Configuration
     {
         private readonly IMapConfigurator mapConfigurator;
         private readonly IGameConfigurator gameConfigurator;
+        private readonly INavigationService navigationService;
         private readonly RelayCommand _startgameCommand;
 
-        public ConfigurationViewModel(IGameConfigurator gameConfigurator, IMapConfigurator mapConfigurator)
+        public ConfigurationViewModel(IGameConfigurator gameConfigurator, IMapConfigurator mapConfigurator, INavigationService navigationService)
         {
             if (gameConfigurator == null)
                 throw new ArgumentNullException(nameof(gameConfigurator));
             if (mapConfigurator == null)
                 throw new ArgumentNullException(nameof(mapConfigurator));
+            if (navigationService == null)
+                throw new ArgumentNullException(nameof(navigationService));
+
             this.mapConfigurator = mapConfigurator;
             this.gameConfigurator = gameConfigurator;
+            this.navigationService = navigationService;
+
             _startgameCommand = new RelayCommand(StartGame, () => CanStartGame);
         }
 
@@ -97,12 +107,13 @@ namespace VOC.Client.WPF.Configuration
             }
         }
 
-        private void StartGame()
+        private async void StartGame()
         {
             if (!CanStartGame) return;
 
             var configuration = new GameConfiguration(SelectedMap, SelectedPlayerCount);
-            gameConfigurator.Start(configuration, Port);
+            Lobby lobby = await gameConfigurator.Start(configuration, Port);
+            await navigationService.Navigate<LobbyViewModel>(new TypedParameter(typeof(Lobby), lobby));
         }
 
         public Task OnClose()
