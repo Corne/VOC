@@ -9,7 +9,7 @@ namespace VOC.Client.Dashboard.Configuration
 {
     public class DummyGameConfigurator : IGameConfigurator
     {
-        public Task<Lobby> Start(GameConfiguration configuration, int port)
+        public Task<Lobby> CreateLobby(GameConfiguration configuration, int port)
         {
             return Task.FromResult((Lobby)null);
         }

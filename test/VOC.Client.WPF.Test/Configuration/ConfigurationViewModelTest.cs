@@ -91,7 +91,7 @@ namespace VOC.Client.WPF.Test.Configuration
         }
 
         [Fact]
-        public void ExpectStartGameToNotExecuteIfMapNull()
+        public void ExpectCreateLobbyToNotExecuteIfMapNull()
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
@@ -102,13 +102,13 @@ namespace VOC.Client.WPF.Test.Configuration
             viewmodel.Port = 8008;
             viewmodel.SelectedMap = null;
             viewmodel.SelectedPlayerCount = 3;
-            viewmodel.StartGameCommand.Execute(null);
+            viewmodel.CreateLobbyCommand.Execute(null);
 
-            gameconfig.Verify(g => g.Start(It.IsAny<GameConfiguration>(), It.IsAny<int>()), Times.Never);
+            gameconfig.Verify(g => g.CreateLobby(It.IsAny<GameConfiguration>(), It.IsAny<int>()), Times.Never);
         }
 
         [Fact]
-        public void ExpectStartToNotExecuteIfPlayersNotWithinMapRange()
+        public void ExpectCreateLobbyToNotExecuteIfPlayersNotWithinMapRange()
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
@@ -123,14 +123,14 @@ namespace VOC.Client.WPF.Test.Configuration
             viewmodel.Port = 8008;
             viewmodel.SelectedMap = map.Object;
             viewmodel.SelectedPlayerCount = 2;
-            viewmodel.StartGameCommand.Execute(null);
+            viewmodel.CreateLobbyCommand.Execute(null);
 
-            gameconfig.Verify(g => g.Start(It.IsAny<GameConfiguration>(), It.IsAny<int>()), Times.Never);
+            gameconfig.Verify(g => g.CreateLobby(It.IsAny<GameConfiguration>(), It.IsAny<int>()), Times.Never);
         }
 
         //CvB Todo: maybe check more then positive int, maybe check if we can start something on this port??
         [Fact]
-        public void ExpectStartToNotExecuteOnInvalidPort()
+        public void ExpectCreateLobbyToNotExecuteOnInvalidPort()
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
@@ -145,20 +145,20 @@ namespace VOC.Client.WPF.Test.Configuration
             viewmodel.Port = 0;
             viewmodel.SelectedMap = map.Object;
             viewmodel.SelectedPlayerCount = 3;
-            viewmodel.StartGameCommand.Execute(null);
+            viewmodel.CreateLobbyCommand.Execute(null);
 
-            gameconfig.Verify(g => g.Start(It.IsAny<GameConfiguration>(), It.IsAny<int>()), Times.Never);
+            gameconfig.Verify(g => g.CreateLobby(It.IsAny<GameConfiguration>(), It.IsAny<int>()), Times.Never);
         }
 
         [Fact]
-        public void StartGameExecuteTest()
+        public void CreateLobbyExecuteTest()
         {
             var mapConfigurator = new Mock<IMapConfigurator>();
             var gameconfig = new Mock<IGameConfigurator>();
             var navigation = new Mock<INavigationService>();
 
             var lobby = new Lobby();
-            gameconfig.Setup(g => g.Start(It.IsAny<GameConfiguration>(), It.IsAny<int>())).Returns(Task.FromResult(lobby));
+            gameconfig.Setup(g => g.CreateLobby(It.IsAny<GameConfiguration>(), It.IsAny<int>())).Returns(Task.FromResult(lobby));
 
             var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object, navigation.Object);
 
@@ -170,9 +170,9 @@ namespace VOC.Client.WPF.Test.Configuration
             viewmodel.SelectedMap = map.Object;
             viewmodel.SelectedPlayerCount = 3;
 
-            viewmodel.StartGameCommand.Execute(null);
+            viewmodel.CreateLobbyCommand.Execute(null);
 
-            gameconfig.Verify(g => g.Start(It.Is<GameConfiguration>(c => c.Map == map.Object && c.TotalPlayers == 3), 8008));
+            gameconfig.Verify(g => g.CreateLobby(It.Is<GameConfiguration>(c => c.Map == map.Object && c.TotalPlayers == 3), 8008));
             navigation.Verify(n => n.Navigate<LobbyViewModel>(It.Is<TypedParameter>(p => p.Value == lobby)));
         }
     }

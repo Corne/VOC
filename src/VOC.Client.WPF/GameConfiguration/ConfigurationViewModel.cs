@@ -21,7 +21,7 @@ namespace VOC.Client.WPF.Configuration
         private readonly IMapConfigurator mapConfigurator;
         private readonly IGameConfigurator gameConfigurator;
         private readonly INavigationService navigationService;
-        private readonly RelayCommand _startgameCommand;
+        private readonly RelayCommand _createLobbyCommand;
 
         public ConfigurationViewModel(IGameConfigurator gameConfigurator, IMapConfigurator mapConfigurator, INavigationService navigationService)
         {
@@ -36,7 +36,7 @@ namespace VOC.Client.WPF.Configuration
             this.gameConfigurator = gameConfigurator;
             this.navigationService = navigationService;
 
-            _startgameCommand = new RelayCommand(StartGame, () => CanStartGame);
+            _createLobbyCommand = new RelayCommand(CreateLobby, () => CanCreateLobby);
         }
 
         private int _port = 1337;
@@ -46,7 +46,7 @@ namespace VOC.Client.WPF.Configuration
             set
             {
                 if (Set(ref _port, value))
-                    _startgameCommand.RaiseCanExecuteChanged();
+                    _createLobbyCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -64,7 +64,7 @@ namespace VOC.Client.WPF.Configuration
                         Players = new int[0];
                     else
                         Players = Enumerable.Range(SelectedMap.MinPlayers, SelectedMap.MaxPlayers - SelectedMap.MinPlayers + 1).ToList();
-                    _startgameCommand.RaiseCanExecuteChanged();
+                    _createLobbyCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -87,16 +87,16 @@ namespace VOC.Client.WPF.Configuration
             set
             {
                 if (Set(ref _selectedPlayerCount, value))
-                    _startgameCommand.RaiseCanExecuteChanged();
+                    _createLobbyCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public ICommand StartGameCommand
+        public ICommand CreateLobbyCommand
         {
-            get { return _startgameCommand; }
+            get { return _createLobbyCommand; }
         }
 
-        private bool CanStartGame
+        private bool CanCreateLobby
         {
             get
             {
@@ -107,12 +107,12 @@ namespace VOC.Client.WPF.Configuration
             }
         }
 
-        private async void StartGame()
+        private async void CreateLobby()
         {
-            if (!CanStartGame) return;
+            if (!CanCreateLobby) return;
 
             var configuration = new GameConfiguration(SelectedMap, SelectedPlayerCount);
-            Lobby lobby = await gameConfigurator.Start(configuration, Port);
+            Lobby lobby = await gameConfigurator.CreateLobby(configuration, Port);
             await navigationService.Navigate<LobbyViewModel>(new TypedParameter(typeof(Lobby), lobby));
         }
 

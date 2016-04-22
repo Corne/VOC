@@ -35,8 +35,8 @@
             </UniformGrid>
 
             <Border Grid.Row="1">
-                <Button Content="Start"
-                        Command="{Binding StartGameCommand}"
+                <Button Content="Create Lobby"
+                        Command="{Binding CreateLobbyCommand}"
                         HorizontalAlignment="Center" />
             </Border>
         </Grid>
