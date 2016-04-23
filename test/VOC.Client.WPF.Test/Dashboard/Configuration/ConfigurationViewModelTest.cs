@@ -157,7 +157,7 @@ namespace VOC.Client.WPF.Test.Dashboard.Configuration
             var gameconfig = new Mock<IGameConfigurator>();
             var navigation = new Mock<INavigationService>();
 
-            var lobby = new Lobby();
+            var lobby = new Mock<ILobby>().Object;
             gameconfig.Setup(g => g.CreateLobby(It.IsAny<GameConfiguration>(), It.IsAny<int>())).Returns(Task.FromResult(lobby));
 
             var viewmodel = new ConfigurationViewModel(gameconfig.Object, mapConfigurator.Object, navigation.Object);

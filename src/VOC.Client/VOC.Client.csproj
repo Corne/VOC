@@ -52,7 +52,8 @@
     <Compile Include="Dashboard\Games\ConnectionInfo.cs" />
     <Compile Include="Dashboard\Games\IGame.cs" />
     <Compile Include="Dashboard\Games\IGameStore.cs" />
-    <Compile Include="Dashboard\Lobbies\Lobby.cs" />
+    <Compile Include="Dashboard\Lobbies\ILobby.cs" />
+    <Compile Include="Dashboard\Lobbies\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

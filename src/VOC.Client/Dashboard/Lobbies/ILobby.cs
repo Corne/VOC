@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace VOC.Client.Dashboard.Lobbies
 {
-    public class Lobby
+    public interface ILobby
     {
+        IEnumerable<Player> Players { get; }
 
+        event EventHandler<Player> PlayerJoined;
+        event EventHandler<Player> PlayerLeft;
     }
 }

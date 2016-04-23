@@ -112,8 +112,8 @@ namespace VOC.Client.WPF.Dashboard.Configuration
             if (!CanCreateLobby) return;
 
             var configuration = new GameConfiguration(SelectedMap, SelectedPlayerCount);
-            Lobby lobby = await gameConfigurator.CreateLobby(configuration, Port);
-            await navigationService.Navigate<LobbyViewModel>(new TypedParameter(typeof(Lobby), lobby));
+            ILobby lobby = await gameConfigurator.CreateLobby(configuration, Port);
+            await navigationService.Navigate<LobbyViewModel>(new TypedParameter(typeof(ILobby), lobby));
         }
 
         public Task OnClose()

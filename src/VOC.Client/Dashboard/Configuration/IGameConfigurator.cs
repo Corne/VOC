@@ -9,6 +9,6 @@ namespace VOC.Client.Dashboard.Configuration
 {
     public interface IGameConfigurator
     {
-        Task<Lobby> CreateLobby(GameConfiguration configuration, int port);
+        Task<ILobby> CreateLobby(GameConfiguration configuration, int port);
     }
 }

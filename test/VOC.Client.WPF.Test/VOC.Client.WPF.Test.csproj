@@ -90,6 +90,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Dashboard\Lobbies\LobbyViewModelTest.cs" />
     <Compile Include="Dashboard\Overview\DashboardViewModelTest.cs" />
     <Compile Include="Dashboard\Configuration\ConfigurationViewModelTest.cs" />
     <Compile Include="Main\MainViewModelTest.cs" />
@@ -109,6 +110,7 @@
       <Name>VOC.Client</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
