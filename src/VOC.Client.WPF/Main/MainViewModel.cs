@@ -4,16 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using VOC.Client.WPF.Main.Users;
 
 namespace VOC.Client.WPF.Main
 {
     public class MainViewModel : ViewModelBase
     {
 
-        public MainViewModel()
+        public MainViewModel(UserViewModel userViewModel)
         {
+            if (userViewModel == null)
+                throw new ArgumentNullException(nameof(userViewModel));
 
+            User = userViewModel;
         }
+
+        public UserViewModel User { get; }
 
         private IContentViewModel _content;
         public IContentViewModel Content

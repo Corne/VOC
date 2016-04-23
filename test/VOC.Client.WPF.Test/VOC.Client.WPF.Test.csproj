@@ -95,6 +95,7 @@
     <Compile Include="Dashboard\Configuration\ConfigurationViewModelTest.cs" />
     <Compile Include="Main\MainViewModelTest.cs" />
     <Compile Include="Main\Navigation\NavigationServiceTest.cs" />
+    <Compile Include="Main\Users\UserViewModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

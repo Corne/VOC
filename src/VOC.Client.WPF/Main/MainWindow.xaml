@@ -3,12 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VOC.Client.WPF"
+        xmlns:local="clr-namespace:VOC.Client.WPF.Main"
+        xmlns:uv="clr-namespace:VOC.Client.WPF.Main.Users"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
-    
-    <Border Padding="10, 50">
-        <ContentControl DataContext="{Binding Content}" Content="{Binding}"   />
+
+    <Border Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="1">
+                    <uv:UserView DataContext="{Binding User}" />
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="1">
+                <ContentControl DataContext="{Binding Content}" Content="{Binding}"   />
+            </Border>
+        </Grid>
     </Border>
 </Window>

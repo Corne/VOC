@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Moq;
+using VOC.Client.Users;
 using VOC.Client.WPF.Main;
 using VOC.Client.WPF.Main.Navigation;
+using VOC.Client.WPF.Main.Users;
 using Xunit;
 
 namespace VOC.Client.WPF.Test.Main.Navigation
@@ -68,7 +70,8 @@ namespace VOC.Client.WPF.Test.Main.Navigation
         {
 
             var builder = new ContainerBuilder();
-            builder.RegisterInstance(new MainViewModel());
+            var user = new UserViewModel(new Mock<IUser>().Object);
+            builder.RegisterInstance(new MainViewModel(user));
 
             builder.RegisterType<NavigationService>().AsSelf().As<INavigationService>();
 
