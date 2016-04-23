@@ -10,11 +10,11 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using VOC.Client.Dashboard.Configuration;
 using VOC.Client.Dashboard.Lobbies;
-using VOC.Client.WPF.Lobbies;
+using VOC.Client.WPF.Dashboard.Lobbies;
 using VOC.Client.WPF.Main;
 using VOC.Client.WPF.Main.Navigation;
 
-namespace VOC.Client.WPF.Configuration
+namespace VOC.Client.WPF.Dashboard.Configuration
 {
     public class ConfigurationViewModel : ViewModelBase, IContentViewModel
     {

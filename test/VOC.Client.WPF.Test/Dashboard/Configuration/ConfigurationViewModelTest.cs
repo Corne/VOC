@@ -7,12 +7,12 @@ using Autofac;
 using Moq;
 using VOC.Client.Dashboard.Configuration;
 using VOC.Client.Dashboard.Lobbies;
-using VOC.Client.WPF.Configuration;
-using VOC.Client.WPF.Lobbies;
+using VOC.Client.WPF.Dashboard.Configuration;
+using VOC.Client.WPF.Dashboard.Lobbies;
 using VOC.Client.WPF.Main.Navigation;
 using Xunit;
 
-namespace VOC.Client.WPF.Test.Configuration
+namespace VOC.Client.WPF.Test.Dashboard.Configuration
 {
     public class ConfigurationViewModelTest
     {

@@ -83,31 +83,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Dashboard\DashboardView.xaml">
+    <Page Include="Dashboard\Overview\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dashboard\GameView.xaml">
+    <Page Include="Dashboard\Overview\GameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dashboard\Templates.xaml">
+    <Page Include="Dashboard\Overview\Templates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GameConfiguration\ConfigurationView.xaml">
+    <Page Include="Dashboard\Configuration\ConfigurationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GameConfiguration\Templates.xaml">
+    <Page Include="Dashboard\Configuration\Templates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Lobbies\LobbyView.xaml">
+    <Page Include="Dashboard\Lobbies\LobbyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Lobbies\Templates.xaml">
+    <Page Include="Dashboard\Lobbies\Templates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -119,22 +119,22 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dashboard\DashboardView.xaml.cs">
+    <Compile Include="Dashboard\Overview\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dashboard\DashboardViewModel.cs" />
-    <Compile Include="Dashboard\GameView.xaml.cs">
+    <Compile Include="Dashboard\Overview\DashboardViewModel.cs" />
+    <Compile Include="Dashboard\Overview\GameView.xaml.cs">
       <DependentUpon>GameView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dashboard\GameViewModel.cs" />
-    <Compile Include="GameConfiguration\ConfigurationView.xaml.cs">
+    <Compile Include="Dashboard\Overview\GameViewModel.cs" />
+    <Compile Include="Dashboard\Configuration\ConfigurationView.xaml.cs">
       <DependentUpon>ConfigurationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameConfiguration\ConfigurationViewModel.cs" />
-    <Compile Include="Lobbies\LobbyView.xaml.cs">
+    <Compile Include="Dashboard\Configuration\ConfigurationViewModel.cs" />
+    <Compile Include="Dashboard\Lobbies\LobbyView.xaml.cs">
       <DependentUpon>LobbyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Lobbies\LobbyViewModel.cs" />
+    <Compile Include="Dashboard\Lobbies\LobbyViewModel.cs" />
     <Compile Include="Main\ApplicationBuilder.cs" />
     <Compile Include="Main\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -6,7 +6,7 @@ using Autofac;
 using Autofac.Core;
 using VOC.Client.Dashboard.Configuration;
 using VOC.Client.Dashboard.Games;
-using VOC.Client.WPF.Dashboard;
+using VOC.Client.WPF.Dashboard.Overview;
 using VOC.Client.WPF.Main.Navigation;
 
 namespace VOC.Client.WPF.Main

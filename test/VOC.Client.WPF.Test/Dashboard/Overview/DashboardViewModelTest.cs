@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using VOC.Client.Dashboard.Games;
-using VOC.Client.WPF.Dashboard;
+using VOC.Client.WPF.Dashboard.Overview;
 using VOC.Client.WPF.Main.Navigation;
 using Xunit;
 
-namespace VOC.Client.WPF.Test.Dashboard
+namespace VOC.Client.WPF.Test.Dashboard.Overview
 {
     public class DashboardViewModelTest
     {

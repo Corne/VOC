@@ -11,9 +11,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Styles.xaml" />
-                <ResourceDictionary Source="Dashboard/Templates.xaml" />
-                <ResourceDictionary Source="GameConfiguration/Templates.xaml" />
-                <ResourceDictionary Source="Lobbies/Templates.xaml" />
+                <ResourceDictionary Source="Dashboard/Overview/Templates.xaml" />
+                <ResourceDictionary Source="Dashboard/Configuration/Templates.xaml" />
+                <ResourceDictionary Source="Dashboard/Lobbies/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <main:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
         </ResourceDictionary>

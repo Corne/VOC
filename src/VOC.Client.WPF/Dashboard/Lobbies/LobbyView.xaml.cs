@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VOC.Client.WPF.Lobbies
+namespace VOC.Client.WPF.Dashboard.Lobbies
 {
     /// <summary>
     /// Interaction logic for LobbyView.xaml

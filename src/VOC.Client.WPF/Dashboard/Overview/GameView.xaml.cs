@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VOC.Client.WPF.Dashboard
+namespace VOC.Client.WPF.Dashboard.Overview
 {
     /// <summary>
-    /// Interaction logic for DashboardView.xaml
+    /// Interaction logic for GameView.xaml
     /// </summary>
-    public partial class DashboardView : UserControl
+    public partial class GameView : UserControl
     {
-        public DashboardView()
+        public GameView()
         {
             InitializeComponent();
         }

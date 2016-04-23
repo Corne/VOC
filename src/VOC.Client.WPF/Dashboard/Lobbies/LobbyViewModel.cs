@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VOC.Client.Dashboard.Lobbies;
 using VOC.Client.WPF.Main;
 
-namespace VOC.Client.WPF.Lobbies
+namespace VOC.Client.WPF.Dashboard.Lobbies
 {
     public class LobbyViewModel : IContentViewModel
     {

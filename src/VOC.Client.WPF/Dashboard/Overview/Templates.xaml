@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:VOC.Client.WPF.Dashboard">
+                    xmlns:local="clr-namespace:VOC.Client.WPF.Dashboard.Overview">
 
     <DataTemplate DataType="{x:Type local:DashboardViewModel}">
         <local:DashboardView />

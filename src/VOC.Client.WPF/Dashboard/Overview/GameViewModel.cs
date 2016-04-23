@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VOC.Client.Dashboard.Games;
 
-namespace VOC.Client.WPF.Dashboard
+namespace VOC.Client.WPF.Dashboard.Overview
 {
     public class GameViewModel
     {
