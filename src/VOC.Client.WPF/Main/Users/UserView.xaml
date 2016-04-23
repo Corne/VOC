@@ -7,10 +7,53 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance local:UserViewModel}">
-    <Border Padding="5" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <TextBlock Text="{Binding Name}"
-                   FontSize="20" 
-                   FontWeight="Bold" 
-                   TextDecorations="Underline" />
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="DisplayTemplate" DataType="{x:Type local:UserViewModel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding Name}"
+                       FontSize="20" 
+                       FontWeight="Bold" 
+                       TextDecorations="Underline"
+                       HorizontalAlignment="Center" />
+
+                <Button Grid.Column="1" Content="E" Command="{Binding EditNameCommand}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EditTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border Margin="5, 0">
+                    <TextBox Text="{Binding EditValue}" VerticalAlignment="Center" />
+                </Border>
+                
+                <Button Grid.Column="1" Content="S" Command="{Binding SaveNameCommand}" />
+                <Button Grid.Column="2" Content="C" Command="{Binding CancelEditCommand}" />
+            </Grid>
+        </DataTemplate>
+
+        <Style x:Key="UserEditControl" TargetType="{x:Type ContentControl}">
+            <Setter Property="ContentTemplate" Value="{StaticResource DisplayTemplate}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding InEditMode}" Value="true">
+                    <Setter Property="ContentTemplate" Value="{StaticResource EditTemplate}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <Border Padding="5" VerticalAlignment="Center">
+        <ContentControl Content="{Binding}" Style="{StaticResource UserEditControl}" />
     </Border>
 </UserControl>

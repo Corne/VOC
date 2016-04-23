@@ -22,7 +22,7 @@
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="1">
+                <Border Grid.Column="1" Width="150">
                     <uv:UserView DataContext="{Binding User}" />
                 </Border>
             </Grid>

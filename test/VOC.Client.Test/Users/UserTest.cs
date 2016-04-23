@@ -18,5 +18,18 @@ namespace VOC.Client.Test.Users
         {
             Assert.Throws<ArgumentNullException>(() => new User(name));
         }
+
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")]
+        public void SetNameShouldBeValidInput(string name)
+        {
+            var user = new User("Henk");
+
+            Assert.Throws<ArgumentNullException>(() => user.Name = name);
+            Assert.Equal("Henk", user.Name);
+        }
     }
 }

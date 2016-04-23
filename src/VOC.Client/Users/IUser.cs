@@ -9,6 +9,6 @@ namespace VOC.Client.Users
     public interface IUser
     {
         Guid Id { get; }
-        string Name { get; }
+        string Name { get; set; }
     }
 }

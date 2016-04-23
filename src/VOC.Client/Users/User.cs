@@ -11,12 +11,23 @@ namespace VOC.Client.Users
 
         public User(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException(nameof(name), "Name can't be null or white space");
+
             Name = name;
         }
 
         public Guid Id { get; }
-        public string Name { get; private set; } 
+
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentNullException(nameof(Name), "Name can't be null or white space");
+                _name = value;
+            }
+        }
+
     }
 }
