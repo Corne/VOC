@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VOC.Client.WPF.Dashboard.Lobbies"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance local:LobbyViewModel}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -17,5 +18,11 @@
                        HorizontalAlignment="Center"
                        FontSize="20" />
         </Border>
+
+        <Grid Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Players}" DisplayMemberPath="Name" />
+
+
+        </Grid>
     </Grid>
 </UserControl>

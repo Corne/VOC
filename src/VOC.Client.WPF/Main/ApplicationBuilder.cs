@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Core;
 using VOC.Client.Dashboard.Configuration;
 using VOC.Client.Dashboard.Games;
+using VOC.Client.Users;
 using VOC.Client.WPF.Dashboard.Overview;
 using VOC.Client.WPF.Main.Navigation;
 
@@ -19,6 +20,10 @@ namespace VOC.Client.WPF.Main
         {
             builder = new ContainerBuilder();
 
+            //user
+            builder.RegisterInstance(new User(Environment.UserName)).As<IUser>();
+
+            //all viewmodels
             var assembly = Assembly.GetExecutingAssembly();
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.Name.EndsWith("ViewModel"))
