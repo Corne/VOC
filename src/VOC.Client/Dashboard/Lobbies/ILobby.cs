@@ -9,7 +9,6 @@ namespace VOC.Client.Dashboard.Lobbies
     public interface ILobby
     {
         Player Moderator { get; }
-
         IEnumerable<Player> Players { get; }
 
         event EventHandler<Player> PlayerJoined;

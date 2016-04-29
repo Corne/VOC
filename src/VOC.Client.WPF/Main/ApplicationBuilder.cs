@@ -36,7 +36,7 @@ namespace VOC.Client.WPF.Main
             builder.RegisterType<MainViewModel>().SingleInstance().OnActivated(StartNavigation);
 
             //data
-            builder.RegisterType<DummyGameStore>().As<IGameStore>();
+            builder.RegisterType<GameStore>().As<IGameStore>();
             builder.RegisterType<DummyMapConfigurator>().As<IMapConfigurator>();
             builder.RegisterType<DummyGameConfigurator>().As<IGameConfigurator>();
         }

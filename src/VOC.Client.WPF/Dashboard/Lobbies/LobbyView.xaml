@@ -20,9 +20,8 @@
         </Border>
 
         <Grid Grid.Row="1">
-            <ItemsControl ItemsSource="{Binding Players}" DisplayMemberPath="Name" />
-
-
+            <ItemsControl ItemsSource="{Binding Players}" 
+                          DisplayMemberPath="Name" />
         </Grid>
     </Grid>
 </UserControl>

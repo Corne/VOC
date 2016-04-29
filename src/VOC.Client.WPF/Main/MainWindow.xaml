@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:VOC.Client.WPF.Main"
         xmlns:uv="clr-namespace:VOC.Client.WPF.Main.Users"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="MainWindow" Height="500" Width="800"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
 
     <Border Padding="10">
@@ -28,7 +28,7 @@
             </Grid>
 
             <Border Grid.Row="1">
-                <ContentControl DataContext="{Binding Content}" Content="{Binding}"   />
+                <ContentControl DataContext="{Binding Content}" Content="{Binding}" />
             </Border>
         </Grid>
     </Border>
