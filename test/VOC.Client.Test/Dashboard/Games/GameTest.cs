@@ -22,7 +22,7 @@ namespace VOC.Client.Test.Dashboard.Games
         [Theory, MemberData(nameof(NullConstruction))]
         public void CantBeConstructedWithNull(string name, ConnectionInfo connection)
         {
-            Assert.Throws<NullReferenceException>(() => new Game(name, connection));
+            Assert.Throws<ArgumentNullException>(() => new Game(name, connection));
         }
     }
 }
