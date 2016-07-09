@@ -5,6 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VOC.Client.WPF.Game.Board"
              mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type local:Tile}">
+            <Setter Property="Height" Value="100" />
+        </Style>
+    </UserControl.Resources>
     
     <StackPanel Orientation="Horizontal">
         <StackPanel >
@@ -13,7 +19,7 @@
             <local:Tile />
             <local:Tile />
         </StackPanel>
-        <StackPanel Margin="-33, -53">
+        <StackPanel Margin="-32, -50">
             <local:Tile />
             <local:Tile />
             <local:Tile />

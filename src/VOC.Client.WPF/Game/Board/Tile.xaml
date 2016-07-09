@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VOC.Client.WPF.Game.Board"
-             mc:Ignorable="d" >
-    <Viewbox>
+             mc:Ignorable="d" 
+             x:Name="TileRoot">
+    <Viewbox Width="{Binding Width, ElementName=TileRoot}" Height="{Binding Height, ElementName=TileRoot}">
         <Grid>
             <Path Data="M33,0 L99,0 L132,53 L99,106 L33,106 L0,53 z" 
                   StrokeThickness="1" 
