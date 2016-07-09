@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="VOC.Client.WPF.Game.Board.Tile"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VOC.Client.WPF.Game.Board"
+             mc:Ignorable="d" >
+    <Viewbox>
+        <Grid>
+            <Path Data="M33,0 L99,0 L132,53 L99,106 L33,106 L0,53 z" 
+                  StrokeThickness="1" 
+                  Stroke="White"  />
+            <!--<Line x:Name="NorthRoad" Y1="0" Y2="0" X1="33" X2="99" />
+            <Line x:Name="NorthEastRoad" Y1="0" Y2="53" X1="99" X2="132" />
+            <Line x:Name="SouthEastRoad" Y1="53" Y2="106" X1="132" X2="99" />
+            <Line x:Name="SouthRoad" Y1="106" Y2="106" X1="99" X2="33" />
+            <Line x:Name="SouthWest" Y1="106" Y2="53" X1="33" X2="0" />
+            <Line x:Name="NorthWest" Y1="53" Y2="0" X1="0" X2="33"  />-->
+        </Grid>
+    </Viewbox>
+</UserControl>

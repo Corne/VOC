@@ -8,7 +8,11 @@ namespace VOC.Client.Dashboard.Games
 {
     public interface IGameStore
     {
-        Task Load();
+        /// <summary>
+        /// Load all games
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> Load();
 
         IEnumerable<IGame> Games { get; }
     }

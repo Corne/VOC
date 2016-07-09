@@ -12,10 +12,10 @@ namespace VOC.Client.Dashboard.Games
 
         public IEnumerable<IGame> Games { get; private set; }
 
-        public Task Load()
+        public Task<bool> Load()
         {
             Games = Enumerable.Range(0, rand.Next(20)).Select(i => new DummyGame()).ToList().AsReadOnly();
-            return Task.FromResult(0);
+            return Task.FromResult(true);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace VOC.Client.Dashboard.Games
 
         public IEnumerable<IGame> Games { get; private set; }
 
-        public async Task Load()
+        public async Task<bool> Load()
         {
             using (var client = new HttpClient())
             {
@@ -27,6 +27,7 @@ namespace VOC.Client.Dashboard.Games
                     var games = await response.Content.ReadAsAsync<IEnumerable<GameData>>();
                     Games = games.Select(g => new Game(g.Name, new ConnectionInfo(IPAddress.Parse(g.IP), g.Port))).ToList();
                 }
+                return response.IsSuccessStatusCode;
             }
         }
 
