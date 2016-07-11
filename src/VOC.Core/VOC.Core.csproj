@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boards\Board.cs" />
-    <Compile Include="Boards\Coordinate.cs" />
     <Compile Include="Boards\DefaultBoardBuilder.cs" />
     <Compile Include="Boards\Edge.cs" />
     <Compile Include="Boards\Harbor.cs" />

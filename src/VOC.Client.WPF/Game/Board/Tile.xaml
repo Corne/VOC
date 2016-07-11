@@ -6,17 +6,45 @@
              xmlns:local="clr-namespace:VOC.Client.WPF.Game.Board"
              mc:Ignorable="d" 
              x:Name="TileRoot">
+
+    <UserControl.Resources>
+        <Style TargetType="Ellipse">
+            <Setter Property="Width" Value="4" />
+            <Setter Property="Height" Value="4" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="-1, 0" />
+        </Style>
+
+        <Style TargetType="Line">
+            <Setter Property="Margin" Value="0, 0" />
+            <Setter Property="Stroke" Value="Transparent" />
+            <Setter Property="StrokeThickness" Value="3" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="Green" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
     <Viewbox Width="{Binding Width, ElementName=TileRoot}" Height="{Binding Height, ElementName=TileRoot}">
         <Grid>
-            <Path Data="M33,0 L99,0 L132,53 L99,106 L33,106 L0,53 z" 
-                  StrokeThickness="1" 
+            <Path Data="M66,0 L198,0 L264,106 L198,212 L66,212 L0,106 z" 
+                  StrokeThickness="1" Margin="1, 0, 0, 0"
                   Stroke="White"  />
-            <!--<Line x:Name="NorthRoad" Y1="0" Y2="0" X1="33" X2="99" />
-            <Line x:Name="NorthEastRoad" Y1="0" Y2="53" X1="99" X2="132" />
-            <Line x:Name="SouthEastRoad" Y1="53" Y2="106" X1="132" X2="99" />
+            <Line x:Name="NorthWestRoad" Y1="106" Y2="0" X1="0" X2="66"  />
+            <Line x:Name="NorthRoad" Y1="0" Y2="0" X1="66" X2="198" />
+            <Line x:Name="NorthEastRoad" Y1="0" Y2="106" X1="198" X2="264" />
+            <!--<Line x:Name="SouthEastRoad" Y1="53" Y2="106" X1="132" X2="99" />
             <Line x:Name="SouthRoad" Y1="106" Y2="106" X1="99" X2="33" />
-            <Line x:Name="SouthWest" Y1="106" Y2="53" X1="33" X2="0" />
-            <Line x:Name="NorthWest" Y1="53" Y2="0" X1="0" X2="33"  />-->
+            <Line x:Name="SouthWest" Y1="106" Y2="53" X1="33" X2="0" />-->
+            <Ellipse x:Name="LeftVertex" 
+                     Fill="Red"
+                     HorizontalAlignment="Left" />
+            
+            <Ellipse x:Name="RightVertex" 
+                     Fill="Blue"
+                     HorizontalAlignment="Right" />
         </Grid>
     </Viewbox>
 </UserControl>

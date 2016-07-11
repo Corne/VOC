@@ -7,9 +7,7 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style TargetType="{x:Type local:Tile}">
-            <Setter Property="Height" Value="100" />
-        </Style>
+
     </UserControl.Resources>
     
     <StackPanel Orientation="Horizontal">
@@ -19,7 +17,7 @@
             <local:Tile />
             <local:Tile />
         </StackPanel>
-        <StackPanel Margin="-32, -50">
+        <StackPanel Margin="-68, -106">
             <local:Tile />
             <local:Tile />
             <local:Tile />

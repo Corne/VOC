@@ -44,7 +44,7 @@ namespace VOC.Client.WPF.Main
         private void StartNavigation(IActivatedEventArgs<MainViewModel> args)
         {
             var navigationService = args.Context.Resolve<INavigationService>();
-            navigationService.Navigate<DashboardViewModel>();
+            navigationService.Navigate<Game.GameViewModel>();
         }
 
         public IContainer Build()
