@@ -20,7 +20,7 @@ namespace VOC.Client.WPF.Test.Converters
                 yield return new object[] { null, 10, DependencyProperty.UnsetValue };
                 yield return new object[] { 5, 10, 50.0 };
                 yield return new object[] { "11.1", 7, 77.7 };
-                yield return new object[] { 8, "5", 40 };
+                yield return new object[] { 8, "5", 40.0 };
             }
         }
 
