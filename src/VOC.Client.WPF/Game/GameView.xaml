@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VOC.Client.WPF.Game"
              xmlns:board="clr-namespace:VOC.Client.WPF.Game.Board"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance local:GameViewModel}">
     <Grid Background="DimGray">
-        <board:Board />
+        <board:Board DataContext="{Binding Board}" />
     </Grid>
 </UserControl>

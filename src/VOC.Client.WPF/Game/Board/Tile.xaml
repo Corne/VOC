@@ -9,8 +9,8 @@
 
     <UserControl.Resources>
         <Style TargetType="Ellipse">
-            <Setter Property="Width" Value="4" />
-            <Setter Property="Height" Value="4" />
+            <Setter Property="Width" Value="8" />
+            <Setter Property="Height" Value="8" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="-1, 0" />
         </Style>
@@ -29,6 +29,7 @@
     
     <Viewbox Width="{Binding Width, ElementName=TileRoot}" Height="{Binding Height, ElementName=TileRoot}">
         <Grid>
+
             <Path Data="M66,0 L198,0 L264,106 L198,212 L66,212 L0,106 z" 
                   StrokeThickness="1" Margin="1, 0, 0, 0"
                   Stroke="White"  />
@@ -38,11 +39,11 @@
             <!--<Line x:Name="SouthEastRoad" Y1="53" Y2="106" X1="132" X2="99" />
             <Line x:Name="SouthRoad" Y1="106" Y2="106" X1="99" X2="33" />
             <Line x:Name="SouthWest" Y1="106" Y2="53" X1="33" X2="0" />-->
-            <Ellipse x:Name="LeftVertex" 
+            <Ellipse x:Name="LeftVertex"
                      Fill="Red"
                      HorizontalAlignment="Left" />
-            
-            <Ellipse x:Name="RightVertex" 
+
+            <Ellipse x:Name="RightVertex"
                      Fill="Blue"
                      HorizontalAlignment="Right" />
         </Grid>

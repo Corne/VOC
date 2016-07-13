@@ -4,31 +4,62 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VOC.Client.WPF.Game.Board"
-             mc:Ignorable="d">
+             xmlns:conveters="clr-namespace:VOC.Client.WPF.Converters"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance local:BoardViewModel}">
 
     <UserControl.Resources>
-
+        <conveters:Multiply x:Key="Multiply" />
+        <local:YPositioner x:Key="YPositioner" />
     </UserControl.Resources>
-    
-    <StackPanel Orientation="Horizontal">
-        <StackPanel >
-            <local:Tile />
-            <local:Tile />
-            <local:Tile />
-            <local:Tile />
-        </StackPanel>
-        <StackPanel Margin="-68, -106">
-            <local:Tile />
-            <local:Tile />
-            <local:Tile />
-            <local:Tile />
-            <local:Tile />
-        </StackPanel>
-        <StackPanel >
-            <local:Tile />
-            <local:Tile />
-            <local:Tile />
-            <local:Tile />
-        </StackPanel>
-    </StackPanel>
+
+    <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ItemsControl ItemsSource="{Binding Tiles}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+           <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Width="1000" Height="1000" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:Tile Width="264" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X, Converter={StaticResource Multiply}, ConverterParameter=198}"/>
+                    <Setter Property="Canvas.Top">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource YPositioner}" ConverterParameter="212">
+                                <Binding Path="X" />
+                                <Binding Path="Y" />
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+
+        <!--<StackPanel Orientation="Horizontal">
+            <StackPanel >
+                <local:Tile />
+                <local:Tile />
+                <local:Tile />
+                <local:Tile />
+            </StackPanel>
+            <StackPanel Margin="-68, -106">
+                <local:Tile />
+                <local:Tile />
+                <local:Tile />
+                <local:Tile />
+                <local:Tile />
+            </StackPanel>
+            <StackPanel >
+                <local:Tile />
+                <local:Tile />
+                <local:Tile />
+                <local:Tile />
+            </StackPanel>
+        </StackPanel>-->
+    </Viewbox>
 </UserControl>

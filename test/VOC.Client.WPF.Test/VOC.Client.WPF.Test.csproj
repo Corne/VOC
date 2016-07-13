@@ -66,6 +66,7 @@
       <HintPath>..\..\packages\MvvmLightLibs.5.2.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
@@ -92,6 +93,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Converters\MultiplyTest.cs" />
     <Compile Include="Dashboard\Lobbies\LobbyViewModelTest.cs" />
     <Compile Include="Dashboard\Overview\DashboardViewModelTest.cs" />
     <Compile Include="Dashboard\Configuration\ConfigurationViewModelTest.cs" />
