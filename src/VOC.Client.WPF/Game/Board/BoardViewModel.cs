@@ -9,15 +9,24 @@ namespace VOC.Client.WPF.Game.Board
 {
     public class BoardViewModel
     {
-        public ObservableCollection<TileViewModel> Tiles { get; } = new ObservableCollection<TileViewModel>();
+        public ObservableCollection<TileViewModel> Tiles { get; }
 
-        public BoardViewModel()
+        public BoardViewModel(IEnumerable<TileViewModel> tiles)
         {
-            Tiles.Add(new TileViewModel(0, 0));
-            Tiles.Add(new TileViewModel(1, 0));
-            Tiles.Add(new TileViewModel(-1, 0));
-            Tiles.Add(new TileViewModel(0, 1));
-            Tiles.Add(new TileViewModel(0, -1));
+            if (tiles == null || tiles.Any(t => t == null))
+                throw new ArgumentNullException(nameof(tiles));
+            Tiles = new ObservableCollection<TileViewModel>(tiles);
+
+            TotalX = GetTotal(t => t.X);
+            TotalY = GetTotal(t => t.Y);
         }
+
+        private int GetTotal(Func<TileViewModel, int> property)
+        {
+            return Tiles.Select(property).DefaultIfEmpty(0).Max() + 1;
+        } 
+
+        public int TotalX { get; }
+        public int TotalY { get; }
     }
 }

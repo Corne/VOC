@@ -1,23 +1,29 @@
 ﻿<UserControl x:Class="VOC.Client.WPF.Game.Board.Board"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VOC.Client.WPF.Game.Board"
              xmlns:conveters="clr-namespace:VOC.Client.WPF.Converters"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance local:BoardViewModel}">
+             d:DataContext="{d:DesignInstance local:BoardViewModel}"
+             x:Name="BoardRoot">
 
     <UserControl.Resources>
+        <system:Int32 x:Key="TileWidth">264</system:Int32>
+        <system:Int32 x:Key="TileHeight">212</system:Int32>
         <conveters:Multiply x:Key="Multiply" />
         <local:YPositioner x:Key="YPositioner" />
+        <local:BoardHeightCalculator x:Key="BoardHeightConverter" />
     </UserControl.Resources>
 
     <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center">
         <ItemsControl ItemsSource="{Binding Tiles}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-           <ItemsControl.ItemsPanel>
+            <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas Width="1000" Height="1000" />
+                    <Canvas Width="{Binding TotalX, Converter={StaticResource Multiply}, ConverterParameter={StaticResource TileWidth}}" 
+                            Height="{Binding TotalY, Converter={StaticResource BoardHeightConverter}, ConverterParameter={StaticResource TileHeight}}" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -27,10 +33,10 @@
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>
                 <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding X, Converter={StaticResource Multiply}, ConverterParameter=198}"/>
+                    <Setter Property="Canvas.Left" Value="{Binding X, Converter={StaticResource Multiply}, ConverterParameter=197}"/>
                     <Setter Property="Canvas.Top">
                         <Setter.Value>
-                            <MultiBinding Converter="{StaticResource YPositioner}" ConverterParameter="212">
+                            <MultiBinding Converter="{StaticResource YPositioner}" ConverterParameter="{StaticResource TileHeight}">
                                 <Binding Path="X" />
                                 <Binding Path="Y" />
                             </MultiBinding>
@@ -39,27 +45,5 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
-
-        <!--<StackPanel Orientation="Horizontal">
-            <StackPanel >
-                <local:Tile />
-                <local:Tile />
-                <local:Tile />
-                <local:Tile />
-            </StackPanel>
-            <StackPanel Margin="-68, -106">
-                <local:Tile />
-                <local:Tile />
-                <local:Tile />
-                <local:Tile />
-                <local:Tile />
-            </StackPanel>
-            <StackPanel >
-                <local:Tile />
-                <local:Tile />
-                <local:Tile />
-                <local:Tile />
-            </StackPanel>
-        </StackPanel>-->
     </Viewbox>
 </UserControl>

@@ -157,6 +157,7 @@
     <Compile Include="Game\Board\Board.xaml.cs">
       <DependentUpon>Board.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Game\Board\BoardHeightCalculator.cs" />
     <Compile Include="Game\Board\BoardViewModel.cs" />
     <Compile Include="Game\Board\Tile.xaml.cs">
       <DependentUpon>Tile.xaml</DependentUpon>

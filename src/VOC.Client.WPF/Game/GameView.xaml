@@ -8,6 +8,6 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance local:GameViewModel}">
     <Grid Background="DimGray">
-        <board:Board DataContext="{Binding Board}" />
+        <board:Board DataContext="{Binding Board}" Margin="50" />
     </Grid>
 </UserControl>

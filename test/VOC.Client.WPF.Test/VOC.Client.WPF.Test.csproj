@@ -97,6 +97,8 @@
     <Compile Include="Dashboard\Lobbies\LobbyViewModelTest.cs" />
     <Compile Include="Dashboard\Overview\DashboardViewModelTest.cs" />
     <Compile Include="Dashboard\Configuration\ConfigurationViewModelTest.cs" />
+    <Compile Include="Game\Board\BoardHeightCalculatorTest.cs" />
+    <Compile Include="Game\Board\BoardViewModelTest.cs" />
     <Compile Include="Game\Board\TileViewModelTest.cs" />
     <Compile Include="Game\Board\YPositionerTest.cs" />
     <Compile Include="Main\MainViewModelTest.cs" />
