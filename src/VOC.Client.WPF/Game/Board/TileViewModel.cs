@@ -13,6 +13,9 @@ namespace VOC.Client.WPF.Game.Board
 
         public TileViewModel(int x, int y)
         {
+            if (x < 0 || y < 0)
+                throw new ArgumentException($"X({x}) and Y({y}, should be positive");
+
             X = x;
             Y = y;
         }
