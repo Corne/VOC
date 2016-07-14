@@ -15,7 +15,7 @@ namespace VOC.Client.WPF.Game.Board
         {
             culture = culture ?? CultureInfo.InvariantCulture;
 
-            if (values == null || values.Length != 2 || parameter == null)
+            if (values == null || values.Length != 2 || values.Any(v => v == null) || parameter == null)
                 return DependencyProperty.UnsetValue;
 
             double parsedX;
